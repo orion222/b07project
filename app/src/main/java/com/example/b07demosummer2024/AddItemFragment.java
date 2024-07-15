@@ -70,7 +70,7 @@ public class AddItemFragment extends Fragment {
         String id = itemsRef.push().getKey();
         Item item = new Item(id, title, author, genre, description);
 
-        itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
+        itemsRef.child(String.valueOf(id)).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
             } else {
