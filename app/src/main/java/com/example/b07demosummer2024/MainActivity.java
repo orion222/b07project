@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Item> userList = new ArrayList<>();
+                List<Item> itemList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Item item = snapshot.getValue(Item.class);
-                    userList.add(item);
+                    itemList.add(item);
                 }
 
-                // Now userList contains all the User objects from the database
-                for (Item i : userList) {
+                // all items have been added to itemList, we can now access them
+                for (Item i : itemList) {
                     Log.d("firebase", "name: " + i.getName());
                 }
             }
