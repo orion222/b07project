@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//
+
 
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new LoginFragment());
         }
     }
 

@@ -26,7 +26,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
         holder.textViewTitle.setText(item.getName());
-        holder.textViewAuthor.setText(item.getTimePeriod());
+        holder.textViewAuthor.setText(item.getId());
         holder.textViewGenre.setText(item.getCategory());
         holder.textViewDescription.setText(item.getDescription());
     }
