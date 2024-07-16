@@ -13,6 +13,7 @@
     <string name="manage_items">Manage Items</string>
 
     <string-array name="categories_array">
+        <item>All</item>
         <item>Books</item>
         <item>Movies</item>
     </string-array>
