@@ -48,9 +48,9 @@ public class RecyclerViewFragment extends Fragment {
         itemsRef = db.getReference("items");
 
         // initialize spinner and adapter (used for dropdown)
-        spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        spinnerCategory = view.findViewById(R.id.actionSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.categories_array, android.R.layout.simple_spinner_item);
+                R.array.userActions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
 

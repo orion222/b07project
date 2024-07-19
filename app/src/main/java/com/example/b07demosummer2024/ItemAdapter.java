@@ -25,29 +25,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
-        holder.textViewName.setText(item.getName());
-        holder.textViewPeriod.setText(item.getTimePeriod());
-        holder.textViewCategory.setText(item.getCategory());
-
-        // description is crowing the UI, here is a solution
-        holder.textViewDescription.setMaxLines(3);
+        holder.textViewTitle.setText(item.getName());
+        holder.textViewAuthor.setText(item.getTimePeriod());
+        holder.textViewGenre.setText(item.getCategory());
         holder.textViewDescription.setText(item.getDescription());
-
-        // hide/expand function
-        holder.textViewDescription.setOnClickListener(new View.OnClickListener() {
-            boolean isExpanded = false;
-
-            @Override
-            public void onClick(View v) {
-                if (isExpanded) {
-                    holder.textViewDescription.setMaxLines(2); // Collapse
-                    isExpanded = false;
-                } else {
-                    holder.textViewDescription.setMaxLines(Integer.MAX_VALUE); // Expand
-                    isExpanded = true;
-                }
-            }
-        });
     }
 
     @Override
@@ -56,13 +37,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewName, textViewPeriod, textViewCategory, textViewDescription;
+        TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.textViewTitle);
-            textViewPeriod = itemView.findViewById(R.id.textViewAuthor);
-            textViewCategory = itemView.findViewById(R.id.textViewGenre);
+            textViewTitle = itemView.findViewById(R.id.textViewTitle);
+            textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
+            textViewGenre = itemView.findViewById(R.id.textViewGenre);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
         }
     }
