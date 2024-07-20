@@ -29,7 +29,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Admin login clicked", Toast.LENGTH_SHORT).show();
-                loadFragment(new RecyclerViewFragment());
+//                loadFragment(new RecyclerViewFragment());
+                LoginPopup custom = new LoginPopup();
+                custom.show(getParentFragmentManager(), "Admin Login");
             }
         });
 
