@@ -28,7 +28,7 @@ public class LoginPopup extends DialogFragment {
 
     private FirebaseDatabase db;
     private List<Credentials> credentialsList;
-    private static boolean admin;
+    private boolean admin;
 
     @NonNull
     @Override
@@ -61,19 +61,16 @@ public class LoginPopup extends DialogFragment {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkLogin(user, pass)) {
+                if (checkLogin(user, pass)) {
                     Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
                     setAdmin(true);
                     dismiss();
                     loadFragment(new RecyclerViewFragment());
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
 
         return builder.create();
     }
@@ -82,8 +79,8 @@ public class LoginPopup extends DialogFragment {
         String username = a.getText().toString();
         String password = b.getText().toString();
 
-        for(Credentials c : credentialsList) {
-            if(username.equals(c.getUsername()) && password.equals(c.getPassword())) {
+        for (Credentials c : credentialsList) {
+            if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
                 return true;
             }
         }
@@ -93,10 +90,9 @@ public class LoginPopup extends DialogFragment {
 
 
 
-    protected boolean isAdmin() {
-        return admin;
-    }
 
+    //setters and getters
+    protected boolean isAdmin() {return admin;}
     protected void setAdmin(boolean c) {
         admin = c;
     }
