@@ -29,6 +29,7 @@ public class Database {
         void onError(DatabaseError error);
     }
 
+    //main method to retrieve data
     public static void fetchItems(OnDataFetchedListener listener){
         DatabaseReference myRef = db.getReference("items");
 
