@@ -36,7 +36,9 @@ public class RecyclerViewFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        // create a listener for itemList, so that when
+        // fetchItems() eventually returns the data,
+        // itemList will be set accordingly
         itemList = Database.fetchItems(new Database.OnDataFetchedListener(){
             @Override
             public void onDataFetched(List<Item> ret) {
@@ -91,35 +93,4 @@ public class RecyclerViewFragment extends Fragment {
 
         return view;
     }
-
-
-//    // fetches items
-//    private void fetchItemsFromDatabase(String category) {
-//        Query query;
-//        if (category == null) {
-//            // fetches all
-//            query = itemsRef.orderByChild("id");
-//        } else {
-//            // selects all where category = category
-//            query = itemsRef.orderByChild("category").equalTo(category);
-//        }
-//
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                itemList.clear();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    Item item = snapshot.getValue(Item.class);
-//                    itemList.add(item);
-//                    Log.d("RETAG", "Item: " + item);
-//                }
-//                itemAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.w("RETAG", "onCancelled", databaseError.toException());
-//            }
-//        });
-//    }
 }

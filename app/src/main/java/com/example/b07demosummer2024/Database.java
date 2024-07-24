@@ -50,7 +50,6 @@ public class Database {
                 }
 
                 listener.onDataFetched(itemList);
-
             }
 
             @Override
