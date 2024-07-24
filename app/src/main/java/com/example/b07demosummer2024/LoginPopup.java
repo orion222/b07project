@@ -49,18 +49,17 @@ public class LoginPopup extends DialogFragment {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkLogin(user, pass)) {
+                if (checkLogin(user, pass)) {
                     Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
                     setAdmin(true);
                     dismiss();
                     loadFragment(new RecyclerViewFragment());
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
+        //initial call to get credentials
         fetchCredentialsFromDatabase();
 
         return builder.create();
@@ -70,8 +69,8 @@ public class LoginPopup extends DialogFragment {
         String username = a.getText().toString();
         String password = b.getText().toString();
 
-        for(Credentials c : credentialsList) {
-            if(username.equals(c.getUsername()) && password.equals(c.getPassword())) {
+        for (Credentials c : credentialsList) {
+            if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
                 return true;
             }
         }
@@ -83,6 +82,7 @@ public class LoginPopup extends DialogFragment {
         db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
         DatabaseReference myRef = db.getReference("admins");
 
+        //event listener for retrieving credentials
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,10 +101,8 @@ public class LoginPopup extends DialogFragment {
         });
     }
 
-    protected boolean isAdmin() {
-        return admin;
-    }
-
+    //setters and getters
+    protected boolean isAdmin() {return admin;}
     protected void setAdmin(boolean c) {
         admin = c;
     }
