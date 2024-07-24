@@ -26,11 +26,7 @@ public class RecyclerViewFragment extends Fragment {
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
-
-    private FirebaseDatabase db;
-    private DatabaseReference itemsRef;
-
-    private Spinner spinnerCategory;
+    private Spinner viewSpinner;
 
     @Nullable
     @Override
@@ -40,30 +36,50 @@ public class RecyclerViewFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        itemList = new ArrayList<>();
+
+        itemList = Database.fetchItems(new Database.OnDataFetchedListener(){
+            @Override
+            public void onDataFetched(List<Item> ret) {
+                itemList.clear();
+                itemList.addAll(ret);
+                itemAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onError(DatabaseError error) {
+                Log.e("db err", "Failed to fetch items");
+            }
+        });
         itemAdapter = new ItemAdapter(itemList);
         recyclerView.setAdapter(itemAdapter);
 
-        db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
-        itemsRef = db.getReference("items");
-
         // initialize spinner and adapter (used for dropdown)
-        spinnerCategory = view.findViewById(R.id.actionSpinner);
+        viewSpinner = view.findViewById(R.id.actionSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.userActions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
+        viewSpinner.setAdapter(adapter);
 
-        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // position = 0 represents all items
                 if (position == 0) {
-                    fetchItemsFromDatabase(null);
-                } else {
-                    // query by categories (defined in strings.xml => will change later)
-                    String category = parent.getItemAtPosition(position).toString().toLowerCase();
-                    fetchItemsFromDatabase(category);
+                    // load detailed view fragment
+                }
+                else if (position == 1){
+                    // load Search Fragment
+                }
+                else if (position == 2){
+                    // load Add fragment
+                }
+                else if (position == 3){
+                    // load remove fragment
+                }
+                else if (position == 4){
+                    // load report fragment
+                }
+                else{
+                    // load back fragment
                 }
             }
 
@@ -73,40 +89,37 @@ public class RecyclerViewFragment extends Fragment {
             }
         });
 
-        // initial fetch command
-        fetchItemsFromDatabase(null);
-
         return view;
     }
 
 
-    // fetches items
-    private void fetchItemsFromDatabase(String category) {
-        Query query;
-        if (category == null) {
-            // fetches all
-            query = itemsRef.orderByChild("id");
-        } else {
-            // selects all where category = category
-            query = itemsRef.orderByChild("category").equalTo(category);
-        }
-
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                itemList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Item item = snapshot.getValue(Item.class);
-                    itemList.add(item);
-                    Log.d("RETAG", "Item: " + item);
-                }
-                itemAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("RETAG", "onCancelled", databaseError.toException());
-            }
-        });
-    }
+//    // fetches items
+//    private void fetchItemsFromDatabase(String category) {
+//        Query query;
+//        if (category == null) {
+//            // fetches all
+//            query = itemsRef.orderByChild("id");
+//        } else {
+//            // selects all where category = category
+//            query = itemsRef.orderByChild("category").equalTo(category);
+//        }
+//
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                itemList.clear();
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Item item = snapshot.getValue(Item.class);
+//                    itemList.add(item);
+//                    Log.d("RETAG", "Item: " + item);
+//                }
+//                itemAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.w("RETAG", "onCancelled", databaseError.toException());
+//            }
+//        });
+//    }
 }

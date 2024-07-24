@@ -16,50 +16,16 @@ import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseDatabase db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = db.getReference("items");
-
-        //firebase uses anonymous methods as parameters
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Item> itemList = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // converts snapshot into an instance of the Item class
-                    Item item = snapshot.getValue(Item.class);
-                    itemList.add(item);
-                    Log.d("TAGTEST", "1" + item);
-                }
-
-                // all items have been added to itemList, we can now access them
-                for (Item i : itemList) {
-                    Log.d("firebase", "name: " + i.getName());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
-                Log.w("firebase", "Failed to read value.", error.toException());
-            }
-        });
 
         if (savedInstanceState == null) {
             loadFragment(new LoginFragment());
