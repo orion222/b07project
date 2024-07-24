@@ -22,11 +22,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.*;
+
 public class LoginPopup extends DialogFragment {
 
     private FirebaseDatabase db;
-    private String username;
-    private String password;
+    private List<Credentials> credentialsList;
     private static boolean admin;
 
     @NonNull
@@ -43,6 +44,8 @@ public class LoginPopup extends DialogFragment {
         EditText user = (EditText) view.findViewById(R.id.editTextUsername);
         EditText pass = (EditText) view.findViewById(R.id.editTextPassword);
 
+        credentialsList = new ArrayList<>();
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,21 +61,36 @@ public class LoginPopup extends DialogFragment {
             }
         });
 
+        fetchCredentialsFromDatabase();
+
         return builder.create();
     }
 
     private boolean checkLogin(EditText a, EditText b) {
-        db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = db.getReference("admin");
-
         String username = a.getText().toString();
         String password = b.getText().toString();
+
+        for(Credentials c : credentialsList) {
+            if(username.equals(c.getUsername()) && password.equals(c.getPassword())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void fetchCredentialsFromDatabase() {
+        db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
+        DatabaseReference myRef = db.getReference("admins");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                credentialsList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    setCredentials(snapshot.getKey(), snapshot.getValue(String.class));
+                    Credentials credentials = snapshot.getValue(Credentials.class);
+                    System.out.println("L: " + credentials.getId() + " " + credentials.getUsername() + " " + credentials.getPassword());
+                    credentialsList.add(credentials);
                 }
             }
 
@@ -81,17 +99,10 @@ public class LoginPopup extends DialogFragment {
                 Log.w("firebase", "Failed to read value (admin).", error.toException());
             }
         });
-
-        return username.equals(this.username) && password.equals(this.password);
     }
 
     protected boolean isAdmin() {
         return admin;
-    }
-
-    protected void setCredentials(String a, String b) {
-        this.username = a;
-        this.password = b;
     }
 
     protected void setAdmin(boolean c) {
