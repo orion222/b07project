@@ -39,13 +39,15 @@ public class RecyclerViewFragment extends Fragment {
         // create a listener for itemList, so that when
         // fetchItems() eventually returns the data,
         // itemList will be set accordingly
-        itemList = Database.fetchItems(new Database.OnDataFetchedListener(){
+        itemList = new ArrayList<Item>();
+        Database.fetchItems(new Database.OnDataFetchedListener(){
             @Override
-            public void onDataFetched(List<Item> ret) {
+            public void onDataFetched(List ret) {
                 itemList.clear();
                 itemList.addAll(ret);
                 itemAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onError(DatabaseError error) {
                 Log.e("db err", "Failed to fetch items");

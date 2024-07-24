@@ -43,8 +43,20 @@ public class LoginPopup extends DialogFragment {
 
         EditText user = (EditText) view.findViewById(R.id.editTextUsername);
         EditText pass = (EditText) view.findViewById(R.id.editTextPassword);
+        credentialsList = new ArrayList<Credentials>();
+        Database.fetchCredentials(new Database.OnDataFetchedListener() {
+            @Override
+            public void onDataFetched(List ret) {
+                credentialsList.clear();
+                credentialsList.addAll(ret);
+                Log.d("cred", "List size is " + ret.size());
+            }
 
-        credentialsList = new ArrayList<>();
+            @Override
+            public void onError(DatabaseError error) {
+                Log.e("db err", "Failed to fetch credentials");
+            }
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +73,7 @@ public class LoginPopup extends DialogFragment {
             }
         });
 
-        fetchCredentialsFromDatabase();
+
 
         return builder.create();
     }
@@ -79,27 +91,7 @@ public class LoginPopup extends DialogFragment {
         return false;
     }
 
-    private void fetchCredentialsFromDatabase() {
-        db = FirebaseDatabase.getInstance("https://b07proj-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = db.getReference("admins");
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                credentialsList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Credentials credentials = snapshot.getValue(Credentials.class);
-                    System.out.println("L: " + credentials.getId() + " " + credentials.getUsername() + " " + credentials.getPassword());
-                    credentialsList.add(credentials);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("firebase", "Failed to read value (admin).", error.toException());
-            }
-        });
-    }
 
     protected boolean isAdmin() {
         return admin;

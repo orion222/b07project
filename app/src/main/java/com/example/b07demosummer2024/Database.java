@@ -24,13 +24,12 @@ public class Database {
         return db;
     }
 
-    public interface OnDataFetchedListener {
-        void onDataFetched(List<Item> itemList);
+    public interface OnDataFetchedListener<T> {
+        void onDataFetched(List<T> ret);
         void onError(DatabaseError error);
     }
 
-    public static List<Item> fetchItems(OnDataFetchedListener listener){
-        List<Item> ret = new ArrayList<>();
+    public static void fetchItems(OnDataFetchedListener listener){
         DatabaseReference myRef = db.getReference("items");
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -58,6 +57,29 @@ public class Database {
                 Log.w("firebase", "Failed to read value.", error.toException());
             }
         });
-        return ret;
+
+    }
+
+    public static void fetchCredentials(OnDataFetchedListener listener) {
+        DatabaseReference myRef = db.getReference("admins");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Credentials> lst = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Credentials cred = snapshot.getValue(Credentials.class);
+                    Log.d("cred", cred.toString());
+                    lst.add(cred);
+                }
+                listener.onDataFetched(lst);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("firebase", "Failed to read value.", error.toException());
+            }
+        });
+
     }
 }
