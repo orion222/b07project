@@ -53,6 +53,7 @@ public class RecyclerViewFragment extends Fragment {
                 Log.e("db err", "Failed to fetch items");
             }
         });
+
         itemAdapter = new ItemAdapter(itemList);
         recyclerView.setAdapter(itemAdapter);
 
