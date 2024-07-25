@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,11 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Background Image -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bgimg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Other UI elements -->
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="314dp"
-        android:layout_height="156dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
         android:text="@string/welcome_msg"
         android:textAlignment="center"
@@ -18,7 +29,6 @@
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,27 +47,48 @@
 
     <Button
         android:id="@+id/adminButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
         android:text="Admin"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/background"
         android:backgroundTint="@color/buttonColor"
         app:layout_constraintEnd_toStartOf="@id/guestButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textContinueAs" />
+        app:layout_constraintTop_toBottomOf="@id/textContinueAs"
+        app:layout_constraintWidth_percent="0.4"/>
 
     <Button
         android:id="@+id/guestButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="80dp"
         android:text="Guest"
-        android:textColorLink="#852020"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/background"
         android:backgroundTint="@color/buttonColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/adminButton"
-        app:layout_constraintTop_toBottomOf="@id/textContinueAs" />
+        app:layout_constraintTop_toBottomOf="@id/textContinueAs"
+        app:layout_constraintWidth_percent="0.4"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView4"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        tools:srcCompat="@tools:sample/avatars"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintWidth_percent="1.0" />-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
