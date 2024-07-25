@@ -22,11 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment {
+public class RecyclerViewFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private Spinner viewSpinner;
+//    private List<Item> clickedList;
 
     @Nullable
     @Override
@@ -35,6 +36,9 @@ public class RecyclerViewFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // List to keep track of clicked items
+//        clickedList = new ArrayList<Item>();
 
         // create a listener for itemList, so that when
         // fetchItems() eventually returns the data,
@@ -54,7 +58,7 @@ public class RecyclerViewFragment extends Fragment {
             }
         });
 
-        itemAdapter = new ItemAdapter(itemList);
+        itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
 
         // initialize spinner and adapter (used for dropdown)
@@ -105,5 +109,20 @@ public class RecyclerViewFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void itemClicked(int pos) {
+        Item clickedItem = itemList.get(pos);
+
+//        if (clickedList.contains(clickedItem)) {
+//            clickedList.remove(clickedItem);
+//        } else {
+//            clickedList.add(clickedItem);
+//        }
+//        Log.d("yea", "itemClicked: yeah" + clickedItem);
+//        Log.d("yea", "itemClicked: yeah" + clickedList);
+//
+
     }
 }
