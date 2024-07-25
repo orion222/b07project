@@ -1,6 +1,8 @@
 package com.example.b07demosummer2024;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
 
     private String id;
     private String name;

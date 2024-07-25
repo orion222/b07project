@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +29,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private Spinner viewSpinner;
-//    private List<Item> clickedList;
+    private List<Item> clickedList;
 
     @Nullable
     @Override
@@ -38,7 +40,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // List to keep track of clicked items
-//        clickedList = new ArrayList<Item>();
+        clickedList = new ArrayList<Item>();
 
         // create a listener for itemList, so that when
         // fetchItems() eventually returns the data,
@@ -115,14 +117,33 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     public void itemClicked(int pos) {
         Item clickedItem = itemList.get(pos);
 
-//        if (clickedList.contains(clickedItem)) {
-//            clickedList.remove(clickedItem);
-//        } else {
-//            clickedList.add(clickedItem);
-//        }
-//        Log.d("yea", "itemClicked: yeah" + clickedItem);
-//        Log.d("yea", "itemClicked: yeah" + clickedList);
-//
+        if (clickedList.contains(clickedItem)) {
+            clickedList.remove(clickedItem);
+        } else {
+            clickedList.add(clickedItem);
+        }
 
+        // Temp implementation of view function, only allow 1 item at a time
+        // Modify later to incorporate remove functionality w/ multiple items allowed
+        if (clickedList.size() != 1) {
+            Toast.makeText(getContext(), "Please select only ONE item to view", Toast.LENGTH_SHORT).show();
+        } else {
+            // Creates ViewFragment w/ item data in a bundle
+            ViewFragment fragment = new ViewFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("key", clickedList.get(0));
+            fragment.setArguments(bundle);
+
+            switchFragment(fragment);
+        }
     }
+
+
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 }

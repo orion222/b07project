@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import android.graphics.Color;
 
 //glide imports
 import com.bumptech.glide.Glide;
@@ -86,7 +88,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         if (pos != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.itemClicked(pos);
                         }
+
                     }
+//                    itemView.setBackgroundColor(Color.LTGRAY);
                 }
             });
 
