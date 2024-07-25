@@ -14,10 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.*;
 import android.widget.Toast;
 
@@ -45,37 +42,14 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View{
         // initialize the presenter
         presenter = new Presenter(new FirebaseModel());
         presenter.attachView(this);
-//        credentialsList = new ArrayList<Credentials>();
-//        Database.fetchCredentials(new Database.OnDataFetchedListener() {
-//            @Override
-//            public void onDataFetched(List ret) {
-//                credentialsList.clear();
-//                credentialsList.addAll(ret);
-//                Log.d("cred", "List size is " + ret.size());
-//            }
-//
-//            @Override
-//            public void onError(DatabaseError error) {
-//                Log.e("db err", "Failed to fetch credentials");
-//            }
-//        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //handle the login
                 presenter.handleLogin(getInputFields(user), getInputFields(pass));
-//                if (checkLogin(user, pass)) {
-//                    Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
-//                    setAdmin(true);
-//                    dismiss();
-//                    loadFragment(new RecyclerViewFragment());
-//                } else {
-//                    Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
-//                }
             }
         });
-
         return builder.create();
     }
 
