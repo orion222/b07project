@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,16 +15,16 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.*;
+import android.widget.Toast;
 
-public class LoginPopup extends DialogFragment {
+//this is the VIEW in MVP, it represents the UI (mostly)
+public class LoginPopup extends DialogFragment implements LoginMVP.View{
 
+    private LoginMVP.Presenter presenter;
     private FirebaseDatabase db;
     private List<Credentials> credentialsList;
     public static boolean admin;
@@ -40,61 +39,60 @@ public class LoginPopup extends DialogFragment {
         builder.setView(view);
 
         Button buttonLogin = view.findViewById(R.id.buttonLogin);
-
         EditText user = (EditText) view.findViewById(R.id.editTextUsername);
         EditText pass = (EditText) view.findViewById(R.id.editTextPassword);
-        credentialsList = new ArrayList<Credentials>();
-        Database.fetchCredentials(new Database.OnDataFetchedListener() {
-            @Override
-            public void onDataFetched(List ret) {
-                credentialsList.clear();
-                credentialsList.addAll(ret);
-                Log.d("cred", "List size is " + ret.size());
-            }
 
-            @Override
-            public void onError(DatabaseError error) {
-                Log.e("db err", "Failed to fetch credentials");
-            }
-        });
+        // initialize the presenter
+        presenter = new Presenter(new FirebaseModel());
+        presenter.attachView(this);
+//        credentialsList = new ArrayList<Credentials>();
+//        Database.fetchCredentials(new Database.OnDataFetchedListener() {
+//            @Override
+//            public void onDataFetched(List ret) {
+//                credentialsList.clear();
+//                credentialsList.addAll(ret);
+//                Log.d("cred", "List size is " + ret.size());
+//            }
+//
+//            @Override
+//            public void onError(DatabaseError error) {
+//                Log.e("db err", "Failed to fetch credentials");
+//            }
+//        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkLogin(user, pass)) {
-                    Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
-                    setAdmin(true);
-                    dismiss();
-                    loadFragment(new RecyclerViewFragment());
-                } else {
-                    Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
-                }
+                //handle the login
+                presenter.handleLogin(getInputFields(user), getInputFields(pass));
+//                if (checkLogin(user, pass)) {
+//                    Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
+//                    setAdmin(true);
+//                    dismiss();
+//                    loadFragment(new RecyclerViewFragment());
+//                } else {
+//                    Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
         return builder.create();
     }
 
-    private boolean checkLogin(EditText a, EditText b) {
-        String username = a.getText().toString();
-        String password = b.getText().toString();
-
-        for (Credentials c : credentialsList) {
-            if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
-                return true;
-            }
-        }
-
-        return false;
+    private String getInputFields(EditText a) {
+        return a.getText().toString();
     }
 
+    @Override
+    public void onLoginError(String message) {
+        Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+    }
 
-
-
-    //setters and getters
-    protected boolean isAdmin() {return admin;}
-    protected void setAdmin(boolean c) {
-        admin = c;
+    @Override
+    public void onLoginSuccess(String message) {
+        Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
+        dismiss();
+        loadFragment(new RecyclerViewFragment());
     }
 
     private void loadFragment(Fragment fragment) {
