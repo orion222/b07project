@@ -7,15 +7,17 @@ public class Item {
     private String timePeriod;
     private String category;
     private String description;
+    private Media media;
 
     public Item() {}
 
-    public Item(String id, String name, String timePeriod, String category, String description) {
+    public Item(String id, String name, String timePeriod, String category, String description, Media media) {
         this.id = id;
         this.name = name;
         this.timePeriod = timePeriod;
         this.category = category;
         this.description = description;
+        this.media = media;
     }
 
     // Getters and setters
@@ -29,6 +31,8 @@ public class Item {
     public void setCategory(String category) { this.category = category; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    public Media getMedia() { return media; }
+    public void setMedia(Media media) { this.media = media; }
 
     @Override
     public String toString(){

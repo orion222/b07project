@@ -30,8 +30,6 @@
     <string-array name="userActions">
         <item>View</item>
         <item>Search</item>
-        <item>Add</item>
-        <item>Remove</item>
         <item>Report</item>
         <item>Back</item>
     </string-array>

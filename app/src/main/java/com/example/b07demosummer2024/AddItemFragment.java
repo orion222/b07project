@@ -68,7 +68,7 @@ public class AddItemFragment extends Fragment {
 
         itemsRef = db.getReference("categories/" + category);
         String id = itemsRef.push().getKey();
-        Item item = new Item(id, title, author, genre, description);
+        Item item = new Item(id, title, author, genre, description, null);
 
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

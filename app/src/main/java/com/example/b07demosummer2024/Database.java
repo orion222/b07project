@@ -47,6 +47,9 @@ public class Database {
                 // all items have been added to itemList, we can now access them
                 for (Item i : itemList) {
                     Log.d("firebase", "name: " + i.getName());
+                    if (i.getMedia() != null) {
+                        Log.d("IMG", "first image: " + i.getMedia().getImagePaths().get(0));
+                    }
                 }
 
                 listener.onDataFetched(itemList);
