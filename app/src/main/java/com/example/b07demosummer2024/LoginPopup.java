@@ -28,7 +28,7 @@ public class LoginPopup extends DialogFragment {
 
     private FirebaseDatabase db;
     private List<Credentials> credentialsList;
-    private boolean admin;
+    public static boolean admin;
 
     @NonNull
     @Override

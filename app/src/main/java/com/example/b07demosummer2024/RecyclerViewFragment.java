@@ -59,8 +59,18 @@ public class RecyclerViewFragment extends Fragment {
 
         // initialize spinner and adapter (used for dropdown)
         viewSpinner = view.findViewById(R.id.actionSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.userActions, android.R.layout.simple_spinner_item);
+
+
+        //testing different spinner layouts depending on admin or not (can delete later)
+        ArrayAdapter<CharSequence> adapter;
+        if (LoginPopup.admin) {
+            adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.adminActions, android.R.layout.simple_spinner_item);
+        } else {
+            adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.userActions, android.R.layout.simple_spinner_item);
+        }
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
 
