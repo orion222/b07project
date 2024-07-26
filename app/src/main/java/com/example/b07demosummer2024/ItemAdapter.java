@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import android.graphics.Color;
 
 //glide imports
 import com.bumptech.glide.Glide;
@@ -16,16 +18,18 @@ import com.bumptech.glide.request.RequestOptions;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
+    private RecyclerViewInterface recyclerViewInterface;
 
-    public ItemAdapter(List<Item> itemList) {
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface) {
         this.itemList = itemList;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_adapater, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view, recyclerViewInterface);
     }
 
     //binds one instance of class Item to item adapter fragment
@@ -66,7 +70,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         ImageView imageView; // Add this line
 
 
-        public ItemViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
@@ -74,6 +78,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (recyclerViewInterface != null) {
+                        int pos = getAdapterPosition();
+
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.itemClicked(pos);
+                        }
+
+                    }
+//                    itemView.setBackgroundColor(Color.LTGRAY);
+                }
+            });
 
         }
     }
