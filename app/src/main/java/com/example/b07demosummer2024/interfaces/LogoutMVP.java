@@ -7,5 +7,7 @@ public interface LogoutMVP {
 
     interface Presenter {
         void logout();
+        void attachView(LogoutMVP.View view);
+        void detachView();
     }
 }

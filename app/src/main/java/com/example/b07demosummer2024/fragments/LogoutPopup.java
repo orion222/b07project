@@ -30,7 +30,8 @@ public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
         View view = inflater.inflate(R.layout.fragment_logout_popup, null);
 
         builder.setView(view);
-        presenter = new LogoutPresenter(this, requireContext());
+        presenter = new LogoutPresenter(requireContext());
+        presenter.attachView(this);
 
 
         Button confirmYes = view.findViewById(R.id.buttonYes);
