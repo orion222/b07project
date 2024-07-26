@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.activities.HomeActivity;
 
 public class LoginFragment extends Fragment {
 
@@ -41,7 +43,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
-                loadFragment(new RecyclerViewFragment());
+                startActivity(new Intent(getContext(), HomeActivity.class));
             }
         });
 
