@@ -17,7 +17,7 @@ public interface LoginMVP
         void login(String username, String password, LoginCallback callback);
 
         interface LoginCallback {
-            void onSuccess(String message);
+            void onSuccess(String message, String username);
             void onError(String message);
         }
     }
