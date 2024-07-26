@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 //this is the MODEL in MVP, it verifies the login
-public class FirebaseModel implements LoginMVP.Model {
+public class UserModel implements LoginMVP.Model {
 
     private List<Credentials> credentialsList;
 
-    public FirebaseModel() {
+    public UserModel() {
         credentialsList = new ArrayList<>();
     }
 
@@ -30,7 +30,8 @@ public class FirebaseModel implements LoginMVP.Model {
                 for (Credentials c : credentialsList) {
 //                    Log.d("BOOL", String.valueOf(username.equals(c.getUsername()) && password.equals(c.getPassword())));
                     if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
-                        callback.onSuccess("Login successful!");
+                        //tells the presenter that it was successful, and passes the uesrname
+                        callback.onSuccess("Login successful!", username);
                         return;
                     }
                 }

@@ -12,6 +12,10 @@
     <string name="spinner">Spinner</string>
     <string name="manage_items">Manage Items</string>
 
+    <!-->The string below is a format string<!-->
+    <string name="welcome_back">Welcome back, %1$s!</string>
+
+
     <string-array name="categories_array">
         <item>All</item>
         <item>Books</item>

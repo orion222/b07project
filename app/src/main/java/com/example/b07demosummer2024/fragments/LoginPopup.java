@@ -19,17 +19,14 @@ import com.example.b07demosummer2024.utilities.Preferences;
 import com.example.b07demosummer2024.utilities.Presenter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.models.Credentials;
-import com.example.b07demosummer2024.models.FirebaseModel;
+import com.example.b07demosummer2024.models.UserModel;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.*;
 import android.widget.Toast;
 
 //this is the VIEW in MVP, it represents the UI (mostly)
 public class LoginPopup extends DialogFragment implements LoginMVP.View {
-
     private LoginMVP.Presenter presenter;
-    private FirebaseDatabase db;
-    private List<Credentials> credentialsList;
     public static boolean admin;
 
     @NonNull
@@ -45,8 +42,8 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View {
         EditText user = (EditText) view.findViewById(R.id.editTextUsername);
         EditText pass = (EditText) view.findViewById(R.id.editTextPassword);
 
-        // initialize the presenter
-        presenter = new Presenter(new FirebaseModel());
+        // initialize the presenter, give a concrete model as its argument
+        presenter = new Presenter(new UserModel(), requireContext());
         presenter.attachView(this);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -63,17 +60,16 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View {
         return a.getText().toString();
     }
 
+    //login success/error should focus on only the UI aspect, other logic is in Presenter
     @Override
     public void onLoginError(String message) {
-        Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
-        Preferences.saveLogin(getContext(), false); //makes login state false, may remove this
+        Toast.makeText(requireContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLoginSuccess(String message) {
-        Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
         dismiss();
-        Preferences.saveLogin(getContext(), true); //saves login state
         loadFragment(new RecyclerViewFragment());
     }
 
