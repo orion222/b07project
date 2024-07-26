@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
+            Preferences.saveLogin(this, false); //set initial login state to false
             loadFragment(new LoginFragment());
         }
     }

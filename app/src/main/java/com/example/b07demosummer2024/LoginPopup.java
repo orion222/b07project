@@ -60,12 +60,14 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View{
     @Override
     public void onLoginError(String message) {
         Toast.makeText(getContext(), "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+        Preferences.saveLogin(getContext(), false); //makes login state false, may remove this
     }
 
     @Override
     public void onLoginSuccess(String message) {
         Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
         dismiss();
+        Preferences.saveLogin(getContext(), true); //saves login state
         loadFragment(new RecyclerViewFragment());
     }
 
