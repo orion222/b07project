@@ -27,7 +27,6 @@ import android.widget.Toast;
 //this is the VIEW in MVP, it represents the UI (mostly)
 public class LoginPopup extends DialogFragment implements LoginMVP.View {
     private LoginMVP.Presenter presenter;
-    public static boolean admin;
 
     @NonNull
     @Override

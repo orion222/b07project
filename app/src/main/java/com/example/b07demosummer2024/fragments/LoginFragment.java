@@ -76,9 +76,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(getContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), HomeActivity.class));
+                //the activity causes some issues for some reason
+                //startActivity(new Intent(getContext(), HomeActivity.class));
+                loadFragment(new RecyclerViewFragment());
             }
         });
 

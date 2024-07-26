@@ -34,14 +34,10 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //testing different spinner layouts depending on admin or not (can delete later)
+        //previously the adapter was initialized based off of the old login
         ArrayAdapter<CharSequence> adapter;
-        if (LoginPopup.admin) {
-            adapter = ArrayAdapter.createFromResource(this,
-                    R.array.adminActions, android.R.layout.simple_spinner_item);
-        } else {
-            adapter = ArrayAdapter.createFromResource(this,
-                    R.array.userActions, android.R.layout.simple_spinner_item);
-        }
+        adapter = ArrayAdapter.createFromResource(this,
+                R.array.userActions, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
