@@ -16,25 +16,25 @@
             android:name=".ItemAdapater"
             android:exported="false" />
         <activity
-            android:name=".Item"
+            android:name=".models.Item"
             android:exported="false" />
         <activity
             android:name=".Item2"
             android:exported="false" />
         <activity
-            android:name=".SpinnerFragment"
+            android:name=".unused.SpinnerFragment"
             android:exported="false" />
         <activity
-            android:name=".RecyclerViewFragment"
+            android:name=".fragments.RecyclerViewFragment"
             android:exported="false" />
         <activity
-            android:name=".HomeFragment"
+            android:name=".unused.HomeFragment"
             android:exported="false" />
         <activity
             android:name=".Activity2"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

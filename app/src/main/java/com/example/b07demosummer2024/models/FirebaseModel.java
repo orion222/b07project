@@ -1,7 +1,9 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.models;
 
 import android.util.Log;
 
+import com.example.b07demosummer2024.utilities.Database;
+import com.example.b07demosummer2024.interfaces.LoginMVP;
 import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.List;

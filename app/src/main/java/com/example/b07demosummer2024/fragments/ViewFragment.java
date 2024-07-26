@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.b07demosummer2024.models.Item;
+import com.example.b07demosummer2024.R;
 
 // Temp Layout, will make it look better later
 

@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.interfaces;
 
 public interface RecyclerViewInterface {
 

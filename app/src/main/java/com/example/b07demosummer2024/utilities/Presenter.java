@@ -1,4 +1,6 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.utilities;
+
+import com.example.b07demosummer2024.interfaces.LoginMVP;
 
 //this is the PRESENTER in MVP, it uses callbacks to link the model (backend) and view (frontend)
 public class Presenter implements LoginMVP.Presenter {
