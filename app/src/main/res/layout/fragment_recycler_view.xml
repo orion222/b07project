@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:rotationX="1"
     android:orientation="vertical"
-    tools:context=".RecyclerViewFragment">
+    tools:context=".fragments.RecyclerViewFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="409dp"

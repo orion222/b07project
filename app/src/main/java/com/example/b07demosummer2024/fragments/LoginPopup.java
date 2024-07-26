@@ -1,9 +1,8 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.b07demosummer2024.interfaces.LoginMVP;
+import com.example.b07demosummer2024.utilities.Preferences;
+import com.example.b07demosummer2024.utilities.Presenter;
+import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.models.Credentials;
+import com.example.b07demosummer2024.models.FirebaseModel;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.*;
 import android.widget.Toast;
 
 //this is the VIEW in MVP, it represents the UI (mostly)
-public class LoginPopup extends DialogFragment implements LoginMVP.View{
+public class LoginPopup extends DialogFragment implements LoginMVP.View {
 
     private LoginMVP.Presenter presenter;
     private FirebaseDatabase db;

@@ -1,8 +1,10 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.utilities;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.b07demosummer2024.models.Credentials;
+import com.example.b07demosummer2024.models.Item;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -1,5 +1,5 @@
 //CURRENTLY NOT USED
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.unused;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.fragments.ManageItemsFragment;
+import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 
 public class HomeFragment extends Fragment {
     @Nullable

@@ -1,6 +1,5 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024.utilities;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import android.graphics.Color;
 
 //glide imports
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
+import com.example.b07demosummer2024.models.Item;
 
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
