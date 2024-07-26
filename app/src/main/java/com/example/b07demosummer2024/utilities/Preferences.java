@@ -37,6 +37,14 @@ public class Preferences {
         editor.apply();
     }
 
+    //logs out
+    public static void logout(Context context){
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     //getters
     public static String getUser(Context context) {
         SharedPreferences sharedPref = getSharedPreferences(context);
@@ -49,6 +57,7 @@ public class Preferences {
         //the getBoolean method takes a 2nd argument called a default, which is left false here
         return sharedPref.getBoolean(PrefConstants.LOGIN_STATE, false);
     }
+
 
 
 }

@@ -75,9 +75,19 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
                 loadFragment(new RecyclerViewFragment());
+
             }
         });
 
+        logoutButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //initiates logout
+                //Toast.makeText(requireContext(), "Logout pressed", Toast.LENGTH_SHORT).show();
+                LogoutPopup custom = new LogoutPopup();
+                custom.show(getParentFragmentManager(), "Logout");
+            }
+        });
         return view;
     }
     private void loadFragment(Fragment fragment) {

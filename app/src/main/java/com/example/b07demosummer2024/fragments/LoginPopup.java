@@ -27,8 +27,6 @@ import android.widget.Toast;
 //this is the VIEW in MVP, it represents the UI (mostly)
 public class LoginPopup extends DialogFragment implements LoginMVP.View {
     private LoginMVP.Presenter presenter;
-    private FirebaseDatabase db;
-    private List<Credentials> credentialsList;
     public static boolean admin;
 
     @NonNull
