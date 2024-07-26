@@ -5,9 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +27,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
-    private Spinner viewSpinner;
     private List<Item> clickedList;
 
     @Nullable
@@ -66,51 +62,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         recyclerView.setAdapter(itemAdapter);
 
         // initialize spinner and adapter (used for dropdown)
-        viewSpinner = view.findViewById(R.id.actionSpinner);
 
-
-        //testing different spinner layouts depending on admin or not (can delete later)
-        ArrayAdapter<CharSequence> adapter;
-        if (LoginPopup.admin) {
-            adapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.adminActions, android.R.layout.simple_spinner_item);
-        } else {
-            adapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.userActions, android.R.layout.simple_spinner_item);
-        }
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        viewSpinner.setAdapter(adapter);
-
-        viewSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // position = 0 represents all items
-                if (position == 0) {
-                    // load detailed view fragment
-                }
-                else if (position == 1){
-                    // load Search Fragment
-                }
-                else if (position == 2){
-                    // load Add fragment
-                }
-                else if (position == 3){
-                    // load remove fragment
-                }
-                else if (position == 4){
-                    // load report fragment
-                }
-                else{
-                    // load back fragment
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });
 
         return view;
     }
