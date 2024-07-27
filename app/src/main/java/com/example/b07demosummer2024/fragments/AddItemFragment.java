@@ -20,11 +20,13 @@ import com.example.b07demosummer2024.models.Media;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AddItemFragment extends Fragment {
     private EditText editTextName, editTextLotId, editTextCategory, editTextTimePeriod, editTextDescription;
     private Button buttonAdd;
-
+    private List<String> images, videos;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
 
@@ -38,6 +40,9 @@ public class AddItemFragment extends Fragment {
         editTextCategory = view.findViewById(R.id.editTextCategory);
         editTextDescription = view.findViewById(R.id.editTextDescription);
         editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
+        images = new ArrayList<String>();
+        videos = new ArrayList<String>();
+
 
         buttonAdd = view.findViewById(R.id.buttonAdd);
 
@@ -67,7 +72,11 @@ public class AddItemFragment extends Fragment {
 
         itemsRef = db.getReference("items");
         String id = itemsRef.push().getKey();
-        Item item = new Item(lotID, name, timePeriod, category, description, new Media());
+
+        if (images.isEmpty()) images.add("null");
+        if (videos.isEmpty()) videos.add("null");
+
+        Item item = new Item(lotID, name, timePeriod, category, description, new Media(images, videos));
 
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
