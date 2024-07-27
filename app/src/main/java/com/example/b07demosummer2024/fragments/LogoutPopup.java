@@ -73,12 +73,4 @@ public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
                     .commit();
         }
     }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
 }

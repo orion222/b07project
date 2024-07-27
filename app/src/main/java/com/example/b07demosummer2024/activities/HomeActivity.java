@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         //previously the adapter was initialized based off of the old login
         ArrayAdapter<CharSequence> adapter;
         adapter = ArrayAdapter.createFromResource(this,
-                R.array.userActions, android.R.layout.simple_spinner_item);
+                R.array.adminActions, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 else if (position == 2){
                     // load Add fragment
+                    loadFragment(new AddItemFragment());
+
                 }
                 else if (position == 3){
                     // load Remove fragment
