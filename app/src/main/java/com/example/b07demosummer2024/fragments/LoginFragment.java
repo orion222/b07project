@@ -1,6 +1,7 @@
 package com.example.b07demosummer2024.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class LoginFragment extends Fragment {
         TextView continueMSG = view.findViewById(R.id.textContinueAs);
 
         boolean loggedIn = Preferences.checkLogin(requireContext());
-
+        Log.d("ZEBRA3", "Is logged in: " + loggedIn);
         //conditional rendering for logged in
         if (loggedIn) {
             String user = Preferences.getUser(requireContext());
@@ -64,10 +65,13 @@ public class LoginFragment extends Fragment {
                 //if admin is already logged in, don't need to re-enter information
                 if (loggedIn)
                 {
-                    loadFragment(new RecyclerViewFragment());
+                    Intent intent = new Intent(requireContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 } else {
                     LoginPopup custom = new LoginPopup();
                     custom.show(getParentFragmentManager(), "Admin Login");
+                    //eventually starts new activity
                 }
             }
         });
@@ -76,9 +80,10 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(getContext(), "Guest login clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), HomeActivity.class));
+                Intent intent = new Intent(requireContext(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+//                loadFragment(new RecyclerViewFragment());
             }
         });
 

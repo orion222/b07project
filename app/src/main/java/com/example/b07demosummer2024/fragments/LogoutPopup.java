@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.b07demosummer2024.interfaces.LogoutMVP;
 import com.example.b07demosummer2024.utilities.LogoutPresenter;
 import com.example.b07demosummer2024.R;
+import androidx.fragment.app.FragmentManager;
 
 import android.widget.Toast;
 
@@ -59,8 +60,17 @@ public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
     public void onLogoutSuccess() {
         Toast.makeText(requireContext(), "Logged Out", Toast.LENGTH_SHORT).show();
         dismiss(); //closes the dialog
+        // Clear the back stack and replace the current fragment with LoginFragment
         if (getActivity() != null) {
-            getActivity().recreate(); // calls onCreate() for main
+            // Clear the back stack
+            FragmentManager fragmentManager = getParentFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+            // Navigate to the login fragment
+            Fragment loginFragment = new LoginFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, loginFragment)
+                    .commit();
         }
     }
 

@@ -29,7 +29,6 @@ import android.widget.Toast;
 //this is the VIEW in MVP, it represents the UI (mostly)
 public class LoginPopup extends DialogFragment implements LoginMVP.View {
     private LoginMVP.Presenter presenter;
-    public static boolean admin;
 
     @NonNull
     @Override
@@ -72,7 +71,10 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View {
     public void onLoginSuccess(String message) {
         Toast.makeText(requireContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
         dismiss();
-        startActivity(new Intent(getContext(), HomeActivity.class));
+//        loadFragment(new RecyclerViewFragment());
+        Intent intent = new Intent(requireContext(), HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void loadFragment(Fragment fragment) {
