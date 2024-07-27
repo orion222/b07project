@@ -95,7 +95,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.home_fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
