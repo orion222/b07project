@@ -15,14 +15,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.utilities.Database;
+import com.example.b07demosummer2024.models.Media;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AddItemFragment extends Fragment {
-    private EditText editTextTitle, editTextAuthor, editTextGenre, editTextDescription;
-    private Spinner spinnerCategory;
+    private EditText editTextName, editTextLotId, editTextCategory, editTextTimePeriod, editTextDescription;
     private Button buttonAdd;
-
+    private List<String> images, videos;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
 
@@ -31,21 +35,18 @@ public class AddItemFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
-        editTextTitle = view.findViewById(R.id.editTextTitle);
-        editTextAuthor = view.findViewById(R.id.editTextAuthor);
-        editTextGenre = view.findViewById(R.id.editTextGenre);
+        editTextName = view.findViewById(R.id.editTextName);
+        editTextLotId = view.findViewById(R.id.editTextLotId);
+        editTextCategory = view.findViewById(R.id.editTextCategory);
         editTextDescription = view.findViewById(R.id.editTextDescription);
-        spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
+        images = new ArrayList<String>();
+        videos = new ArrayList<String>();
+
+
         buttonAdd = view.findViewById(R.id.buttonAdd);
 
-        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
-
-        // Set up the spinner with categories
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.categories_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
-
+        db = Database.getInstance();
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,24 +58,35 @@ public class AddItemFragment extends Fragment {
     }
 
     private void addItem() {
-        String title = editTextTitle.getText().toString().trim();
-        String author = editTextAuthor.getText().toString().trim();
-        String genre = editTextGenre.getText().toString().trim();
+        String name = editTextName.getText().toString().trim();
+        String lotID = editTextLotId.getText().toString().trim();
+        String category = editTextCategory.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
-        String category = spinnerCategory.getSelectedItem().toString().toLowerCase();
+        String timePeriod = editTextTimePeriod.getText().toString().trim();
 
-        if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || description.isEmpty()) {
+
+        if (name.isEmpty() || lotID.isEmpty() || category.isEmpty() || description.isEmpty() || timePeriod.isEmpty()) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        itemsRef = db.getReference("categories/" + category);
+        itemsRef = db.getReference("items");
         String id = itemsRef.push().getKey();
-        Item item = new Item(id, title, author, genre, description, null);
+
+        if (images.isEmpty()) images.add("null");
+        if (videos.isEmpty()) videos.add("null");
+
+        Item item = new Item(lotID, name, timePeriod, category, description, new Media(images, videos));
 
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                editTextName.getText().clear();
+                editTextLotId.getText().clear();
+                editTextDescription.getText().clear();
+                editTextTimePeriod.getText().clear();
+                editTextCategory.getText().clear();
+
             } else {
                 Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
             }

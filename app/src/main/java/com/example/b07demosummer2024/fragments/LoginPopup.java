@@ -71,17 +71,8 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View {
     public void onLoginSuccess(String message) {
         Toast.makeText(requireContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
         dismiss();
-//        loadFragment(new RecyclerViewFragment());
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
 }

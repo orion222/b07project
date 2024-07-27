@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Log.d("wow15", "Is logged in: " + isLoggedIn);
 
-//            Preferences.saveLogin(this, false); //set initial login state to false
             loadFragment(new LoginFragment());
         }
     }
