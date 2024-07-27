@@ -2,6 +2,7 @@ package com.example.b07demosummer2024.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.b07demosummer2024.activities.HomeActivity;
 import com.example.b07demosummer2024.interfaces.LoginMVP;
 import com.example.b07demosummer2024.utilities.Preferences;
 import com.example.b07demosummer2024.utilities.Presenter;
@@ -70,7 +72,7 @@ public class LoginPopup extends DialogFragment implements LoginMVP.View {
     public void onLoginSuccess(String message) {
         Toast.makeText(requireContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
         dismiss();
-        loadFragment(new RecyclerViewFragment());
+        startActivity(new Intent(getContext(), HomeActivity.class));
     }
 
     private void loadFragment(Fragment fragment) {
