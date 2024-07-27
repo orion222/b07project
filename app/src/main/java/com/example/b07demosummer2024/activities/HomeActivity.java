@@ -17,6 +17,7 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.b07demosummer2024.R;
@@ -94,16 +95,21 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //when you press back, kill this activity
-        Log.d("ZEBRA", String.valueOf(Preferences.checkLogin(this)));
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        // start the main activity when you press back, then finish (kill) this activity
-        // this causes other things to go back when undesired (future fix)
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (fragmentManager.getBackStackEntryCount() > 1) {
+            // pop the back stack to go back to the previous fragment (changed to > 1)
+            fragmentManager.popBackStack();
+        } else {
+            // when no fragments in back stack (go back to login - MainActivity)
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        startActivity(intent);
-        finish();
+            startActivity(intent);
+            finish();
+        }
     }
+
 
 
 }
