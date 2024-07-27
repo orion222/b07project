@@ -62,9 +62,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         recyclerView.setAdapter(itemAdapter);
         Log.d("WOW4", "goes through recycler");
 
-        // initialize spinner and adapter (used for dropdown)
-
-
         return view;
     }
 
