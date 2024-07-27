@@ -9,16 +9,22 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.b07demosummer2024.utilities.Preferences;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.fragments.LoginFragment;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("WOW10", "main activity commenced");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        boolean isLoggedIn = Preferences.checkLogin(this);
         if (savedInstanceState == null) {
-            Preferences.saveLogin(this, false); //set initial login state to false
+            Log.d("wow15", "Is logged in: " + isLoggedIn);
+
+//            Preferences.saveLogin(this, false); //set initial login state to false
             loadFragment(new LoginFragment());
         }
     }

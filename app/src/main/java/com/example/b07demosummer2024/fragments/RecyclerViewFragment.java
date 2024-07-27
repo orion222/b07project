@@ -60,6 +60,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
         itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
+        Log.d("WOW4", "goes through recycler");
 
         // initialize spinner and adapter (used for dropdown)
 
@@ -83,19 +84,19 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             Toast.makeText(getContext(), "Please select only ONE item to view", Toast.LENGTH_SHORT).show();
         } else {
             // Creates ViewFragment w/ item data in a bundle
-            ViewFragment fragment = new ViewFragment();
+            ViewFragment view = new ViewFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable("key", clickedList.get(0));
-            fragment.setArguments(bundle);
+            view.setArguments(bundle);
 
-            switchFragment(fragment);
+            switchFragment(view);
         }
     }
 
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.home_fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
