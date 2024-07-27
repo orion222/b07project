@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.ItemAdapter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
+import com.example.b07demosummer2024.utilities.Pagination;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private List<Item> clickedList;
+    private Button buttonNext;
+    private Button buttonPrevious;
+    private int currentPage;
 
     @Nullable
     @Override
@@ -36,6 +41,9 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        buttonNext = view.findViewById(R.id.buttonNext);
+        buttonPrevious = view.findViewById(R.id.buttonPrevious);
 
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
@@ -49,6 +57,11 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             public void onDataFetched(List ret) {
                 itemList.clear();
                 itemList.addAll(ret);
+
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                recyclerView.setAdapter(itemAdapter);
+                switchButtonState();
+
                 itemAdapter.notifyDataSetChanged();
             }
 
@@ -58,8 +71,28 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             }
         });
 
-        itemAdapter = new ItemAdapter(itemList, this);
-        recyclerView.setAdapter(itemAdapter);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentPage++;
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                recyclerView.setAdapter(itemAdapter);
+                switchButtonState();
+            }
+        });
+
+        buttonPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentPage--;
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                recyclerView.setAdapter(itemAdapter);
+                switchButtonState();
+            }
+        });
+
+//        itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+//        recyclerView.setAdapter(itemAdapter);
         Log.d("WOW4", "goes through recycler");
 
         return view;
@@ -87,6 +120,30 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             view.setArguments(bundle);
 
             switchFragment(view);
+        }
+    }
+
+    private void switchButtonState() {
+        int size = itemList.size();
+        int lastPage = size / Pagination.getItemsPerPage();
+
+        if(size % Pagination.getItemsPerPage() == 0) lastPage--;
+
+        if(size <= Pagination.getItemsPerPage()) {
+            buttonNext.setEnabled(false);
+            buttonPrevious.setEnabled(false);
+        }
+        else if(currentPage == 0) {
+            buttonPrevious.setEnabled(false);
+            buttonNext.setEnabled(true);
+        }
+        else if(currentPage == lastPage) {
+            buttonNext.setEnabled(false);
+            buttonPrevious.setEnabled(true);
+        }
+        else {
+            buttonNext.setEnabled(true);
+            buttonPrevious.setEnabled(true);
         }
     }
 
