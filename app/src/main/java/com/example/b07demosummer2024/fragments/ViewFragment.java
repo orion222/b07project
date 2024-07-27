@@ -9,9 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.utilities.Preferences;
+
+import android.util.Log;
 
 // Temp Layout, will make it look better later
 
@@ -27,7 +32,7 @@ public class ViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.d("CYCLE", "ViewFragment - onCreateView");
         View view = inflater.inflate(R.layout.fragment_view, container, false);
 
         nameText = view.findViewById(R.id.textName);

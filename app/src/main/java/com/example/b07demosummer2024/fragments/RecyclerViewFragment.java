@@ -92,8 +92,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         });
 
 //        itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-//
 //        recyclerView.setAdapter(itemAdapter);
+        Log.d("WOW4", "goes through recycler");
 
         return view;
     }
@@ -114,12 +114,12 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             Toast.makeText(getContext(), "Please select only ONE item to view", Toast.LENGTH_SHORT).show();
         } else {
             // Creates ViewFragment w/ item data in a bundle
-            ViewFragment fragment = new ViewFragment();
+            ViewFragment view = new ViewFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable("key", clickedList.get(0));
-            fragment.setArguments(bundle);
+            view.setArguments(bundle);
 
-            switchFragment(fragment);
+            switchFragment(view);
         }
     }
 
