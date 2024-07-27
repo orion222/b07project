@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:rotationX="1"
     android:orientation="vertical"
     tools:context=".fragments.RecyclerViewFragment">
 
@@ -16,34 +15,39 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="36dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonPrevious"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.8"
-            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.135"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintVertical_bias="0.135" />
 
         <Button
             android:id="@+id/buttonPrevious"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="8dp"
             android:text="Previous"
+            android:layout_marginBottom="36dp"
             android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonNext"
+            app:layout_constraintHorizontal_bias="0.5" />
 
         <Button
             android:id="@+id/buttonNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Next"
-            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="36dp"
             android:background="@color/white"
             app:layout_constraintStart_toEndOf="@id/buttonPrevious"
-            app:layout_constraintTop_toBottomOf="@id/recyclerView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

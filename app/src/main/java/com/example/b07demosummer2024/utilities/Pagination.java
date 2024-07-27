@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Pagination {
     // can switch num of items to display per page
-    private static final int ITEMS_PER_PAGE = 3;
+    private static final int ITEMS_PER_PAGE = 6;
 
     public static List<Item> generatePage(int currentPage, List<Item> itemList) {
         if(itemList == null) return new ArrayList<Item>();
