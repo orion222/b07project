@@ -36,6 +36,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
+        String lot = "Lot " + item.getId();
+        holder.textLotID.setText(lot);
         holder.textViewTitle.setText(item.getName());
         holder.textViewAuthor.setText(item.getTimePeriod());
         holder.textViewGenre.setText(item.getCategory());
@@ -66,7 +68,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription;
+        TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription, textLotID;
         ImageView imageView; // Add this line
 
 
@@ -76,6 +78,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
             textViewGenre = itemView.findViewById(R.id.textViewGenre);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
+            textLotID = itemView.findViewById(R.id.textViewLotId);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
 
