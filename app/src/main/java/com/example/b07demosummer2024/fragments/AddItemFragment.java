@@ -1,6 +1,8 @@
 package com.example.b07demosummer2024.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +11,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.b07demosummer2024.activities.MainActivity;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.models.Media;
 
+import com.example.b07demosummer2024.utilities.Preferences;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
@@ -34,6 +43,7 @@ public class AddItemFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
+
 
         editTextName = view.findViewById(R.id.editTextName);
         editTextLotId = view.findViewById(R.id.editTextLotId);
@@ -92,4 +102,8 @@ public class AddItemFragment extends Fragment {
             }
         });
     }
+
+
+
+
 }
