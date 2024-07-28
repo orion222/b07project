@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.content.Intent;
-
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -68,7 +68,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
                 else if (position == 3){
-                    // load Remove fragment
+                    // load Remove (ie. set deleteMode to be true)
+
+                    RecyclerViewFragment recycle = new RecyclerViewFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("deleteMode", true);
+                    recycle.setArguments(bundle);
+                    loadFragment(recycle);
+
                 }
                 else if (position == 4){
                     // load Report fragment

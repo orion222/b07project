@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024.utilities;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,12 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import android.graphics.Color;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //glide imports
 import com.bumptech.glide.Glide;
@@ -19,10 +25,14 @@ import com.example.b07demosummer2024.models.Item;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
     private RecyclerViewInterface recyclerViewInterface;
+//    private List<Integer> clickedList;
+    private Set<Integer> clickedList;
 
     public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface) {
         this.itemList = itemList;
         this.recyclerViewInterface = recyclerViewInterface;
+//        clickedList = new ArrayList<Integer>();
+        clickedList = new HashSet<Integer>();
     }
 
     @NonNull
@@ -59,6 +69,35 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             //if no thumbnail in db
             holder.imageView.setImageResource(R.drawable.notavailable);
         }
+
+        if (clickedList.contains(position)) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int pos = holder.getAdapterPosition();
+
+                if (clickedList.contains(pos)) {
+                    clickedList.remove(pos);
+                } else {
+                    clickedList.add(pos);
+                }
+
+                notifyItemChanged(pos);
+
+                if (recyclerViewInterface != null) {
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.itemClicked(pos);
+                    }
+                }
+            }
+        });
+
     }
 
     //accessory function
@@ -81,21 +120,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textLotID = itemView.findViewById(R.id.textViewLotId);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
-
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.itemClicked(pos);
-                        }
-
-                    }
-//                    itemView.setBackgroundColor(Color.LTGRAY);
-                }
-            });
 
         }
     }

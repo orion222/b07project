@@ -33,6 +33,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private Button buttonNext;
     private Button buttonPrevious;
     private int currentPage;
+    private Boolean deleteMode;
 
     @Nullable
     @Override
@@ -45,8 +46,16 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
 
+        if (getArguments() != null) {
+            deleteMode = (Boolean) getArguments().getSerializable("deleteMode");
+            assert deleteMode != null;
+        } else {
+            deleteMode = false;
+        }
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
+
+        Log.d("AAAAAAAAAANNN", "CALLING CREATE VIEW");
 
         // create a listener for itemList, so that when
         // fetchItems() eventually returns the data,
@@ -108,10 +117,9 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             clickedList.add(clickedItem);
         }
 
-        // Temp implementation of view function, only allow 1 item at a time
-        // Modify later to incorporate remove functionality w/ multiple items allowed
-        if (clickedList.size() != 1) {
-            Toast.makeText(getContext(), "Please select only ONE item to view", Toast.LENGTH_SHORT).show();
+        if (deleteMode) {
+            // Implement remove item funcitonality here
+            Toast.makeText(getContext(), "Implement Delete Mode idk", Toast.LENGTH_SHORT).show();
         } else {
             // Creates ViewFragment w/ item data in a bundle
             ViewFragment view = new ViewFragment();
@@ -146,7 +154,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             buttonPrevious.setEnabled(true);
         }
     }
-
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
