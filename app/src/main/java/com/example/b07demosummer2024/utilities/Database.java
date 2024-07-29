@@ -63,7 +63,6 @@ public class Database {
                 Log.w("firebase", "Failed to read value.", error.toException());
             }
         });
-
     }
 
     public static void fetchCredentials(OnDataFetchedListener listener) {

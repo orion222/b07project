@@ -9,12 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-//glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
-
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
@@ -25,6 +23,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
+    public void setItems(List<Item> itemList) {
+        this.itemList = itemList;
+        notifyDataSetChanged();
+    }
+
+    public List<Item> getItems() {
+        return itemList;
+    }
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,7 +39,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return new ItemViewHolder(view, recyclerViewInterface);
     }
 
-    //binds one instance of class Item to item adapter fragment
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
@@ -41,25 +47,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.textViewGenre.setText(item.getCategory());
         holder.textViewDescription.setText(item.getDescription());
 
-        //try to showcase thumbnail
         List<String> imagePaths = item.getMedia().getImagePaths();
         if (imagePaths != null && !imagePaths.isEmpty()) {
             String thumbnail = imagePaths.get(0);
-
-            // use Glide to replace the content of itemView
             Glide.with(holder.itemView.getContext())
                     .load(thumbnail)
-                    .placeholder(R.drawable.notloading) // placeholder while loading
-                    .error(R.drawable.notavailable) // error image
+                    .placeholder(R.drawable.notloading)
+                    .error(R.drawable.notavailable)
                     .into(holder.imageView);
-        }
-        else {
-            //if no thumbnail in db
+        } else {
             holder.imageView.setImageResource(R.drawable.notavailable);
         }
     }
 
-    //accessory function
     @Override
     public int getItemCount() {
         return itemList.size();
@@ -67,8 +67,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription;
-        ImageView imageView; // Add this line
-
+        ImageView imageView;
 
         public ItemViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
@@ -76,24 +75,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
             textViewGenre = itemView.findViewById(R.id.textViewGenre);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
-
-            imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
+            imageView = itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (recyclerViewInterface != null) {
                         int pos = getAdapterPosition();
-
                         if (pos != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.itemClicked(pos);
                         }
-
                     }
-//                    itemView.setBackgroundColor(Color.LTGRAY);
                 }
             });
-
         }
     }
 }

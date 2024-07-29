@@ -25,6 +25,7 @@ import com.example.b07demosummer2024.fragments.AddItemFragment;
 import com.example.b07demosummer2024.fragments.LogoutPopup;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.fragments.LoginPopup;
+import com.example.b07demosummer2024.fragments.SearchFragment;
 import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 else if (position == 1){
                     // load Search fragment
-                    loadFragment(new RecyclerViewFragment());
+                    loadFragment(new SearchFragment());
                 }
                 else if (position == 2){
                     // load Add fragment
