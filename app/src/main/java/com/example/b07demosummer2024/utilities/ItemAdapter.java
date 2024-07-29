@@ -12,12 +12,14 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 //glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
 
@@ -33,6 +35,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.recyclerViewInterface = recyclerViewInterface;
 //        clickedList = new ArrayList<Integer>();
         clickedList = new HashSet<Integer>();
+    }
+
+    // temp
+    // could just be one constructor
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Set<Integer> set) {
+        this.itemList = itemList;
+        this.recyclerViewInterface = recyclerViewInterface;
+//        clickedList = new ArrayList<Integer>();
+        clickedList = set;
     }
 
     @NonNull
@@ -70,7 +81,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.imageView.setImageResource(R.drawable.notavailable);
         }
 
-        if (clickedList.contains(position)) {
+        if (clickedList.contains(position + Pagination.getItemsPerPage() * RecyclerViewFragment.getCurrentPage())) {
             holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
@@ -82,10 +93,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
                 int pos = holder.getAdapterPosition();
 
-                if (clickedList.contains(pos)) {
-                    clickedList.remove(pos);
+                int posLotNum = pos + Pagination.getItemsPerPage() * RecyclerViewFragment.getCurrentPage();
+
+                if (clickedList.contains(posLotNum)) {
+                    clickedList.remove(posLotNum);
                 } else {
-                    clickedList.add(pos);
+                    clickedList.add(posLotNum);
                 }
 
                 notifyItemChanged(pos);
@@ -104,6 +117,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public Set<Integer> getSet() {
+        return clickedList;
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

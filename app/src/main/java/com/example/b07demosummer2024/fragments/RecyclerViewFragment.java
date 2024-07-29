@@ -32,7 +32,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
-    private int currentPage;
+    private static int currentPage;
     private Boolean deleteMode;
 
     @Nullable
@@ -84,7 +84,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             @Override
             public void onClick(View view) {
                 currentPage++;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                // too much text in one line, can change later
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
             }
@@ -94,7 +95,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             @Override
             public void onClick(View view) {
                 currentPage--;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
             }
@@ -153,6 +154,10 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             buttonNext.setEnabled(true);
             buttonPrevious.setEnabled(true);
         }
+    }
+
+    public static int getCurrentPage() {
+        return currentPage;
     }
 
     private void switchFragment(Fragment fragment) {
