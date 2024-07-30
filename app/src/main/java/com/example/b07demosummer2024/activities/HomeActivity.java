@@ -1,8 +1,12 @@
 package com.example.b07demosummer2024.activities;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
@@ -29,6 +33,7 @@ import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private boolean isAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +47,17 @@ public class HomeActivity extends AppCompatActivity {
         //testing different spinner layouts depending on admin or not (can delete later)
         //previously the adapter was initialized based off of the old login
         ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(this,
-                R.array.adminActions, android.R.layout.simple_spinner_item);
+
+        isAdmin = Preferences.checkLogin(this);
+        if (isAdmin){
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.adminActions, android.R.layout.simple_spinner_item);
+        }
+        else {
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.userActions, android.R.layout.simple_spinner_item);
+        }
+
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
@@ -63,12 +77,25 @@ public class HomeActivity extends AppCompatActivity {
                     loadFragment(new RecyclerViewFragment());
                 }
                 else if (position == 2){
-                    // load Add fragment
-                    loadFragment(new AddItemFragment());
+
+                    if (isAdmin){
+                        // load Add fragment if
+                        loadFragment(new AddItemFragment());
+                    }
+                    else{
+                        // load report fragment
+                    }
+
 
                 }
                 else if (position == 3){
-                    // load Remove fragment
+                    if (isAdmin){
+                        // load Remove fragment
+                    }
+                    else {
+                        // load back fragment
+                    }
+
                 }
                 else if (position == 4){
                     // load Report fragment
@@ -107,6 +134,13 @@ public class HomeActivity extends AppCompatActivity {
 
             startActivity(intent);
             finish();
+        }
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
