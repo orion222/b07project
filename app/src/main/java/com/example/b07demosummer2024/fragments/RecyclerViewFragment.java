@@ -55,8 +55,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
 
-        Log.d("AAAAAAAAAANNN", "CALLING CREATE VIEW");
-
         // create a listener for itemList, so that when
         // fetchItems() eventually returns the data,
         // itemList will be set accordingly

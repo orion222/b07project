@@ -25,6 +25,7 @@ import com.example.b07demosummer2024.fragments.AddItemFragment;
 import com.example.b07demosummer2024.fragments.LogoutPopup;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.fragments.LoginPopup;
+import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {

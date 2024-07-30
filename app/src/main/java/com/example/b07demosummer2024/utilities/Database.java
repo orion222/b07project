@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024.utilities;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -88,4 +89,39 @@ public class Database {
         });
 
     }
+
+    public static void deleteItemById(String id) {
+        DatabaseReference myRef = db.getReference("items");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean itemFound = false;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Item item = snapshot.getValue(Item.class);
+                    if (item != null && item.getId().equalsIgnoreCase(id)) {
+                        snapshot.getRef().removeValue().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("DELETE", "onDataChange: DELETION SUCCESSFUL");
+                            } else {
+                                Log.d("DELETE", "onDataChange: DELETION FAILED");
+                            }
+                        });
+                        itemFound = true;
+                        break;
+                    }
+                }
+                if (!itemFound) {
+                    Log.d("DELETE", "onDataChange: ITEM NOT FOUND");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DELETE", "onCancelled: CANCELLED");
+            }
+        });
+
+    }
+
+
 }
