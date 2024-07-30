@@ -37,6 +37,15 @@
         <item>Report</item>
         <item>Back</item>
     </string-array>
+
+    <string-array name="reportFilterOptions">
+        <item>All Items</item>
+        <item>By lot number</item>
+        <item>By name</item>
+        <item>By Category</item>
+        <item>By Period</item>
+    </string-array>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

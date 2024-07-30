@@ -8,14 +8,13 @@
 
     <EditText
         android:id="@+id/editReportConstraint"
-        android:layout_width="349dp"
-        android:layout_height="79dp"
-        android:layout_marginTop="163dp"
+        android:layout_width="352dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="156dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,21 +32,32 @@
         android:id="@+id/buttonGenerate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="273dp"
+        android:layout_marginTop="296dp"
         android:text="Generate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="150dp"
-        android:layout_height="31dp"
+        android:layout_width="85dp"
+        android:layout_height="27dp"
         android:layout_marginTop="32dp"
         android:text="Report"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/contentCheckBox"
+        android:layout_width="225dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="232dp"
+        android:text="Description and Picture only"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
