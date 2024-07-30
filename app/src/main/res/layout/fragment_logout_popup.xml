@@ -30,18 +30,18 @@
         android:layout_marginBottom="20dp">
 
         <Button
+            style="@style/Button"
             android:id="@+id/buttonYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/buttonColor"
             android:text="Yes" />
 
         <Button
+            style="@style/Button"
             android:id="@+id/buttonNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/buttonColor"
             android:text="No" />
 
     </LinearLayout>

@@ -57,12 +57,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
-        String lot = "Lot " + item.getId();
-        holder.textLotID.setText(lot);
         holder.textViewTitle.setText(item.getName());
-        holder.textViewAuthor.setText(item.getTimePeriod());
-        holder.textViewGenre.setText(item.getCategory());
-        holder.textViewDescription.setText(item.getDescription());
+        String lot = "ID: " + item.getId();
+        holder.textLotID.setText(lot);
+        String category = "Category: " + item.getCategory();
+        holder.textViewGenre.setText(category);
+        String time = "Time Period: " + item.getTimePeriod();
+        holder.textViewAuthor.setText(time);
+        String description = item.getDescription().substring(0, 150) + " ...";
+        holder.textViewDescription.setText(description);
 
         //try to showcase thumbnail
         List<String> imagePaths = item.getMedia().getImagePaths();

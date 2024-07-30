@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
-import com.example.b07demosummer2024.utilities.Preferences;
 
 import android.util.Log;
 
@@ -25,7 +22,9 @@ public class ViewFragment extends Fragment {
     private TextView DateText;
     private TextView CategoryText;
     private TextView DescriptionText;
+    private TextView IdText;
     private Button backButton;
+
 
     private Item item;
 
@@ -38,6 +37,7 @@ public class ViewFragment extends Fragment {
         nameText = view.findViewById(R.id.textName);
         DateText = view.findViewById(R.id.textDate);
         CategoryText = view.findViewById(R.id.textCategory);
+        IdText = view.findViewById(R.id.textId);
         DescriptionText = view.findViewById(R.id.textDescription);
         backButton = view.findViewById(R.id.btnBack);
 
@@ -55,9 +55,10 @@ public class ViewFragment extends Fragment {
             assert item != null;
         }
 
-        nameText.setText("[" + item.getId() + "] " + item.getName());
-        DateText.setText(item.getTimePeriod());
-        CategoryText.setText(item.getCategory());
+        nameText.setText(item.getName());
+        DateText.setText("Time Period: " + item.getTimePeriod());
+        CategoryText.setText("Category: " + item.getCategory());
+        IdText.setText("ID: " + item.getId());
         DescriptionText.setText(item.getDescription());
 
         // TODO: Add Pictures

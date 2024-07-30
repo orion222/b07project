@@ -47,48 +47,42 @@
 
 
     <Button
+        style="@style/Button"
         android:id="@+id/adminButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="80dp"
         android:text="Admin"
-        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:background="@drawable/background"
-        android:backgroundTint="@color/buttonColor"
         app:layout_constraintEnd_toStartOf="@id/guestButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textContinueAs"
         app:layout_constraintWidth_percent="0.4"/>
 
     <Button
+        style="@style/Button"
         android:id="@+id/guestButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="80dp"
         android:text="Guest"
-        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:background="@drawable/background"
-        android:backgroundTint="@color/buttonColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/adminButton"
         app:layout_constraintTop_toBottomOf="@id/textContinueAs"
         app:layout_constraintWidth_percent="0.4"/>
 
     <Button
+        style="@style/Button"
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="80dp"
-        android:text="Logout"
-        android:textColor="#FFFFFF"
+        android:text="@string/logout"
         android:textSize="16sp"
-        android:background="@drawable/background"
-        android:backgroundTint="@color/buttonColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/adminButton"
         app:layout_constraintTop_toBottomOf="@id/textContinueAs"

@@ -80,6 +80,8 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="actions">Actions</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
 
 
 </resources>
