@@ -81,7 +81,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.imageView.setImageResource(R.drawable.notavailable);
         }
 
-        if (clickedList.contains(position + Pagination.getItemsPerPage() * RecyclerViewFragment.getCurrentPage())) {
+        if (clickedList.contains(Integer.parseInt(item.getId()))) {
             holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
@@ -93,7 +93,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
                 int pos = holder.getAdapterPosition();
 
-                int posLotNum = pos + Pagination.getItemsPerPage() * RecyclerViewFragment.getCurrentPage();
+                int posLotNum = Integer.parseInt(item.getId());
 
                 if (clickedList.contains(posLotNum)) {
                     clickedList.remove(posLotNum);
