@@ -40,10 +40,10 @@
 
     <string-array name="reportFilterOptions">
         <item>All Items</item>
-        <item>By lot number</item>
-        <item>By name</item>
+        <item>By Lot Number</item>
+        <item>By Name</item>
         <item>By Category</item>
-        <item>By Period</item>
+        <item>By Time Period</item>
     </string-array>
 
     <!-- Strings used for fragments for navigation -->

@@ -44,7 +44,7 @@ public class ReportFragment extends Fragment {
     private Spinner spinnerFilterOptions;
     private CheckBox contentCheckBox;
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
-    private static PdfCreator pdfCreator = new PdfCreator();
+
 
     @Nullable
     @Override
@@ -68,7 +68,6 @@ public class ReportFragment extends Fragment {
 
 
         buttonGenerate.setOnClickListener(v -> {
-            Log.d("test", "Generate Button");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -87,22 +86,42 @@ public class ReportFragment extends Fragment {
     }
 
     private void generateReport() {
+        PdfCreator pdfCreator = new PdfCreator();
+
         String filterConstraint = editReportConstraint.getText().toString().trim();
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
-        String filterType = spinnerFilterOptions.getSelectedItem().toString().replace("By ","");
+        String filterType = spinnerFilterOptions.getSelectedItem().toString().replace("By ","").toLowerCase();
+        //
 
-        Database.fetchItems(new Database.OnDataFetchedListener(){
-            @Override
-            public void onDataFetched(List ret) {
-                pdfCreator.createPdf(getContext(),ret.subList(0,5), contentType);
-            }
 
-            @Override
-            public void onError(DatabaseError error) {
-                Log.e("db err", "Failed to fetch items");
-            }
-        });
+        //All items search can use General Search
+        if(position == 0) {
+            Database.fetchItems(new Database.OnDataFetchedListener() {
+                @Override
+                public void onDataFetched(List ret) {
+                    pdfCreator.createPdf(getContext(), ret, contentType);
+                }
+
+                @Override
+                public void onError(DatabaseError error) {
+                    Log.e("db err", "Failed to fetch items");
+                }
+            });
+        }else{
+            // use filtered Search
+            Database.fetchItemsFiltered(new Database.OnDataFetchedListener() {
+                @Override
+                public void onDataFetched(List ret) {
+                    pdfCreator.createPdf(getContext(), ret, contentType);
+                }
+
+                @Override
+                public void onError(DatabaseError error) {
+                    Log.e("db err", "Failed to fetch items");
+                }
+            }, filterType, filterConstraint);
+        }
 
 
     }
