@@ -108,6 +108,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                         Database.deleteItemById(iter.next().toString());
                     }
                     Toast.makeText(view.getContext(), "Items Successfully Deleted", Toast.LENGTH_SHORT).show();
+                    deleteMode = false;
                 }
             }
         });
