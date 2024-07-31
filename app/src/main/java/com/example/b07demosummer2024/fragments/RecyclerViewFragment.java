@@ -22,8 +22,7 @@ import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.utilities.Pagination;
 import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RecyclerViewFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
@@ -32,6 +31,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
+    private Button buttonDelete;
     private int currentPage;
     private static boolean deleteMode;
 
@@ -45,6 +45,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
+        buttonDelete = view.findViewById(R.id.buttonDelete);
 
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
@@ -90,6 +91,24 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                 itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
+            }
+        });
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Set<Integer> clickedList = itemAdapter.getSet();
+
+                if(clickedList.isEmpty()) {
+                    Toast.makeText(view.getContext(), "Select Items to Delete", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Iterator iter = clickedList.iterator();
+                    while(iter.hasNext()) {
+                        Database.deleteItemById(iter.next().toString());
+                    }
+                    Toast.makeText(view.getContext(), "Items Successfully Deleted", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -146,8 +165,13 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     public static boolean getDeleteMode() {
         return deleteMode;
     }
-    public static void setDeleteMode(boolean c) {
+
+    public static void setDeleteMode(boolean c, View view) {
         deleteMode = c;
+
+        if(c) {
+            Toast.makeText(view.getContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void switchFragment(Fragment fragment) {

@@ -88,39 +88,35 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        boolean deleteMode = RecyclerViewFragment.getDeleteMode();
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(!RecyclerViewFragment.getDeleteMode()) {
+                    RecyclerViewFragment.setDeleteMode(true, view);
+                    checkItemToRemove(holder, item);
+                }
+
+                return true;
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = holder.getAdapterPosition();
 
-                if (recyclerViewInterface != null && !deleteMode) {
+                if(RecyclerViewFragment.getDeleteMode()) {
+                    checkItemToRemove(holder, item);
+
+                    if(clickedList.isEmpty()) {
+                        RecyclerViewFragment.setDeleteMode(false, view);
+                    }
+                }
+                else if (recyclerViewInterface != null) {
                     if (pos != RecyclerView.NO_POSITION) {
                         recyclerViewInterface.itemClicked(pos);
                     }
                 }
-                else if(deleteMode) {
-                    checkItemToRemove(holder, item);
-
-                    if(clickedList.isEmpty()) {
-                        RecyclerViewFragment.setDeleteMode(false);
-                        Toast.makeText(view.getContext(), "View Mode Activated", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if(!deleteMode) {
-                    RecyclerViewFragment.setDeleteMode(true);
-                    checkItemToRemove(holder, item);
-                    Toast.makeText(view.getContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
             }
         });
 
