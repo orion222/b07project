@@ -32,8 +32,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
-    private static int currentPage;
-    private Boolean deleteMode;
+    private int currentPage;
+    private static boolean deleteMode;
 
     @Nullable
     @Override
@@ -46,12 +46,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
 
-        if (getArguments() != null) {
-            deleteMode = (Boolean) getArguments().getSerializable("deleteMode");
-            assert deleteMode != null;
-        } else {
-            deleteMode = false;
-        }
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
 
@@ -116,18 +110,13 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             clickedList.add(clickedItem);
         }
 
-        if (deleteMode) {
-            // Implement remove item funcitonality here
-            Toast.makeText(getContext(), "Implement Delete Mode idk", Toast.LENGTH_SHORT).show();
-        } else {
-            // Creates ViewFragment w/ item data in a bundle
-            ViewFragment view = new ViewFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("key", clickedList.get(0));
-            view.setArguments(bundle);
+        // Creates ViewFragment w/ item data in a bundle
+        ViewFragment view = new ViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("key", clickedList.get(0));
+        view.setArguments(bundle);
 
-            switchFragment(view);
-        }
+        switchFragment(view);
     }
 
     private void switchButtonState() {
@@ -154,8 +143,11 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         }
     }
 
-    public static int getCurrentPage() {
-        return currentPage;
+    public static boolean getDeleteMode() {
+        return deleteMode;
+    }
+    public static void setDeleteMode(boolean c) {
+        deleteMode = c;
     }
 
     private void switchFragment(Fragment fragment) {
