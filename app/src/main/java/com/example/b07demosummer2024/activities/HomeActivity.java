@@ -125,6 +125,10 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.popBackStack();
         } else {
             // when no fragments in back stack (go back to login - MainActivity)
+
+            // there were currently some issues with this
+            RecyclerViewFragment.setDeleteMode(false);
+
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 

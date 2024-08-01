@@ -37,9 +37,7 @@
             android:layout_weight="1"
             app:layout_constraintEnd_toStartOf="@+id/textCategory"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:ellipsize="end"
-            android:maxLines="1" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textCategory"

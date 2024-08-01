@@ -11,13 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.b07demosummer2024.interfaces.LogoutMVP;
 import com.example.b07demosummer2024.utilities.LogoutPresenter;
 import com.example.b07demosummer2024.R;
 import androidx.fragment.app.FragmentManager;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
@@ -28,12 +28,16 @@ public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_logout_popup, null);
+        View view = inflater.inflate(R.layout.fragment_confirm_popup, null);
+
 
         builder.setView(view);
         presenter = new LogoutPresenter(requireContext());
         presenter.attachView(this);
 
+        TextView message = view.findViewById(R.id.textViewMessage);
+        String confirmMsg = "Are you sure you want to logout?";
+        message.setText(confirmMsg);
 
         Button confirmYes = view.findViewById(R.id.buttonYes);
         Button confirmNo = view.findViewById(R.id.buttonNo);
