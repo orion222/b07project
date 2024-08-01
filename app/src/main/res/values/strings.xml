@@ -38,11 +38,20 @@
         <item>Back</item>
     </string-array>
 
+    <string-array name="reportFilterOptions">
+        <item>All Items</item>
+        <item>By Lot Number</item>
+        <item>By Name</item>
+        <item>By Category</item>
+        <item>By Time Period</item>
+    </string-array>
+
     <string-array name="mediaUploadOptions">
         <item>Image</item>
         <item>Video</item>
     </string-array>
-    <!-- Strings used for fragments for navigation -->
+
+  <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
