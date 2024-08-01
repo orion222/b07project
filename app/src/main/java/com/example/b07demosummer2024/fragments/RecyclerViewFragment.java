@@ -64,7 +64,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                 itemList.clear();
                 itemList.addAll(ret);
 
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, getContext());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
 
@@ -80,6 +80,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clickedList.clear();
                 currentPage++;
                 // too much text in one line, can change later
                 itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
@@ -92,6 +93,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clickedList.clear();
                 currentPage--;
                 itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
                         RecyclerViewFragment.this, itemAdapter.getSet());
@@ -132,21 +134,22 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
     @Override
     public void itemClicked(int pos) {
-        Item clickedItem = itemList.get(pos);
-
+//        Item clickedItem = itemList.get(pos);
+        Item clickedItem = Pagination.generatePage(currentPage, itemList).get(pos);
         if (clickedList.contains(clickedItem)) {
             clickedList.remove(clickedItem);
         } else {
             clickedList.add(clickedItem);
         }
 
-        // Creates ViewFragment w/ item data in a bundle
+        // creates ViewFragment w/ item data in a bundle
         ViewFragment view = new ViewFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("key", clickedList.get(0));
         view.setArguments(bundle);
-
+        Log.e("zebraaa", clickedList.get(0).toString());
         switchFragment(view);
+
     }
 
     // changes UI, we need to move this to a new class
@@ -189,6 +192,15 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        // I added animations, but the exit ones are kind of glitchy so didn't include them for now
+        transaction.setCustomAnimations(
+                R.anim.fragment_enter,
+                R.anim.fragment_exit//,
+//                R.anim.fragment_pop_enter,  // pop enter animation
+//                R.anim.fragment_pop_exit    // pop exit animation
+        );
+
         transaction.replace(R.id.home_fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

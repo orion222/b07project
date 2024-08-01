@@ -38,6 +38,6 @@ public class Item implements Serializable {
 
     @Override
     public String toString(){
-        return getId() + " " + getName();
+        return getId() + " " + getName() + getMedia().getImagePaths().get(0);
     }
 }
