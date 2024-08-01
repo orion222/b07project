@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,12 +43,16 @@ public class DeletionPopup extends DialogFragment implements DeletionMVP.View {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_deletion_popup, null);
+        View view = inflater.inflate(R.layout.fragment_confirm_popup, null);
 
         builder.setView(view);
 
-        buttonConfirm = view.findViewById(R.id.buttonConfirm);
-        buttonCancel = view.findViewById(R.id.buttonCancel);
+        TextView message = view.findViewById(R.id.textViewMessage);
+        String confirmMsg = "Are you sure you want to delete?";
+        message.setText(confirmMsg);
+
+        buttonConfirm = view.findViewById(R.id.buttonYes);
+        buttonCancel = view.findViewById(R.id.buttonNo);
 
         // initialize the presenter, give a concrete model as its argument
         presenter = new DeletionPresenter(new DeletionModel());
@@ -58,6 +63,7 @@ public class DeletionPopup extends DialogFragment implements DeletionMVP.View {
             public void onClick(View view) {
                 presenter.handleDeletion(clickedList, itemList);
                 dismiss();
+                // need to change this later
                 switchFragment(new RecyclerViewFragment());
             }
         });
