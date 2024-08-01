@@ -80,7 +80,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             Glide.with(holder.itemView.getContext())
                     .load(thumbnail)
                     .placeholder(R.drawable.notloading) // placeholder while loading
-                    .error(R.drawable.notavailable) // error image
+                    .error(R.drawable.pic_not_available) // error image
                     .into(holder.imageView);
         }
         else {
