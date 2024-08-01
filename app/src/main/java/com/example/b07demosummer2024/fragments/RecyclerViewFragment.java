@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
-    private Button buttonDelete;
+    private ImageButton buttonDelete;
 
     //defaults to 0
     private int currentPage;
@@ -125,10 +126,6 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                 }
             }
         });
-
-//        itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-//        recyclerView.setAdapter(itemAdapter);
-        Log.d("WOW4", "goes through recycler");
 
         return view;
     }

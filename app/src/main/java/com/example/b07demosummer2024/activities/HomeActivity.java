@@ -1,7 +1,5 @@
 package com.example.b07demosummer2024.activities;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,15 +7,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.content.Intent;
-import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -26,10 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.fragments.AddItemFragment;
-import com.example.b07demosummer2024.fragments.LogoutPopup;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
-import com.example.b07demosummer2024.fragments.LoginPopup;
-import com.example.b07demosummer2024.utilities.Database;
+import com.example.b07demosummer2024.fragments.ReportFragment;
 import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {
@@ -101,6 +90,11 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 else if (position == 4){
                     // load Report fragment
+                    loadFragment(new ReportFragment());
+//                    List<Item> test =  new ArrayList();
+//                    test.add(new Item("bruh","name", "time","category", "There are many apps in which data from the app is provided to users in the downloadable PDF file format. So in this case we have to create a PDF file from the data present inside our app and represent that data properly inside our app. So by using this technique, we can easily create a new PDF according to our requirements. In this article, we will take a look at creating a new PDF file from the data present inside your Android app and saving that PDF file in the external storage of the users’ device. So for generating a new PDF file from the data present inside our Android app we will be using Canvas. Canvas is a predefined class in Android which is used to make 2D drawings of the different objects on our screen. So in this article, we will be using canvas to draw our data inside our canvas, and then we will store that canvas in the form of a PDF. Now we will move towards the implementation of our project. ",null));
+//                    PDFCreator pdfCreator = new PDFCreator();
+//                    pdfCreator.createPdf(getApplicationContext(),test, false);
                 }
                 else{
                     // load back fragment
