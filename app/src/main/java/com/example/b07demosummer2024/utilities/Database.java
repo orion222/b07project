@@ -1,6 +1,5 @@
 package com.example.b07demosummer2024.utilities;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -32,8 +31,8 @@ public class Database {
         void onError(DatabaseError error);
     }
 
-    //main method to retrieve data
-    public static void fetchItems(OnDataFetchedListener listener){
+    //main method to retrieve all data
+    public static void fetchItems(OnDataFetchedListener<Item> listener){
         DatabaseReference myRef = db.getReference("items");
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -67,7 +66,7 @@ public class Database {
 
     }
 
-    public static void fetchCredentials(OnDataFetchedListener listener) {
+    public static void fetchCredentials(OnDataFetchedListener<Credentials> listener) {
         DatabaseReference myRef = db.getReference("admins");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -122,6 +121,30 @@ public class Database {
         });
 
     }
+
+    public static void fetchItemByLotID(String lotID, OnDataFetchedListener<Item> listener) {
+        DatabaseReference myRef = db.getReference("items");
+
+        myRef.orderByChild("id").equalTo(lotID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Item> itemList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Item item = snapshot.getValue(Item.class);
+                    itemList.add(item);
+                    break; //item is found
+                }
+                listener.onDataFetched(itemList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("SEARCH", "Failed to search for lotid.", error.toException());
+                listener.onError(error);
+            }
+        });
+    }
+
 
 
 }
