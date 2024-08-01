@@ -91,7 +91,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         if (clickedList.contains(Integer.parseInt(item.getId()))) {
             holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
         } else {
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+//            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
         // used to listen for long presses; used for deletion

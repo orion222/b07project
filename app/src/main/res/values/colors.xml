@@ -7,4 +7,5 @@
     <color name="accentBlack">#323232</color>
     <color name="accentGrey">#838386</color>
     <color name = "darkBlue">#3F51B5</color>
+    <color name ="background">#DED4E9</color>
 </resources>
