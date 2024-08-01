@@ -65,7 +65,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.textViewGenre.setText(category);
         String time = "Time Period: " + item.getTimePeriod();
         holder.textViewAuthor.setText(time);
-        holder.textViewDescription.setText(item.getDescription());
+        holder.textViewTitle.setText(item.getName());
         holder.textViewDescription.setMaxLines(3);
         holder.textViewDescription.setEllipsize(TextUtils.TruncateAt.END);
         holder.textViewDescription.setText(item.getDescription());
