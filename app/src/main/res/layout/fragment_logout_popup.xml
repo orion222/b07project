@@ -31,17 +31,19 @@
 
         <Button
             android:id="@+id/buttonYes"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/buttonColor"
+            android:layout_marginHorizontal="8dp"
             android:text="Yes" />
 
         <Button
+            style="@style/Button"
             android:id="@+id/buttonNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/buttonColor"
+            android:layout_marginHorizontal="8dp"
             android:text="No" />
 
     </LinearLayout>
