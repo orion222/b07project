@@ -1,11 +1,15 @@
 package com.example.b07demosummer2024.utilities;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Color;
 import android.widget.Toast;
@@ -30,12 +34,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private RecyclerViewInterface recyclerViewInterface;
 //    private List<Integer> clickedList;
     private Set<Integer> clickedList;
+    private Context context;
 
-    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface) {
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Context context) {
         this.itemList = itemList;
         this.recyclerViewInterface = recyclerViewInterface;
 //        clickedList = new ArrayList<Integer>();
         clickedList = new HashSet<Integer>();
+        this.context = context;
     }
 
     // temp
@@ -58,12 +64,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
-        String lot = "Lot " + item.getId();
+        String lot = "Lot ID: " + item.getId();
         holder.textLotID.setText(lot);
+        String category = "Category: " + item.getCategory();
+        holder.textViewGenre.setText(category);
+        String time = "Time Period: " + item.getTimePeriod();
+        holder.textViewAuthor.setText(time);
         holder.textViewTitle.setText(item.getName());
-        holder.textViewAuthor.setText(item.getTimePeriod());
-        holder.textViewGenre.setText(item.getCategory());
+        holder.textViewDescription.setMaxLines(3);
+        holder.textViewDescription.setEllipsize(TextUtils.TruncateAt.END);
         holder.textViewDescription.setText(item.getDescription());
+
 
         //try to showcase thumbnail
         List<String> imagePaths = item.getMedia().getImagePaths();
@@ -74,7 +85,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             Glide.with(holder.itemView.getContext())
                     .load(thumbnail)
                     .placeholder(R.drawable.notloading) // placeholder while loading
-                    .error(R.drawable.notavailable) // error image
+                    .error(R.drawable.pic_not_available) // error image
                     .into(holder.imageView);
         }
         else {
@@ -83,9 +94,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
 
         if (clickedList.contains(Integer.parseInt(item.getId()))) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
+            holder.itemView.setBackgroundResource(R.drawable.adapter_bg_clicked);
+
+//            holder.itemContainer.setBackground(ContextCompat.getDrawable(context, R.drawable.adapter_bg_clicked));
+
         } else {
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            holder.itemView.setBackgroundResource(R.drawable.adapter_bg);
         }
 
         // used to listen for long presses; used for deletion
@@ -148,6 +162,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription, textLotID;
         ImageView imageView; // Add this line
+        ConstraintLayout itemContainer;
 
 
         public ItemViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
@@ -159,6 +174,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textLotID = itemView.findViewById(R.id.textViewLotId);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
+
+            itemContainer = itemView.findViewById(R.id.itemContainer);
 
         }
     }

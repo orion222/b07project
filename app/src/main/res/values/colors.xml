@@ -3,5 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="buttonColor">#CC9840</color>
+    <color name="accent">#c7a762</color>
+    <color name="accentBlack">#323232</color>
+    <color name="accentGrey">#838386</color>
     <color name = "darkBlue">#3F51B5</color>
+    <color name ="background">#DBD2E6</color>
+    <color name ="background2">#DBCAEB</color>
+    <color name ="selected">#D3EFF8</color>
+    <color name ="selected2">#B6BDBD</color>
 </resources>
