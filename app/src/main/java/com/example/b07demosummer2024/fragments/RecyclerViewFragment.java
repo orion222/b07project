@@ -32,7 +32,10 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private Button buttonNext;
     private Button buttonPrevious;
     private Button buttonDelete;
+
+    //defaults to 0
     private int currentPage;
+
     private static boolean deleteMode;
 
     @Nullable
@@ -78,7 +81,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             public void onClick(View view) {
                 currentPage++;
                 // too much text in one line, can change later
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                        RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
             }
@@ -88,7 +92,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             @Override
             public void onClick(View view) {
                 currentPage--;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                        RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
             }
@@ -100,13 +105,15 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                 Set<Integer> clickedList = itemAdapter.getSet();
 
                 if(clickedList.isEmpty()) {
-                    Toast.makeText(view.getContext(), "Select Items to Delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Long-Press Items to Delete", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Iterator iter = clickedList.iterator();
                     while(iter.hasNext()) {
                         Database.deleteItemById(iter.next().toString());
                     }
+                    itemList.removeIf(item -> clickedList.contains(Integer.parseInt(item.getId())));
+
                     Toast.makeText(view.getContext(), "Items Successfully Deleted", Toast.LENGTH_SHORT).show();
                     deleteMode = false;
                 }
@@ -139,6 +146,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         switchFragment(view);
     }
 
+    // changes UI, we need to move this to a new class
     private void switchButtonState() {
         int size = itemList.size();
         int lastPage = size / Pagination.getItemsPerPage();
@@ -163,6 +171,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         }
     }
 
+    //getters and setters
     public static boolean getDeleteMode() {
         return deleteMode;
     }

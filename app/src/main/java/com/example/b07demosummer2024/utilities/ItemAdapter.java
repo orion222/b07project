@@ -88,6 +88,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
+        // used to listen for long presses; used for deletion
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -95,7 +96,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     RecyclerViewFragment.setDeleteMode(true, view);
                     checkItemToRemove(holder, item);
                 }
-
                 return true;
             }
         });

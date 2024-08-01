@@ -32,6 +32,7 @@ public class Pagination {
         return itemsToDisplay;
     }
 
+    //getters and setters
     public static void setItemsPerPage(int num) {
         items_per_page = num;
     }

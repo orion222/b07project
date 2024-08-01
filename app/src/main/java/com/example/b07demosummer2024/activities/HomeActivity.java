@@ -71,11 +71,12 @@ public class HomeActivity extends AppCompatActivity {
                 else if (position == 3){
                     // load Remove (ie. set deleteMode to be true)
 
-                    RecyclerViewFragment recycle = new RecyclerViewFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("deleteMode", true);
-                    recycle.setArguments(bundle);
-                    loadFragment(recycle);
+                    //currently commenting this out, as its causing some overlap errors
+//                    RecyclerViewFragment recycle = new RecyclerViewFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("deleteMode", true);
+//                    recycle.setArguments(bundle);
+//                    loadFragment(recycle);
 
                 }
                 else if (position == 4){
