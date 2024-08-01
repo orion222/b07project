@@ -94,14 +94,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
 
         if (clickedList.contains(Integer.parseInt(item.getId()))) {
-            holder.itemContainer.setBackgroundColor(Color.parseColor("#f5ebe0"));
+            holder.itemView.setBackgroundResource(R.drawable.adapter_bg_clicked);
 
 //            holder.itemContainer.setBackground(ContextCompat.getDrawable(context, R.drawable.adapter_bg_clicked));
 
         } else {
-
-//            holder.itemContainer.setBackground(ContextCompat.getDrawable(context, R.drawable.adapter_bg));
-//            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            holder.itemView.setBackgroundResource(R.drawable.adapter_bg);
         }
 
         // used to listen for long presses; used for deletion
