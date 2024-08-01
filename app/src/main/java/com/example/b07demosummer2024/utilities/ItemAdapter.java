@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024.utilities;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Color;
 import android.widget.Toast;
@@ -31,12 +34,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private RecyclerViewInterface recyclerViewInterface;
 //    private List<Integer> clickedList;
     private Set<Integer> clickedList;
+    private Context context;
 
-    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface) {
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Context context) {
         this.itemList = itemList;
         this.recyclerViewInterface = recyclerViewInterface;
 //        clickedList = new ArrayList<Integer>();
         clickedList = new HashSet<Integer>();
+        this.context = context;
     }
 
     // temp
@@ -89,8 +94,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
 
         if (clickedList.contains(Integer.parseInt(item.getId()))) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
+            holder.itemContainer.setBackgroundColor(Color.parseColor("#f5ebe0"));
+
+//            holder.itemContainer.setBackground(ContextCompat.getDrawable(context, R.drawable.adapter_bg_clicked));
+
         } else {
+
+//            holder.itemContainer.setBackground(ContextCompat.getDrawable(context, R.drawable.adapter_bg));
 //            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
@@ -154,6 +164,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription, textLotID;
         ImageView imageView; // Add this line
+        ConstraintLayout itemContainer;
 
 
         public ItemViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
@@ -165,6 +176,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textLotID = itemView.findViewById(R.id.textViewLotId);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
+
+            itemContainer = itemView.findViewById(R.id.itemContainer);
 
         }
     }

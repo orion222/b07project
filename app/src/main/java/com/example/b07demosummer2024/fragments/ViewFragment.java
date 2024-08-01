@@ -58,7 +58,7 @@ public class ViewFragment extends Fragment {
         nameText.setText(item.getName());
         DateText.setText("Time Period: " + item.getTimePeriod());
         CategoryText.setText("Category: " + item.getCategory());
-        IdText.setText("LOT ID: " + item.getId());
+        IdText.setText("Lot ID: " + item.getId());
         DescriptionText.setText(item.getDescription());
 
         // TODO: Add Pictures

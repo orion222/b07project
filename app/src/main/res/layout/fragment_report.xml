@@ -55,6 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editReportConstraint" />
 
     <Button
+        style="@style/Button"
         android:id="@+id/buttonGenerate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

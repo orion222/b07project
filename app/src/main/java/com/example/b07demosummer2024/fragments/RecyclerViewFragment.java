@@ -64,7 +64,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                 itemList.clear();
                 itemList.addAll(ret);
 
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, getContext());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
 
