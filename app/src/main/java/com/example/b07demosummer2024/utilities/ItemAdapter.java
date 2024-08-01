@@ -7,11 +7,20 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import android.graphics.Color;
+import android.widget.Toast;
+
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 //glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.activities.HomeActivity;
+import com.example.b07demosummer2024.activities.MainActivity;
+import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
 
@@ -19,10 +28,23 @@ import com.example.b07demosummer2024.models.Item;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
     private RecyclerViewInterface recyclerViewInterface;
+//    private List<Integer> clickedList;
+    private Set<Integer> clickedList;
 
     public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface) {
         this.itemList = itemList;
         this.recyclerViewInterface = recyclerViewInterface;
+//        clickedList = new ArrayList<Integer>();
+        clickedList = new HashSet<Integer>();
+    }
+
+    // temp
+    // could just be one constructor
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Set<Integer> set) {
+        this.itemList = itemList;
+        this.recyclerViewInterface = recyclerViewInterface;
+//        clickedList = new ArrayList<Integer>();
+        clickedList = set;
     }
 
     @NonNull
@@ -59,12 +81,68 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             //if no thumbnail in db
             holder.imageView.setImageResource(R.drawable.notavailable);
         }
+
+        if (clickedList.contains(Integer.parseInt(item.getId()))) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#f5ebe0"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        // used to listen for long presses; used for deletion
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(!RecyclerViewFragment.getDeleteMode()) {
+                    RecyclerViewFragment.setDeleteMode(true, view);
+                    checkItemToRemove(holder, item);
+                }
+                return true;
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = holder.getAdapterPosition();
+
+                if(RecyclerViewFragment.getDeleteMode()) {
+                    checkItemToRemove(holder, item);
+
+                    if(clickedList.isEmpty()) {
+                        RecyclerViewFragment.setDeleteMode(false, view);
+                    }
+                }
+                else if (recyclerViewInterface != null) {
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.itemClicked(pos);
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void checkItemToRemove(ItemViewHolder holder, Item item) {
+        int pos = holder.getAdapterPosition();
+        int posLotNum = Integer.parseInt(item.getId());
+
+        if (clickedList.contains(posLotNum)) {
+            clickedList.remove(posLotNum);
+        } else {
+            clickedList.add(posLotNum);
+        }
+
+        notifyItemChanged(pos);
     }
 
     //accessory function
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public Set<Integer> getSet() {
+        return clickedList;
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -81,21 +159,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textLotID = itemView.findViewById(R.id.textViewLotId);
 
             imageView = itemView.findViewById(R.id.imageView); // Initialize the ImageView
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
-
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.itemClicked(pos);
-                        }
-
-                    }
-//                    itemView.setBackgroundColor(Color.LTGRAY);
-                }
-            });
 
         }
     }

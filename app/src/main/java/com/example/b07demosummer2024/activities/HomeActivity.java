@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.content.Intent;
-
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -29,6 +29,7 @@ import com.example.b07demosummer2024.fragments.AddItemFragment;
 import com.example.b07demosummer2024.fragments.LogoutPopup;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.fragments.LoginPopup;
+import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {
@@ -89,13 +90,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
                 else if (position == 3){
-                    if (isAdmin){
-                        // load Remove fragment
-                    }
-                    else {
-                        // load back fragment
-                    }
+                    // load Remove (ie. set deleteMode to be true)
 
+                    //currently commenting this out, as its causing some overlap errors
+//                    RecyclerViewFragment recycle = new RecyclerViewFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("deleteMode", true);
+//                    recycle.setArguments(bundle);
+//                    loadFragment(recycle);
                 }
                 else if (position == 4){
                     // load Report fragment
