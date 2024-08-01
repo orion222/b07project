@@ -99,7 +99,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
                     Toast.makeText(view.getContext(), "Long-Press Items to Delete", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    DeletePopup temp = new DeletePopup(clickedList, itemList);
+                    DeletionPopup temp = new DeletionPopup(clickedList, itemList);
                     temp.show(getParentFragmentManager(), "Item Deletion");
                 }
             }

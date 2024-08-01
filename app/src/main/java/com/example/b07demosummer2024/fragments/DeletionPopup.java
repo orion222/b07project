@@ -3,20 +3,16 @@ package com.example.b07demosummer2024.fragments;
 import androidx.fragment.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b07demosummer2024.R;
@@ -24,11 +20,10 @@ import com.example.b07demosummer2024.interfaces.DeletionMVP;
 import com.example.b07demosummer2024.models.DeletionModel;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.DeletionPresenter;
-import com.example.b07demosummer2024.utilities.ItemAdapter;
 
 import java.util.*;
 
-public class DeletePopup extends DialogFragment implements DeletionMVP.View {
+public class DeletionPopup extends DialogFragment implements DeletionMVP.View {
 
     private RecyclerView recyclerView;
     private Button buttonConfirm;
@@ -37,7 +32,7 @@ public class DeletePopup extends DialogFragment implements DeletionMVP.View {
     private Set<Integer> clickedList;
     private List<Item> itemList;
 
-    public DeletePopup(Set<Integer> clickedList, List<Item> itemList) {
+    public DeletionPopup(Set<Integer> clickedList, List<Item> itemList) {
         this.clickedList = clickedList;
         this.itemList = itemList;
     }
@@ -47,7 +42,7 @@ public class DeletePopup extends DialogFragment implements DeletionMVP.View {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_delete_popup, null);
+        View view = inflater.inflate(R.layout.fragment_deletion_popup, null);
 
         builder.setView(view);
 
