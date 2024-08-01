@@ -116,6 +116,12 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
                     Toast.makeText(view.getContext(), "Items Successfully Deleted", Toast.LENGTH_SHORT).show();
                     deleteMode = false;
+
+                    currentPage = 0;
+                    itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                            RecyclerViewFragment.this, itemAdapter.getSet());
+                    recyclerView.setAdapter(itemAdapter);
+                    switchButtonState();
                 }
             }
         });
