@@ -1,6 +1,5 @@
 package com.example.b07demosummer2024.utilities;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Color;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +18,8 @@ import java.util.Set;
 //glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.activities.HomeActivity;
+import com.example.b07demosummer2024.activities.MainActivity;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
@@ -90,23 +91,31 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
+        // used to listen for long presses; used for deletion
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(!RecyclerViewFragment.getDeleteMode()) {
+                    RecyclerViewFragment.setDeleteMode(true, view);
+                    checkItemToRemove(holder, item);
+                }
+                return true;
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View view) {
                 int pos = holder.getAdapterPosition();
 
-                int posLotNum = Integer.parseInt(item.getId());
+                if(RecyclerViewFragment.getDeleteMode()) {
+                    checkItemToRemove(holder, item);
 
-                if (clickedList.contains(posLotNum)) {
-                    clickedList.remove(posLotNum);
-                } else {
-                    clickedList.add(posLotNum);
+                    if(clickedList.isEmpty()) {
+                        RecyclerViewFragment.setDeleteMode(false, view);
+                    }
                 }
-
-                notifyItemChanged(pos);
-
-                if (recyclerViewInterface != null) {
+                else if (recyclerViewInterface != null) {
                     if (pos != RecyclerView.NO_POSITION) {
                         recyclerViewInterface.itemClicked(pos);
                     }
@@ -114,6 +123,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         });
 
+    }
+
+    public void checkItemToRemove(ItemViewHolder holder, Item item) {
+        int pos = holder.getAdapterPosition();
+        int posLotNum = Integer.parseInt(item.getId());
+
+        if (clickedList.contains(posLotNum)) {
+            clickedList.remove(posLotNum);
+        } else {
+            clickedList.add(posLotNum);
+        }
+
+        notifyItemChanged(pos);
     }
 
     //accessory function

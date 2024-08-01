@@ -37,6 +37,11 @@
         <item>Report</item>
         <item>Back</item>
     </string-array>
+
+    <string-array name="mediaUploadOptions">
+        <item>Image</item>
+        <item>Video</item>
+    </string-array>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

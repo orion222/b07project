@@ -22,8 +22,7 @@ import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.utilities.Pagination;
 import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RecyclerViewFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
@@ -32,8 +31,12 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
-    private static int currentPage;
-    private Boolean deleteMode;
+    private Button buttonDelete;
+
+    //defaults to 0
+    private int currentPage;
+
+    private static boolean deleteMode;
 
     @Nullable
     @Override
@@ -45,13 +48,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
+        buttonDelete = view.findViewById(R.id.buttonDelete);
 
-        if (getArguments() != null) {
-            deleteMode = (Boolean) getArguments().getSerializable("deleteMode");
-            assert deleteMode != null;
-        } else {
-            deleteMode = false;
-        }
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
 
@@ -83,7 +81,8 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             public void onClick(View view) {
                 currentPage++;
                 // too much text in one line, can change later
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                        RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
             }
@@ -93,9 +92,37 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             @Override
             public void onClick(View view) {
                 currentPage--;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, itemAdapter.getSet());
+                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                        RecyclerViewFragment.this, itemAdapter.getSet());
                 recyclerView.setAdapter(itemAdapter);
                 switchButtonState();
+            }
+        });
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Set<Integer> clickedList = itemAdapter.getSet();
+
+                if(clickedList.isEmpty()) {
+                    Toast.makeText(view.getContext(), "Long-Press Items to Delete", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Iterator iter = clickedList.iterator();
+                    while(iter.hasNext()) {
+                        Database.deleteItemById(iter.next().toString());
+                    }
+                    itemList.removeIf(item -> clickedList.contains(Integer.parseInt(item.getId())));
+
+                    Toast.makeText(view.getContext(), "Items Successfully Deleted", Toast.LENGTH_SHORT).show();
+                    deleteMode = false;
+
+                    currentPage = 0;
+                    itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                            RecyclerViewFragment.this, itemAdapter.getSet());
+                    recyclerView.setAdapter(itemAdapter);
+                    switchButtonState();
+                }
             }
         });
 
@@ -116,20 +143,16 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             clickedList.add(clickedItem);
         }
 
-        if (deleteMode) {
-            // Implement remove item funcitonality here
-            Toast.makeText(getContext(), "Implement Delete Mode idk", Toast.LENGTH_SHORT).show();
-        } else {
-            // Creates ViewFragment w/ item data in a bundle
-            ViewFragment view = new ViewFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("key", clickedList.get(0));
-            view.setArguments(bundle);
+        // Creates ViewFragment w/ item data in a bundle
+        ViewFragment view = new ViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("key", clickedList.get(0));
+        view.setArguments(bundle);
 
-            switchFragment(view);
-        }
+        switchFragment(view);
     }
 
+    // changes UI, we need to move this to a new class
     private void switchButtonState() {
         int size = itemList.size();
         int lastPage = size / Pagination.getItemsPerPage();
@@ -154,8 +177,17 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         }
     }
 
-    public static int getCurrentPage() {
-        return currentPage;
+    //getters and setters
+    public static boolean getDeleteMode() {
+        return deleteMode;
+    }
+
+    public static void setDeleteMode(boolean c, View view) {
+        deleteMode = c;
+
+        if(c) {
+            Toast.makeText(view.getContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void switchFragment(Fragment fragment) {
