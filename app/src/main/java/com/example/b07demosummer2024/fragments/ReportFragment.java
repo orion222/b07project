@@ -18,23 +18,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.utilities.Database;
-import com.example.b07demosummer2024.models.Media;
 
-import com.example.b07demosummer2024.utilities.ItemAdapter;
-import com.example.b07demosummer2024.utilities.Pagination;
-import com.example.b07demosummer2024.utilities.PdfCreator;
+import com.example.b07demosummer2024.utilities.PDFCreator;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ReportFragment extends Fragment {
     private EditText editReportConstraint;
@@ -60,7 +56,7 @@ public class ReportFragment extends Fragment {
         contentCheckBox = view.findViewById(R.id.contentCheckBox);
 
         ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(getContext(),
+        adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.reportFilterOptions, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,9 +65,9 @@ public class ReportFragment extends Fragment {
 
         buttonGenerate.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(),
+                    ActivityCompat.requestPermissions(requireActivity(),
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
                 } else {
@@ -86,7 +82,7 @@ public class ReportFragment extends Fragment {
     }
 
     private void generateReport() {
-        PdfCreator pdfCreator = new PdfCreator();
+        PDFCreator pdfCreator = new PDFCreator();
 
         String filterConstraint = editReportConstraint.getText().toString().trim();
         boolean contentType = contentCheckBox.isChecked();
@@ -97,9 +93,9 @@ public class ReportFragment extends Fragment {
 
         //All items search can use General Search
         if(position == 0) {
-            Database.fetchItems(new Database.OnDataFetchedListener() {
+            Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
                 @Override
-                public void onDataFetched(List ret) {
+                public void onDataFetched(List<Item> ret) {
                     pdfCreator.createPdf(getContext(), ret, contentType);
                 }
 
@@ -110,9 +106,9 @@ public class ReportFragment extends Fragment {
             });
         }else{
             // use filtered Search
-            Database.fetchItemsFiltered(new Database.OnDataFetchedListener() {
+            Database.fetchItemsFiltered(new Database.OnDataFetchedListener<Item>() {
                 @Override
-                public void onDataFetched(List ret) {
+                public void onDataFetched(List<Item> ret) {
                     pdfCreator.createPdf(getContext(), ret, contentType);
                 }
 
