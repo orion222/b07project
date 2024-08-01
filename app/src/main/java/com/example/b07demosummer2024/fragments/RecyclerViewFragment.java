@@ -182,12 +182,12 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         return deleteMode;
     }
 
-    public static void setDeleteMode(boolean c, View view) {
+    public static void setDeleteMode(boolean c) {
         deleteMode = c;
 
-        if(c) {
-            Toast.makeText(view.getContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
-        }
+//        if(c) {
+//            Toast.makeText(requireContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void switchFragment(Fragment fragment) {

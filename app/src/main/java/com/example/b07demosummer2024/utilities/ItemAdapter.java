@@ -107,7 +107,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             @Override
             public boolean onLongClick(View view) {
                 if(!RecyclerViewFragment.getDeleteMode()) {
-                    RecyclerViewFragment.setDeleteMode(true, view);
+                    RecyclerViewFragment.setDeleteMode(true);
                     checkItemToRemove(holder, item);
                 }
                 return true;
@@ -123,7 +123,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     checkItemToRemove(holder, item);
 
                     if(clickedList.isEmpty()) {
-                        RecyclerViewFragment.setDeleteMode(false, view);
+                        RecyclerViewFragment.setDeleteMode(false);
                     }
                 }
                 else if (recyclerViewInterface != null) {
