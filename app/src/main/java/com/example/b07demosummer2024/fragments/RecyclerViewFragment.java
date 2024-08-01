@@ -192,6 +192,15 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        // I added animations, but the exit ones are kind of glitchy so didn't include them for now
+        transaction.setCustomAnimations(
+                R.anim.fragment_enter,
+                R.anim.fragment_exit//,
+//                R.anim.fragment_pop_enter,  // pop enter animation
+//                R.anim.fragment_pop_exit    // pop exit animation
+        );
+
         transaction.replace(R.id.home_fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
