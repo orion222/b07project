@@ -1,11 +1,16 @@
 package com.example.b07demosummer2024.fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,10 +39,12 @@ import java.util.ArrayList;
 
 public class AddItemFragment extends Fragment {
     private EditText editTextName, editTextLotId, editTextCategory, editTextTimePeriod, editTextDescription;
-    private Button buttonAdd;
+    private Spinner mediaSpinner;
+    private Button buttonAdd, buttonUpload;
     private List<String> images, videos;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
+    public boolean uploadingImage = true;
 
     @Nullable
     @Override
@@ -50,6 +57,28 @@ public class AddItemFragment extends Fragment {
         editTextCategory = view.findViewById(R.id.editTextCategory);
         editTextDescription = view.findViewById(R.id.editTextDescription);
         editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
+        mediaSpinner = view.findViewById(R.id.mediaSpinner);
+        buttonUpload = view.findViewById(R.id.buttonUpload);
+
+
+        ArrayAdapter<CharSequence> adapter;
+        adapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.mediaUploadOptions, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mediaSpinner.setAdapter(adapter);
+
+
+        mediaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    uploadingImage = true;
+                } else uploadingImage = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {};
+        });
         images = new ArrayList<String>();
         videos = new ArrayList<String>();
 
@@ -64,8 +93,15 @@ public class AddItemFragment extends Fragment {
             }
         });
 
+        buttonUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return view;
     }
+
 
     private void addItem() {
         String name = editTextName.getText().toString().trim();
@@ -102,6 +138,7 @@ public class AddItemFragment extends Fragment {
             }
         });
     }
+
 
 
 
