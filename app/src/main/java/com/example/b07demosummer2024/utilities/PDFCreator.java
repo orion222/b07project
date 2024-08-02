@@ -1,5 +1,11 @@
 package com.example.b07demosummer2024.utilities;
 
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.models.Item;
 
@@ -12,15 +18,15 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class PDFCreator {
     private static final int PAGE_WIDTH = 595;
@@ -28,6 +34,7 @@ public class PDFCreator {
     private static final int IMAGE_HEIGHT = 100;
     private static final int IMAGE_WIDTH = 100;
     private static final float MARGIN_X = 80;
+    private static final float MARGIN_Y = 50;
     private static final float PADDING = 20;
     private static final float LINE_SPACING = 5;
     private static final int IMAGE_Y_MARGIN = 40;
@@ -47,10 +54,14 @@ public class PDFCreator {
     private float lineHeight;
     private float subtitleLineHeight;
     private float titleLineHeight;
+    private int loadedImages;
+    private int numImages;
 
     public void createPdf(Context context, List<Item> items, boolean reducedInfoMode) {
         this.context = context;
         pdfDocument = new PdfDocument();
+        loadedImages = 0;
+        numImages = items.size();
 
         pageInfo = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, 1).create();
         page = pdfDocument.startPage(pageInfo);
@@ -58,6 +69,7 @@ public class PDFCreator {
 
         initializePaint();
 
+        float startingY = 0;
         curY = 0;
         textX = MARGIN_X + IMAGE_WIDTH + PADDING;
         textWidth = pageInfo.getPageWidth() - textX - MARGIN_X;
@@ -73,6 +85,7 @@ public class PDFCreator {
                 newPage();
             }
 
+            startingY = curY;
             drawImage(item);
 
             if (!reducedInfoMode) {
@@ -85,7 +98,7 @@ public class PDFCreator {
             for (String line : descriptionLines) {
                 drawLine(line, textX, paint, lineHeight);
             }
-            curY += itemContainerHeight + PADDING;
+            curY = startingY + itemContainerHeight + PADDING;
         }
 
         pdfDocument.finishPage(page);
@@ -94,7 +107,7 @@ public class PDFCreator {
 
     private void savePdf() {
         Date date = new Date();
-        File file = new File(context.getExternalFilesDir(null), "Report-" + date.getTime() + ".pdf");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Report-" + date.getTime() + ".pdf");
 
         try (FileOutputStream fos = new FileOutputStream(file)) {
             pdfDocument.writeTo(fos);
@@ -128,23 +141,40 @@ public class PDFCreator {
 
     private void drawImage(Item item) {
         Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.notloading);
+        final CountDownLatch latch = new CountDownLatch(1);
         try {
-            URL url = new URL(item.getMedia().getImagePaths().get(0));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            bmp = BitmapFactory.decodeStream(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            String path = item.getMedia().getImagePaths().get(0);
+            Glide.with(context)
+                    .asBitmap().load(path)
+                    .listener(new RequestListener<Bitmap>() {
+                                  @Override
+                                  public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
+                                      Toast.makeText(context,"error loading image",Toast.LENGTH_SHORT).show();
+                                      Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, IMAGE_WIDTH, IMAGE_HEIGHT, false);
+                                      canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
+                                      latch.countDown();
+                                      return false;
+                                  }
 
-        Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, IMAGE_WIDTH, IMAGE_HEIGHT, false);
-        canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
+                                  @Override
+                                  public boolean onResourceReady(Bitmap bitmap, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
+                                      Bitmap scaledBmp = Bitmap.createScaledBitmap(bitmap, IMAGE_WIDTH, IMAGE_HEIGHT, false);
+                                      canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
+                                      latch.countDown();
+                                      return true;
+                                  }
+                              }
+                    ).submit();
+            latch.await();
+            } catch(Exception e) {
+                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, IMAGE_WIDTH, IMAGE_HEIGHT, false);
+                canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
+            }
     }
 
     private void drawLine(String text, float x, Paint paint, float lineHeight) {
-        canvas.drawText(text, x, MARGIN_X + curY, paint);
+        canvas.drawText(text, x, MARGIN_Y + curY, paint);
         curY += lineHeight;
     }
 

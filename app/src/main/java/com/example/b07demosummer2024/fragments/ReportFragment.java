@@ -40,6 +40,7 @@ public class ReportFragment extends Fragment {
     private Spinner spinnerFilterOptions;
     private CheckBox contentCheckBox;
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
+    private final static String [] filterKeyWords = {"", "id", "name", "category", "timePeriod"};
 
 
     @Nullable
@@ -87,7 +88,7 @@ public class ReportFragment extends Fragment {
         String filterConstraint = editReportConstraint.getText().toString().trim();
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
-        String filterType = spinnerFilterOptions.getSelectedItem().toString().replace("By ","").toLowerCase();
+        String filterType = filterKeyWords[position];
         //
 
 

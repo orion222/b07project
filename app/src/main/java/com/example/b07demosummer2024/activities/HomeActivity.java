@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     else{
                         // load report fragment
+                        loadFragment(new ReportFragment());
                     }
 
 
