@@ -23,11 +23,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
-        android:text="@string/welcome_msg"
+        android:text="@string/app_name"
+        style="@style/TitleTextStyle"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="34sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Continue as:"
+        android:text="@string/welcome_msg"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:text="Admin"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/guestButton"
@@ -61,18 +61,18 @@
         app:layout_constraintWidth_percent="0.4"/>
 
     <Button
-        style="@style/Button"
         android:id="@+id/guestButton"
+        style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:text="Guest"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/adminButton"
         app:layout_constraintTop_toBottomOf="@id/textContinueAs"
-        app:layout_constraintWidth_percent="0.4"/>
+        app:layout_constraintWidth_percent="0.4" />
 
     <Button
         style="@style/Button"
@@ -80,7 +80,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:text="@string/logout"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,19 +90,20 @@
         android:visibility="gone"
         />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="2"
+        app:layout_constraintWidth_percent="0.7"
+        app:srcCompat="@drawable/main_pic3" />
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageView4"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        tools:srcCompat="@tools:sample/avatars"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintWidth_percent="1.0" />-->
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
