@@ -2,6 +2,8 @@ package com.example.b07demosummer2024.fragments;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ public class ViewFragment extends Fragment {
     private Button backButton;
     private ImageView imageView;
 
+    private TextView linksTextView;
+
     private Item item;
 
     @Override
@@ -38,6 +42,8 @@ public class ViewFragment extends Fragment {
         DescriptionText = view.findViewById(R.id.textDescription);
         imageView = view.findViewById(R.id.imageView);
         backButton = view.findViewById(R.id.btnBack);
+        linksTextView = view.findViewById(R.id.textLinks);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +78,17 @@ public class ViewFragment extends Fragment {
         } else {
             // Set default image if no image available
             imageView.setImageResource(R.drawable.notavailable);
+        }
+
+        List<String> videoLinks = item.getMedia().getVideoPaths();
+        if (videoLinks != null && !videoLinks.isEmpty()) {
+            StringBuilder linksBuilder = new StringBuilder();
+            for (String link : videoLinks) {
+                linksBuilder.append(link).append("\n");
+            }
+            // currently broken
+            linksTextView.setText(linksBuilder.toString());
+            linksTextView.setMovementMethod(LinkMovementMethod.getInstance()); // Make links clickable
         }
 
         return view;
