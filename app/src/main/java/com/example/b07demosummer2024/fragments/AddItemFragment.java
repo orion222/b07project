@@ -1,6 +1,5 @@
 package com.example.b07demosummer2024.fragments;
 
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,10 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.app.ProgressDialog;
-
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,35 +25,34 @@ import com.example.b07demosummer2024.models.Media;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AddItemFragment extends Fragment {
     private EditText editTextName, editTextLotId, editTextCategory, editTextTimePeriod, editTextDescription;
+    private TextView mediaCount;
     private Spinner mediaSpinner;
     private Button buttonAdd, buttonUpload;
     private List<String> images, videos;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
     private FirebaseStorage storage;
-    public boolean uploadingImage = true;
-    Uri media;
+    private int count;
+
+    private Uri media;
+    private boolean uploadingImage = true;
+    private boolean isUploading = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
-
 
         editTextName = view.findViewById(R.id.editTextName);
         editTextLotId = view.findViewById(R.id.editTextLotId);
@@ -65,67 +61,57 @@ public class AddItemFragment extends Fragment {
         editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
         mediaSpinner = view.findViewById(R.id.mediaSpinner);
         buttonUpload = view.findViewById(R.id.buttonUpload);
+        buttonAdd = view.findViewById(R.id.buttonAdd);
+        mediaCount = view.findViewById(R.id.mediaCount);
 
-
-        ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(requireContext(),
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.mediaUploadOptions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mediaSpinner.setAdapter(adapter);
 
-
         mediaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    uploadingImage = true;
-                } else uploadingImage = false;
+                uploadingImage = (position == 0);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {};
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-        images = new ArrayList<String>();
-        videos = new ArrayList<String>();
 
-
-        buttonAdd = view.findViewById(R.id.buttonAdd);
-
+        images = new ArrayList<>();
+        videos = new ArrayList<>();
         db = Database.getInstance();
         storage = Database.getStorageInstance();
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        buttonAdd.setOnClickListener(v -> {
+            if (!isUploading) {
                 addItem();
+            } else {
+                Toast.makeText(requireContext(), "Please wait for the upload to complete", Toast.LENGTH_SHORT).show();
             }
         });
 
-        buttonUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectFile();
-            }
-        });
+        buttonUpload.setOnClickListener(v -> selectFile());
+
         return view;
     }
-    private void selectFile(){
-        Intent i = new Intent();
-        i.setType((uploadingImage) ? "image/*": "video/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(i,100);
+
+    private void selectFile() {
+        Intent intent = new Intent();
+        intent.setType(uploadingImage ? "image/*" : "video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
     }
 
-    private void uploadFile(){
-        Toast.makeText(requireContext(),"Uploading",Toast.LENGTH_SHORT).show();
-
+    private void uploadFile() {
+        isUploading = true;
+        Toast.makeText(requireContext(), "Uploading...", Toast.LENGTH_SHORT).show();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = formatter.format(now);
-
-        String q = (uploadingImage) ? "media/images/": "media/videos/";
-        StorageReference ref = storage.getReference(q +fileName);
-
+        String fileName = formatter.format(new Date());
+        String path = (uploadingImage ? "media/images/" : "media/videos/") + fileName;
+        StorageReference ref = storage.getReference(path);
 
         ref.putFile(media)
                 .addOnSuccessListener(taskSnapshot -> {
@@ -134,9 +120,18 @@ public class AddItemFragment extends Fragment {
                     } else {
                         videos.add(media.toString());
                     }
-                    Toast.makeText(requireContext(),"Successfully Uploaded",Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> Toast.makeText(requireContext(),"Failed to Upload",Toast.LENGTH_SHORT).show());
+                    Toast.makeText(requireContext(), "Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                    isUploading = false;
+                    count++;
+                    String mediaPhrase = "Uploaded files: " + Integer.toString(count);
+                    mediaCount.setText(mediaPhrase);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
+                    isUploading = false;
+                });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,7 +147,6 @@ public class AddItemFragment extends Fragment {
         String category = editTextCategory.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String timePeriod = editTextTimePeriod.getText().toString().trim();
-
 
         if (name.isEmpty() || lotID.isEmpty() || category.isEmpty() || description.isEmpty() || timePeriod.isEmpty()) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
@@ -170,15 +164,18 @@ public class AddItemFragment extends Fragment {
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
-                editTextName.getText().clear();
-                editTextLotId.getText().clear();
-                editTextDescription.getText().clear();
-                editTextTimePeriod.getText().clear();
-                editTextCategory.getText().clear();
-
+                clearFields();
             } else {
                 Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void clearFields() {
+        editTextName.getText().clear();
+        editTextLotId.getText().clear();
+        editTextDescription.getText().clear();
+        editTextTimePeriod.getText().clear();
+        editTextCategory.getText().clear();
     }
 }
