@@ -146,10 +146,11 @@ public class PDFCreator {
             String path = item.getMedia().getImagePaths().get(0);
             Glide.with(context)
                     .asBitmap().load(path)
+                    .error(R.drawable.pic_not_available)
                     .listener(new RequestListener<Bitmap>() {
                                   @Override
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
-                                      Toast.makeText(context,"error loading image",Toast.LENGTH_SHORT).show();
+                                      //Toast.makeText(context,"error loading image",Toast.LENGTH_SHORT).show();
                                       Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, IMAGE_WIDTH, IMAGE_HEIGHT, false);
                                       canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
                                       latch.countDown();
@@ -167,7 +168,8 @@ public class PDFCreator {
                     ).submit();
             latch.await();
             } catch(Exception e) {
-                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                latch.countDown();
+                //Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 Bitmap scaledBmp = Bitmap.createScaledBitmap(bmp, IMAGE_WIDTH, IMAGE_HEIGHT, false);
                 canvas.drawBitmap(scaledBmp, MARGIN_X, curY + IMAGE_Y_MARGIN, paint);
             }
