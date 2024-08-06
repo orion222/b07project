@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,9 +31,11 @@ import com.google.firebase.database.DatabaseError;
 import java.util.List;
 
 public class ReportFragment extends Fragment {
-    private EditText editReportConstraint;
+    private EditText editTextConstraint;
     private Button buttonGenerate;
     private Spinner spinnerFilterOptions;
+    private Spinner spinnerCategory;
+    private Spinner spinnerTimePeriod;
     private CheckBox contentCheckBox;
 
     private static final int REQUEST_CODE_PERMISSIONS = 1;
@@ -43,7 +46,9 @@ public class ReportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
-        editReportConstraint = view.findViewById(R.id.editReportConstraint);
+        editTextConstraint = view.findViewById(R.id.editTextConstraint);
+        spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        spinnerTimePeriod = view.findViewById(R.id.spinnerTimePeriod);
         buttonGenerate = view.findViewById(R.id.buttonGenerate);
         spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
         contentCheckBox = view.findViewById(R.id.contentCheckBox);
@@ -52,6 +57,46 @@ public class ReportFragment extends Fragment {
                 R.array.reportFilterOptions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilterOptions.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> adapterCategory = ArrayAdapter.createFromResource(requireContext(),
+                R.array.category, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapterCategory);
+
+        ArrayAdapter<CharSequence> adapterTime = ArrayAdapter.createFromResource(requireContext(),
+                R.array.period, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTimePeriod.setAdapter(adapterTime);
+
+        spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0){
+                    editTextConstraint.setVisibility(view.GONE);
+                    spinnerCategory.setVisibility(view.GONE);
+                    spinnerTimePeriod.setVisibility(view.GONE);
+                }else if(i <= 2){
+                    editTextConstraint.setVisibility(view.VISIBLE);
+                    spinnerCategory.setVisibility(view.GONE);
+                    spinnerTimePeriod.setVisibility(view.GONE);
+                }else if( i == 3){
+                    editTextConstraint.setVisibility(view.GONE);
+                    spinnerCategory.setVisibility(view.VISIBLE);
+                    spinnerTimePeriod.setVisibility(view.GONE);
+                }else{
+                    editTextConstraint.setVisibility(view.GONE);
+                    spinnerCategory.setVisibility(view.GONE);
+                    spinnerTimePeriod.setVisibility(view.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                editTextConstraint.setVisibility(view.GONE);
+                spinnerCategory.setVisibility(view.GONE);
+                spinnerTimePeriod.setVisibility(view.GONE);
+            }
+        });
 
         buttonGenerate.setOnClickListener(v -> {
 //            Log.d("REPORT", "Button clicked");
@@ -73,6 +118,7 @@ public class ReportFragment extends Fragment {
                 ActivityCompat.requestPermissions(requireActivity(),
                         new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO},
                         REQUEST_CODE_PERMISSIONS);
+
             } else {
                 generateReport();
             }
@@ -94,16 +140,21 @@ public class ReportFragment extends Fragment {
         Log.d("REPORT", "Generating report");
         PDFCreator pdfCreator = new PDFCreator();
 
-        String filterConstraint = editReportConstraint.getText().toString().trim();
+        String textConstraint = editTextConstraint.getText().toString().trim();
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
+        int categoryPosition = spinnerCategory.getSelectedItemPosition();
+        int timePeriodPosition = spinnerTimePeriod.getSelectedItemPosition();
+        String category =(String) spinnerCategory.getItemAtPosition(categoryPosition);
+        String timePeriod = (String) spinnerTimePeriod.getItemAtPosition(timePeriodPosition);
         String filterType = filterKeyWords[position];
+        String filterConstraint = "";
 
         if (position == 0) {
             Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
-                    pdfCreator.createPdf(getContext(), ret, contentType);
+                    pdfCreator.createPdf(getContext(), ret, "All Items", contentType);
                 }
 
                 @Override
@@ -112,10 +163,19 @@ public class ReportFragment extends Fragment {
                 }
             });
         } else {
+            filterConstraint = "";
+            if(position <= 2){
+                filterConstraint = textConstraint;
+            }else if(position == 3){
+                filterConstraint = category;
+            }else{
+                filterConstraint = timePeriod;
+            }
+            String finalFilterConstraint = filterConstraint;
             Database.fetchItemsFiltered(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
-                    pdfCreator.createPdf(getContext(), ret, contentType);
+                    pdfCreator.createPdf(getContext(), ret, finalFilterConstraint, contentType);
                 }
 
                 @Override

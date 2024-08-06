@@ -10,9 +10,9 @@
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="112dp"
         android:text="Report"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,9 +31,35 @@
         app:layout_constraintWidth_min="240dp" />
 
     <EditText
-        android:id="@+id/editReportConstraint"
+        android:id="@+id/editTextConstraint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Enter report details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFilterOptions"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_min="240dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="239dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:hint="Enter report details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFilterOptions"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_min="240dp" />
+
+    <Spinner
+        android:id="@+id/spinnerTimePeriod"
+        android:layout_width="241dp"
+        android:layout_height="45dp"
         android:layout_marginTop="16dp"
         android:hint="Enter report details"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,23 +73,22 @@
         android:id="@+id/contentCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="332dp"
         android:text="Description and Picture only"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editReportConstraint" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        style="@style/Button"
         android:id="@+id/buttonGenerate"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Generate"
-        app:layout_constraintTop_toBottomOf="@+id/contentCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="24dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contentCheckBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

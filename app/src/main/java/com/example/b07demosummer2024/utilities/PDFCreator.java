@@ -54,14 +54,10 @@ public class PDFCreator {
     private float lineHeight;
     private float subtitleLineHeight;
     private float titleLineHeight;
-    private int loadedImages;
-    private int numImages;
 
-    public void createPdf(Context context, List<Item> items, boolean reducedInfoMode) {
+    public void createPdf(Context context, List<Item> items, String filter, boolean reducedInfoMode) {
         this.context = context;
         pdfDocument = new PdfDocument();
-        loadedImages = 0;
-        numImages = items.size();
 
         pageInfo = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, 1).create();
         page = pdfDocument.startPage(pageInfo);
@@ -75,7 +71,7 @@ public class PDFCreator {
         textWidth = pageInfo.getPageWidth() - textX - MARGIN_X;
 
         float pageContentHeight = pageInfo.getPageHeight() - 2 * MARGIN_X;
-        drawLine("Report", MARGIN_X, titlePaint, titleLineHeight);
+        drawLine("Report - " + filter, MARGIN_X, titlePaint, titleLineHeight);
 
         for (Item item : items) {
             List<String> descriptionLines = generateLines(item.getDescription(), textWidth, paint);
