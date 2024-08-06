@@ -38,7 +38,7 @@ public class ReportFragment extends Fragment {
     private CheckBox contentCheckBox;
 
     private static final int REQUEST_CODE_PERMISSIONS = 1;
-    private final static String[] filterKeyWords = {"", "ID", "Name", "Category", "Time Period"};
+    private final static String[] filterKeyWords = {"", "id", "name", "category", "timePeriod"};
 
     @Nullable
     @Override
@@ -86,7 +86,7 @@ public class ReportFragment extends Fragment {
 
             editReportConstraint.setVisibility(View.GONE); // Hide EditText for category
 
-        } else if (selectedFilter.equalsIgnoreCase("time period")) {
+        } else if (selectedFilter.equalsIgnoreCase("timePeriod")) {
             selectionSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(requireContext(),
                     R.array.period, android.R.layout.simple_spinner_item);
@@ -142,7 +142,7 @@ public class ReportFragment extends Fragment {
         int position = spinnerFilterOptions.getSelectedItemPosition();
         String filterType = filterKeyWords[position];
 
-        if (filterType.equalsIgnoreCase("category") || filterType.equalsIgnoreCase("time period")) {
+        if (filterType.equals("category") || filterType.equals("timePeriod")) {
             filterConstraint = selectionSpinner.getSelectedItem().toString();
         } else {
             filterConstraint = editReportConstraint.getText().toString().trim();

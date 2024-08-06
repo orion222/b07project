@@ -23,9 +23,11 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 public class PDFCreator {
@@ -98,12 +100,16 @@ public class PDFCreator {
         }
 
         pdfDocument.finishPage(page);
-        savePdf();
+        savePdf(filter);
     }
 
-    private void savePdf() {
-        Date date = new Date();
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Report-" + date.getTime() + ".pdf");
+    private void savePdf(String filter) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String dateString = sdf.format(new Date());
+
+        // create file with specified filename
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "Report-" + "by-" + filter + "-" + dateString + ".pdf");
 
         try (FileOutputStream fos = new FileOutputStream(file)) {
             pdfDocument.writeTo(fos);
