@@ -11,25 +11,34 @@ import android.widget.Spinner;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.fragments.AddItemFragment;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.fragments.ReportFragment;
+import com.example.b07demosummer2024.fragments.SearchFragment;
 import com.example.b07demosummer2024.utilities.Preferences;
+import com.example.b07demosummer2024.models.ItemViewModel;
 
 public class HomeActivity extends AppCompatActivity {
 
     private boolean isAdmin;
+    private ItemViewModel itemViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("WOW10", "activity commenced");
 
         setContentView(R.layout.activity_home);
+
+        //Initialize ViewModel
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
 
         // initialize spinner and adapter (used for dropdown)
         Spinner viewSpinner = findViewById(R.id.actionSpinner);
@@ -58,13 +67,16 @@ public class HomeActivity extends AppCompatActivity {
                 if (position == 0){
                     // load Home Fragment
                     Log.d("WOW", String.valueOf(Preferences.checkLogin(getApplicationContext())));
+                    itemViewModel.fetchViewModelItems(); // Reset Search Filters
                     loadFragment(new RecyclerViewFragment());
                     Log.d("WOW2", "recycler view made");
 
                 }
                 else if (position == 1){
-                    // load Search fragment
-                    loadFragment(new RecyclerViewFragment());
+                    if (isAdmin){
+                        loadFragment(new SearchFragment());
+                    }
+//                    loadFragment(new RecyclerViewFragment());
                 }
                 else if (position == 2){
 

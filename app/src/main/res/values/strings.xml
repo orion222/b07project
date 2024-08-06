@@ -1,7 +1,7 @@
 <resources>
-    <string name="welcome_msg">Welcome to the Toronto Asian Art Museum!</string>
+    <string name="welcome_msg">Welcome, continue as the following:</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="app_name">Welcome to the Toronto Asian Art Museum!</string>
+    <string name="app_name">The Toronto Asian Art Museum</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_item">Delete Item</string>
@@ -15,7 +15,42 @@
     <!-->The string below is a format string<!-->
     <string name="welcome_back">Welcome back, %1$s!</string>
 
+    <string-array name="category">
+        <item></item>
+        <item>Jade</item>
+        <item>Paintings</item>
+        <item>Calligraphy</item>
+        <item>Rubbings</item>
+        <item>Bronze</item>
+        <item>Brass</item>
+        <item>Copper</item>
+        <item>Gold and Silvers</item>
+        <item>Lacquer</item>
+        <item>Enamels</item>
+    </string-array>
 
+    <string-array name="period">
+        <item></item>
+        <item>Xia</item>
+        <item>Shang</item>
+        <item>Zhou</item>
+        <item>Chuanqiu</item>
+        <item>Zhanggou</item>
+        <item>Qin</item>
+        <item>Hang</item>
+        <item>Shangou</item>
+        <item>Ji</item>
+        <item>South and North</item>
+        <item>Shui</item>
+        <item>Tang</item>
+        <item>Liao</item>
+        <item>Song</item>
+        <item>Jin</item>
+        <item>Yuan</item>
+        <item>Ming</item>
+        <item>Qing</item>
+        <item>Modern</item>
+    </string-array>
     <string-array name="categories_array">
         <item>All</item>
         <item>Books</item>
