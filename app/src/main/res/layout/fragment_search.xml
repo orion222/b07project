@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/edtTxtLotNumber"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SearchFragment">
@@ -11,7 +10,7 @@
 
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/edtTxtLotNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="132dp"
@@ -72,10 +71,10 @@
         android:hint="Name"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="@+id/editTextNumber"
+        app:layout_constraintEnd_toEndOf="@+id/edtTxtLotNumber"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumber"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
+        app:layout_constraintStart_toStartOf="@+id/edtTxtLotNumber"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtLotNumber"
         app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
@@ -131,7 +130,7 @@
         android:gravity="center"
         android:text="Search the Toronto Asian Art Museum Collection"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextNumber"
+        app:layout_constraintBottom_toTopOf="@+id/edtTxtLotNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

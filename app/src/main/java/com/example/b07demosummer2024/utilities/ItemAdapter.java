@@ -53,6 +53,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         clickedList = set;
     }
 
+    public void setItems(List<Item> itemList) {
+        this.itemList = itemList;
+        notifyDataSetChanged();
+    }
+
+    public List<Item> getItems() {
+        return itemList;
+    }
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
