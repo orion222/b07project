@@ -77,6 +77,15 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             }
         });
 
+        itemViewModel.getNoResults().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean noResults) {
+                if (noResults) {
+                    Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         if (itemViewModel.getItemList().getValue() == null) {
             itemViewModel.fetchViewModelItems();
         }
