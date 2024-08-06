@@ -31,26 +31,24 @@ import com.google.firebase.database.DatabaseError;
 import java.util.List;
 
 public class ReportFragment extends Fragment {
-    private EditText editTextConstraint;
+    private EditText editReportConstraint;
     private Button buttonGenerate;
     private Spinner spinnerFilterOptions;
-    private Spinner spinnerCategory;
-    private Spinner spinnerTimePeriod;
+    private Spinner selectionSpinner;
     private CheckBox contentCheckBox;
 
     private static final int REQUEST_CODE_PERMISSIONS = 1;
-    private final static String[] filterKeyWords = {"", "id", "name", "category", "timePeriod"};
+    private final static String[] filterKeyWords = {"", "ID", "Name", "Category", "Time Period"};
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
-        editTextConstraint = view.findViewById(R.id.editTextConstraint);
-        spinnerCategory = view.findViewById(R.id.spinnerCategory);
-        spinnerTimePeriod = view.findViewById(R.id.spinnerTimePeriod);
+        editReportConstraint = view.findViewById(R.id.editReportConstraint);
         buttonGenerate = view.findViewById(R.id.buttonGenerate);
         spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
+        selectionSpinner = view.findViewById(R.id.selectionSpinner);
         contentCheckBox = view.findViewById(R.id.contentCheckBox);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
@@ -58,55 +56,56 @@ public class ReportFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilterOptions.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapterCategory = ArrayAdapter.createFromResource(requireContext(),
-                R.array.category, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapterCategory);
-
-        ArrayAdapter<CharSequence> adapterTime = ArrayAdapter.createFromResource(requireContext(),
-                R.array.period, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTimePeriod.setAdapter(adapterTime);
-
         spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0){
-                    editTextConstraint.setVisibility(view.GONE);
-                    spinnerCategory.setVisibility(view.GONE);
-                    spinnerTimePeriod.setVisibility(view.GONE);
-                }else if(i <= 2){
-                    editTextConstraint.setVisibility(view.VISIBLE);
-                    spinnerCategory.setVisibility(view.GONE);
-                    spinnerTimePeriod.setVisibility(view.GONE);
-                }else if( i == 3){
-                    editTextConstraint.setVisibility(view.GONE);
-                    spinnerCategory.setVisibility(view.VISIBLE);
-                    spinnerTimePeriod.setVisibility(view.GONE);
-                }else{
-                    editTextConstraint.setVisibility(view.GONE);
-                    spinnerCategory.setVisibility(view.GONE);
-                    spinnerTimePeriod.setVisibility(view.VISIBLE);
-                }
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                handleFilterOptionSelection(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                editTextConstraint.setVisibility(view.GONE);
-                spinnerCategory.setVisibility(view.GONE);
-                spinnerTimePeriod.setVisibility(view.GONE);
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectionSpinner.setVisibility(View.GONE);
+                editReportConstraint.setVisibility(View.GONE); // Ensure it's visible when no selection
             }
         });
 
-        buttonGenerate.setOnClickListener(v -> {
-//            Log.d("REPORT", "Button clicked");
-            checkMediaPermissions();
-        });
+        buttonGenerate.setOnClickListener(v -> checkMediaPermissions());
 
         return view;
     }
 
-    // asks and enables permissions
+    private void handleFilterOptionSelection(int position) {
+        String selectedFilter = filterKeyWords[position];
+
+        if (selectedFilter.equalsIgnoreCase("category")) {
+            selectionSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.category, android.R.layout.simple_spinner_item);
+            categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selectionSpinner.setAdapter(categoryAdapter);
+
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for category
+
+        } else if (selectedFilter.equalsIgnoreCase("time period")) {
+            selectionSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.period, android.R.layout.simple_spinner_item);
+            periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selectionSpinner.setAdapter(periodAdapter);
+
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for timePeriod
+
+        } else if (selectedFilter.equalsIgnoreCase("")) {
+            selectionSpinner.setVisibility(View.GONE);
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for all items
+
+        } else {
+            selectionSpinner.setVisibility(View.GONE);
+            editReportConstraint.setVisibility(View.VISIBLE); // Show EditText for other filters (name and id)
+        }
+    }
+
+
     private void checkMediaPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             boolean readMediaImages = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
@@ -118,12 +117,10 @@ public class ReportFragment extends Fragment {
                 ActivityCompat.requestPermissions(requireActivity(),
                         new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO},
                         REQUEST_CODE_PERMISSIONS);
-
             } else {
                 generateReport();
             }
         } else {
-            // for devices < Android 13, use old permissions
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("REPORT", "Requesting WRITE_EXTERNAL_STORAGE permission");
                 ActivityCompat.requestPermissions(requireActivity(),
@@ -140,15 +137,16 @@ public class ReportFragment extends Fragment {
         Log.d("REPORT", "Generating report");
         PDFCreator pdfCreator = new PDFCreator();
 
-        String textConstraint = editTextConstraint.getText().toString().trim();
+        String filterConstraint;
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
-        int categoryPosition = spinnerCategory.getSelectedItemPosition();
-        int timePeriodPosition = spinnerTimePeriod.getSelectedItemPosition();
-        String category =(String) spinnerCategory.getItemAtPosition(categoryPosition);
-        String timePeriod = (String) spinnerTimePeriod.getItemAtPosition(timePeriodPosition);
         String filterType = filterKeyWords[position];
-        String filterConstraint = "";
+
+        if (filterType.equalsIgnoreCase("category") || filterType.equalsIgnoreCase("time period")) {
+            filterConstraint = selectionSpinner.getSelectedItem().toString();
+        } else {
+            filterConstraint = editReportConstraint.getText().toString().trim();
+        }
 
         if (position == 0) {
             Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
@@ -163,19 +161,10 @@ public class ReportFragment extends Fragment {
                 }
             });
         } else {
-            filterConstraint = "";
-            if(position <= 2){
-                filterConstraint = textConstraint;
-            }else if(position == 3){
-                filterConstraint = category;
-            }else{
-                filterConstraint = timePeriod;
-            }
-            String finalFilterConstraint = filterConstraint;
             Database.fetchItemsFiltered(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
-                    pdfCreator.createPdf(getContext(), ret, finalFilterConstraint, contentType);
+                    pdfCreator.createPdf(getContext(), ret, filterType, contentType);
                 }
 
                 @Override
