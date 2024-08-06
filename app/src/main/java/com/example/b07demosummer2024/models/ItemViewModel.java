@@ -59,4 +59,29 @@ public class ItemViewModel extends ViewModel {
             filteredList.postValue(filteredItems);
         }
     }
+
+    public void searchByNameOrDescription(String query) {
+        List<Item> allItems = itemList.getValue();
+        if (allItems != null) {
+            List<Item> nameMatches = new ArrayList<>();
+            List<Item> descriptionMatches = new ArrayList<>();
+
+            for (Item item : allItems) {
+                boolean matchesName = item.getName().toLowerCase().contains(query.toLowerCase());
+                boolean matchesDescription = item.getDescription().toLowerCase().contains(query.toLowerCase());
+
+                if (matchesName) {
+                    nameMatches.add(item);
+                } else if (matchesDescription) {
+                    descriptionMatches.add(item);
+                }
+            }
+
+            // Combine the lists: name matches first, then description matches
+            List<Item> filteredItems = new ArrayList<>(nameMatches);
+            filteredItems.addAll(descriptionMatches);
+
+            filteredList.postValue(filteredItems);
+        }
+    }
 }
