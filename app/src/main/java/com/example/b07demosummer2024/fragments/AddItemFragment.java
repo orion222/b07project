@@ -60,6 +60,7 @@ public class AddItemFragment extends Fragment {
         editTextDescription = view.findViewById(R.id.editTextDescription);
         editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
         mediaSpinner = view.findViewById(R.id.mediaSpinner);
+
         buttonUpload = view.findViewById(R.id.buttonUpload);
         buttonAdd = view.findViewById(R.id.buttonAdd);
         mediaCount = view.findViewById(R.id.mediaCount);
@@ -116,21 +117,30 @@ public class AddItemFragment extends Fragment {
         ref.putFile(media)
                 .addOnSuccessListener(taskSnapshot -> {
                     if (uploadingImage) {
-                        images.add(media.toString());
+                        // For images, directly use the URI
+                        images.add(media.toString());  // Directly add the URI
+                        Toast.makeText(requireContext(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
                     } else {
-                        videos.add(media.toString());
+                        // For videos, get the download URL
+                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                                    String downloadUrl = uri.toString();
+                                    videos.add(downloadUrl);  // Add the download URL
+                                    Toast.makeText(requireContext(), "Video Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(requireContext(), "Failed to Retrieve URL", Toast.LENGTH_SHORT).show();
+                                });
                     }
-                    Toast.makeText(requireContext(), "Successfully Uploaded", Toast.LENGTH_SHORT).show();
                     isUploading = false;
                     count++;
-                    String mediaPhrase = "Uploaded files: " + Integer.toString(count);
-                    mediaCount.setText(mediaPhrase);
+                    mediaCount.setText("Uploaded files: " + count);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(requireContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
                     isUploading = false;
                 });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

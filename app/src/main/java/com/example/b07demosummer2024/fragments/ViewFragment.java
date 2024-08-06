@@ -26,6 +26,7 @@ public class ViewFragment extends Fragment {
     private ImageView imageView;
 
     private TextView linksTextView;
+    private TextView linksHeader;
 
     private Item item;
 
@@ -43,6 +44,7 @@ public class ViewFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         backButton = view.findViewById(R.id.btnBack);
         linksTextView = view.findViewById(R.id.textLinks);
+        linksHeader = view.findViewById(R.id.linkHeader);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -82,13 +84,20 @@ public class ViewFragment extends Fragment {
 
         List<String> videoLinks = item.getMedia().getVideoPaths();
         if (videoLinks != null && !videoLinks.isEmpty()) {
-            StringBuilder linksBuilder = new StringBuilder();
-            for (String link : videoLinks) {
-                linksBuilder.append(link).append("\n");
+            if ("null".equals(videoLinks.get(0))) {
+                linksTextView.setVisibility(View.INVISIBLE);
+                linksHeader.setVisibility(View.INVISIBLE);
             }
-            // currently broken
-            linksTextView.setText(linksBuilder.toString());
-            linksTextView.setMovementMethod(LinkMovementMethod.getInstance()); // Make links clickable
+            else
+            {
+                StringBuilder linksBuilder = new StringBuilder();
+                for (String link : videoLinks) {
+                    linksBuilder.append(link).append("\n\n");
+                }
+                // currently broken
+                linksTextView.setText(linksBuilder.toString());
+                linksTextView.setMovementMethod(LinkMovementMethod.getInstance()); // make links clickable
+            }
         }
 
         return view;

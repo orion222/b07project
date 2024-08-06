@@ -74,11 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textId" />
 
-<!--    <androidx.viewpager2.widget.ViewPager2-->
-<!--        android:id="@+id/viewPager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
@@ -98,23 +93,41 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textLinks"
+        android:id="@+id/linkHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:linksClickable="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@+id/scrollView"
-        android:text=""/>
+        android:layout_marginHorizontal="10dp"
+        android:text="Links"/>
+
+    <!-- Wrap the links TextView in a ScrollView -->
+    <ScrollView
+        android:id="@+id/linksScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/linkHeader">
+
+        <TextView
+            android:id="@+id/textLinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:text=""/>
+    </ScrollView>
 
     <Button
         android:id="@+id/btnBack"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
         android:text="@string/back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLinks" />
+        app:layout_constraintTop_toBottomOf="@+id/linksScrollView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
