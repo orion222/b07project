@@ -12,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.b07demosummer2024.models.ItemViewModel;
 import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.ItemAdapter;
@@ -33,6 +36,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private Button buttonNext;
     private Button buttonPrevious;
     private ImageButton buttonDelete;
+    private ItemViewModel itemViewModel;
 
     //defaults to 0
     private int currentPage;
@@ -54,28 +58,23 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
 
-        // create a listener for itemList, so that when
-        // fetchItems() eventually returns the data,
-        // itemList will be set accordingly
-        itemList = new ArrayList<Item>();
-        Database.fetchItems(new Database.OnDataFetchedListener(){
-            @Override
-            public void onDataFetched(List ret) {
-                itemList.clear();
-                itemList.addAll(ret);
+        itemAdapter = new ItemAdapter(new ArrayList<>(), RecyclerViewFragment.this, getContext());
+        recyclerView.setAdapter(itemAdapter);
 
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this, getContext());
-                recyclerView.setAdapter(itemAdapter);
+        itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+
+        itemViewModel.getFilteredList().observe(getViewLifecycleOwner(), new Observer<List<Item>>() {
+            @Override
+            public void onChanged(List<Item> items) {
+                itemList = items;
+                updateRecyclerView();
                 switchButtonState();
-
-                itemAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(DatabaseError error) {
-                Log.e("db err", "Failed to fetch items");
             }
         });
+
+        if (itemViewModel.getItemList().getValue() == null) {
+            itemViewModel.fetchViewModelItems();
+        }
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +108,13 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         });
 
         return view;
+    }
+
+    private void updateRecyclerView() {
+        if (itemList != null) {
+            List<Item> pageItems = Pagination.generatePage(currentPage, itemList);
+            itemAdapter.setItems(pageItems);
+        }
     }
 
     @Override

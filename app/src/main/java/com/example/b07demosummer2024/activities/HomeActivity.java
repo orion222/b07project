@@ -19,6 +19,7 @@ import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.fragments.AddItemFragment;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.fragments.ReportFragment;
+import com.example.b07demosummer2024.fragments.SearchFragment;
 import com.example.b07demosummer2024.utilities.Preferences;
 
 public class HomeActivity extends AppCompatActivity {
@@ -63,8 +64,10 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
                 else if (position == 1){
-                    // load Search fragment
-                    loadFragment(new RecyclerViewFragment());
+                    if (isAdmin){
+                        loadFragment(new SearchFragment());
+                    }
+//                    loadFragment(new RecyclerViewFragment());
                 }
                 else if (position == 2){
 
