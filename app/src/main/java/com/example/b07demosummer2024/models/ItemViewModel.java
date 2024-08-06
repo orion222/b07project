@@ -43,10 +43,12 @@ public class ItemViewModel extends ViewModel {
         if (allItems != null) {
             List<Item> filteredItems = new ArrayList<>();
             for (Item item : allItems) {
-                if (item.getId().toLowerCase().contains(lotNumber) &&
-                        item.getName().toLowerCase().contains(itemName) &&
-                        item.getCategory().toLowerCase().contains(category) &&
-                        item.getTimePeriod().toLowerCase().contains(period)) {
+                boolean matchesLotNumber = lotNumber.isEmpty() || item.getId().equals(lotNumber);
+                boolean matchesName = itemName.isEmpty() || item.getName().contains(itemName);
+                boolean matchesCategory = category.isEmpty() || item.getCategory().contains(category);
+                boolean matchesPeriod = period.isEmpty() || item.getTimePeriod().contains(period);
+
+                if (matchesLotNumber && matchesName && matchesCategory && matchesPeriod) {
                     filteredItems.add(item);
                 }
             }
