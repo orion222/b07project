@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -37,6 +38,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private Button buttonPrevious;
     private ImageButton buttonDelete;
     private ItemViewModel itemViewModel;
+    private SearchView searchView;
 
     //defaults to 0
     private int currentPage;
@@ -50,6 +52,9 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
 
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
@@ -72,9 +77,31 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             }
         });
 
+        itemViewModel.getNoResults().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean noResults) {
+                if (noResults) {
+                    Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         if (itemViewModel.getItemList().getValue() == null) {
             itemViewModel.fetchViewModelItems();
         }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                itemViewModel.searchByNameOrDescription(newText.toLowerCase().trim());
+                return true;
+            }
+        });
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override

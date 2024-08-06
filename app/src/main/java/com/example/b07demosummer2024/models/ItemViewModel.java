@@ -14,6 +14,7 @@ import java.util.List;
 public class ItemViewModel extends ViewModel {
     private MutableLiveData<List<Item>> itemList = new MutableLiveData<>();
     private MutableLiveData<List<Item>> filteredList = new MutableLiveData<>();
+    private MutableLiveData<Boolean> noResults = new MutableLiveData<>(false);
 
     public LiveData<List<Item>> getItemList() {
         return itemList;
@@ -22,6 +23,8 @@ public class ItemViewModel extends ViewModel {
     public LiveData<List<Item>> getFilteredList() {
         return filteredList;
     }
+
+    public LiveData<Boolean> getNoResults() { return noResults; }
 
     public void fetchViewModelItems() {
         Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
@@ -56,6 +59,42 @@ public class ItemViewModel extends ViewModel {
                     filteredItems.add(item);
                 }
             }
+            if (filteredItems.isEmpty()) {
+                noResults.postValue(true);
+            } else {
+                noResults.postValue(false);
+            }
+            filteredList.postValue(filteredItems);
+        }
+    }
+
+    public void searchByNameOrDescription(String query) {
+        List<Item> allItems = itemList.getValue();
+        if (allItems != null) {
+            List<Item> nameMatches = new ArrayList<>();
+            List<Item> descriptionMatches = new ArrayList<>();
+
+            for (Item item : allItems) {
+                boolean matchesName = item.getName().toLowerCase().contains(query.toLowerCase());
+                boolean matchesDescription = item.getDescription().toLowerCase().contains(query.toLowerCase());
+
+                if (matchesName) {
+                    nameMatches.add(item);
+                } else if (matchesDescription) {
+                    descriptionMatches.add(item);
+                }
+            }
+
+            // Combine the lists: name matches first, then description matches
+            List<Item> filteredItems = new ArrayList<>(nameMatches);
+            filteredItems.addAll(descriptionMatches);
+
+            if (filteredItems.isEmpty()) {
+                noResults.postValue(true);
+            } else {
+                noResults.postValue(false);
+            }
+
             filteredList.postValue(filteredItems);
         }
     }
