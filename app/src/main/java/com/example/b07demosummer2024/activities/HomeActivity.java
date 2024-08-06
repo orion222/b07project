@@ -42,9 +42,6 @@ public class HomeActivity extends AppCompatActivity {
 
         // initialize spinner and adapter (used for dropdown)
         Spinner viewSpinner = findViewById(R.id.actionSpinner);
-
-        //testing different spinner layouts depending on admin or not (can delete later)
-        //previously the adapter was initialized based off of the old login
         ArrayAdapter<CharSequence> adapter;
 
         isAdmin = Preferences.checkLogin(this);
@@ -57,60 +54,23 @@ public class HomeActivity extends AppCompatActivity {
                     R.array.userActions, android.R.layout.simple_spinner_item);
         }
 
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
 
         viewSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0){
-                    // load Home Fragment
-                    Log.d("WOW", String.valueOf(Preferences.checkLogin(getApplicationContext())));
-                    itemViewModel.fetchViewModelItems(); // Reset Search Filters
+                // load fragments based on selected action
+                if (position == 0) {
+                    // load home fragment (view)
+                    itemViewModel.fetchViewModelItems();
                     loadFragment(new RecyclerViewFragment());
-                    Log.d("WOW2", "recycler view made");
-
+                } else if (position == 1) {
+                    loadFragment(new SearchFragment());
                 }
-                else if (position == 1){
-                    if (isAdmin){
-                        loadFragment(new SearchFragment());
-                    }
-//                    loadFragment(new RecyclerViewFragment());
-                }
-                else if (position == 2){
-
-                    if (isAdmin){
-                        // load Add fragment if
-                        loadFragment(new AddItemFragment());
-                    }
-                    else{
-                        // load report fragment
-                        loadFragment(new ReportFragment());
-                    }
-
-
-                }
-                else if (position == 3){
-                    // load Remove (ie. set deleteMode to be true)
-
-                    //currently commenting this out, as its causing some overlap errors
-//                    RecyclerViewFragment recycle = new RecyclerViewFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("deleteMode", true);
-//                    recycle.setArguments(bundle);
-//                    loadFragment(recycle);
-                }
-                else if (position == 4){
-                    // load Report fragment
-                    loadFragment(new ReportFragment());
-//                    List<Item> test =  new ArrayList();
-//                    test.add(new Item("bruh","name", "time","category", "There are many apps in which data from the app is provided to users in the downloadable PDF file format. So in this case we have to create a PDF file from the data present inside our app and represent that data properly inside our app. So by using this technique, we can easily create a new PDF according to our requirements. In this article, we will take a look at creating a new PDF file from the data present inside your Android app and saving that PDF file in the external storage of the users’ device. So for generating a new PDF file from the data present inside our Android app we will be using Canvas. Canvas is a predefined class in Android which is used to make 2D drawings of the different objects on our screen. So in this article, we will be using canvas to draw our data inside our canvas, and then we will store that canvas in the form of a PDF. Now we will move towards the implementation of our project. ",null));
-//                    PDFCreator pdfCreator = new PDFCreator();
-//                    pdfCreator.createPdf(getApplicationContext(),test, false);
-                }
-                else{
-                    // load back fragment
+                if (isAdmin) {
+                    if (position == 2) loadFragment(new AddItemFragment());
+                    else if (position == 3) loadFragment(new ReportFragment());
                 }
             }
 
