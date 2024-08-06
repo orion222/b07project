@@ -9,15 +9,14 @@
     <Button
         style="@style/Button"
         android:id="@+id/buttonAdd"
-        android:layout_width="250dp"
-        android:layout_height="75dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/add_item"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/mediaCount"
@@ -28,8 +27,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonAdd" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -57,35 +55,66 @@
             android:layout_marginTop="2dp"
             android:hint="Lot ID" />
 
-        <EditText
-            android:id="@+id/editTextCategory"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="2dp"
-            android:hint="Category" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="12dp">
 
-        <EditText
-            android:id="@+id/editTextTimePeriod"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Category"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spnCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/category" />
+        </LinearLayout>
+
+        <!-- Period Spinner with Label -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="2dp"
-            android:hint="Time Period" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Time Period"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spnPeriod"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/period" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             android:hint="Description" />
 
         <LinearLayout
             android:id="@+id/horizontalLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/mediaSpinner"
@@ -103,10 +132,6 @@
                 android:layout_marginStart="2dp"
                 android:layout_weight="1" />
         </LinearLayout>
-
-
-
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

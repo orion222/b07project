@@ -23,6 +23,7 @@ import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.models.Media;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,7 +36,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class AddItemFragment extends Fragment {
-    private EditText editTextName, editTextLotId, editTextCategory, editTextTimePeriod, editTextDescription;
+    private EditText editTextName, editTextLotId, editTextDescription;
+    private Spinner spnPeriod, spnCategory;
     private TextView mediaCount;
     private Spinner mediaSpinner;
     private Button buttonAdd, buttonUpload;
@@ -54,11 +56,13 @@ public class AddItemFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
+        // find all UI elements
         editTextName = view.findViewById(R.id.editTextName);
         editTextLotId = view.findViewById(R.id.editTextLotId);
-        editTextCategory = view.findViewById(R.id.editTextCategory);
         editTextDescription = view.findViewById(R.id.editTextDescription);
-        editTextTimePeriod = view.findViewById(R.id.editTextTimePeriod);
+        spnCategory = view.findViewById(R.id.spnCategory);
+        spnPeriod = view.findViewById(R.id.spnPeriod);
+
         mediaSpinner = view.findViewById(R.id.mediaSpinner);
 
         buttonUpload = view.findViewById(R.id.buttonUpload);
@@ -99,6 +103,12 @@ public class AddItemFragment extends Fragment {
     }
 
     private void selectFile() {
+        // limit to max 1 of each for now
+        if ((uploadingImage && !images.isEmpty()) || (!uploadingImage && !videos.isEmpty())) {
+            Toast.makeText(requireContext(), "TEMP: You are currently limited to maximum 1 video and 1 image",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent();
         intent.setType(uploadingImage ? "image/*" : "video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -154,38 +164,64 @@ public class AddItemFragment extends Fragment {
     private void addItem() {
         String name = editTextName.getText().toString().trim();
         String lotID = editTextLotId.getText().toString().trim();
-        String category = editTextCategory.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
-        String timePeriod = editTextTimePeriod.getText().toString().trim();
+        String timePeriod = spnPeriod.getSelectedItem().toString().trim();
+        String category = spnCategory.getSelectedItem().toString().trim();
+
+        // check for a valid integer lotID
+        try {
+            int intLotID = Integer.parseInt(lotID);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), "Lot ID must be a valid integer", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (name.isEmpty() || lotID.isEmpty() || category.isEmpty() || description.isEmpty() || timePeriod.isEmpty()) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        itemsRef = db.getReference("items");
-        String id = itemsRef.push().getKey();
+        // use the fetchItemByLotID method to check for duplicates
+        Database.fetchItemByLotID(lotID, new Database.OnDataFetchedListener<Item>() {
+            @Override
+            public void onDataFetched(List<Item> itemList) {
+                if (!itemList.isEmpty()) {
+                    Toast.makeText(getContext(), "Item with this Lot ID already exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // else proceed
 
-        if (images.isEmpty()) images.add("null");
-        if (videos.isEmpty()) videos.add("null");
+                itemsRef = db.getReference("items");
+                String id = itemsRef.push().getKey();
 
-        Item item = new Item(lotID, name, timePeriod, category, description, new Media(images, videos));
+                if (images.isEmpty()) images.add("null");
+                if (videos.isEmpty()) videos.add("null");
 
-        itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
-                clearFields();
-            } else {
-                Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
+                Item item = new Item(lotID, name, timePeriod, category, description, new Media(images, videos));
+
+                itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                        clearFields();
+
+                    } else {
+                        Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(DatabaseError error) {
+                Toast.makeText(getContext(), "Error checking for duplicates", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void clearFields() {
         editTextName.getText().clear();
         editTextLotId.getText().clear();
         editTextDescription.getText().clear();
-        editTextTimePeriod.getText().clear();
-        editTextCategory.getText().clear();
+//        editTextTimePeriod.getText().clear();
+//        editTextCategory.getText().clear();
     }
 }
