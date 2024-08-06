@@ -25,23 +25,18 @@ import androidx.fragment.app.Fragment;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.utilities.Database;
-
 import com.example.b07demosummer2024.utilities.PDFCreator;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class ReportFragment extends Fragment {
     private EditText editReportConstraint;
     private Button buttonGenerate;
-    private FirebaseDatabase db;
-    private DatabaseReference itemsRef;
     private Spinner spinnerFilterOptions;
     private CheckBox contentCheckBox;
-    private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
-    private final static String [] filterKeyWords = {"", "id", "name", "category", "timePeriod"};
 
+    private static final int REQUEST_CODE_PERMISSIONS = 1;
+    private final static String[] filterKeyWords = {"", "id", "name", "category", "timePeriod"};
 
     @Nullable
     @Override
@@ -49,51 +44,62 @@ public class ReportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
         editReportConstraint = view.findViewById(R.id.editReportConstraint);
-
         buttonGenerate = view.findViewById(R.id.buttonGenerate);
-
         spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
-
         contentCheckBox = view.findViewById(R.id.contentCheckBox);
 
-        ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(requireContext(),
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.reportFilterOptions, android.R.layout.simple_spinner_item);
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilterOptions.setAdapter(adapter);
 
-
         buttonGenerate.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
-                } else {
-                    generateReport();
-                }
-            } else {
-                generateReport();
-            }
+//            Log.d("REPORT", "Button clicked");
+            checkMediaPermissions();
         });
 
         return view;
     }
 
+    // asks and enables permissions
+    private void checkMediaPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            boolean readMediaImages = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
+            boolean readMediaVideo = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED;
+            boolean readMediaAudio = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED;
+
+            if (!readMediaImages || !readMediaVideo || !readMediaAudio) {
+                Log.d("REPORT", "Requesting media permissions");
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO},
+                        REQUEST_CODE_PERMISSIONS);
+            } else {
+                generateReport();
+            }
+        } else {
+            // for devices < Android 13, use old permissions
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("REPORT", "Requesting WRITE_EXTERNAL_STORAGE permission");
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_PERMISSIONS);
+            } else {
+                generateReport();
+            }
+        }
+    }
+
     private void generateReport() {
+        Toast.makeText(requireContext(), "Generating report ... Please allow up to 5 seconds", Toast.LENGTH_SHORT).show();
+        Log.d("REPORT", "Generating report");
         PDFCreator pdfCreator = new PDFCreator();
 
         String filterConstraint = editReportConstraint.getText().toString().trim();
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
         String filterType = filterKeyWords[position];
-        //
 
-
-        //All items search can use General Search
-        if(position == 0) {
+        if (position == 0) {
             Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
@@ -105,8 +111,7 @@ public class ReportFragment extends Fragment {
                     Log.e("db err", "Failed to fetch items");
                 }
             });
-        }else{
-            // use filtered Search
+        } else {
             Database.fetchItemsFiltered(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
@@ -119,17 +124,25 @@ public class ReportFragment extends Fragment {
                 }
             }, filterType, filterConstraint);
         }
-
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+            if (allPermissionsGranted) {
+                Log.d("REPORT", "Permissions granted");
                 generateReport();
             } else {
-                Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                Log.d("REPORT", "Permissions denied");
+                Toast.makeText(getContext(), "Permissions denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
