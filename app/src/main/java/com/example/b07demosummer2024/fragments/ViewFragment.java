@@ -44,8 +44,6 @@ public class ViewFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         backButton = view.findViewById(R.id.btnBack);
         linksTextView = view.findViewById(R.id.textLinks);
-        linksHeader = view.findViewById(R.id.linkHeader);
-
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,19 +84,18 @@ public class ViewFragment extends Fragment {
         if (videoLinks != null && !videoLinks.isEmpty()) {
             if ("null".equals(videoLinks.get(0))) {
                 linksTextView.setVisibility(View.INVISIBLE);
-                linksHeader.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
+            } else {
                 StringBuilder linksBuilder = new StringBuilder();
+                int videoNumber = 1; // Counter for video labeling
                 for (String link : videoLinks) {
-                    linksBuilder.append(link).append("\n\n");
+                    linksBuilder.append("Video").append(videoNumber).append(": ").append(link).append("\n\n");
+                    videoNumber++; // Increment counter for each video
                 }
-                // currently broken
                 linksTextView.setText(linksBuilder.toString());
                 linksTextView.setMovementMethod(LinkMovementMethod.getInstance()); // make links clickable
             }
         }
+
 
         return view;
     }
