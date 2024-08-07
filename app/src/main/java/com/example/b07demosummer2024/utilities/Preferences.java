@@ -37,27 +37,52 @@ public class Preferences {
         editor.apply();
     }
 
+    public static void saveAutoLogoutStatus(Context context, boolean autoLogoutStatus) {
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(PrefConstants.AUTO_LOGOUT_STATUS, autoLogoutStatus);
+        editor.apply();
+    }
+
+//    public static void saveMaxEntryCount(Context context, int maxEntryCount) {
+//        SharedPreferences sharedPref = getSharedPreferences(context);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putInt(PrefConstants.MAX_ENTRY_COUNT, maxEntryCount);
+//        editor.apply();
+//    }
+
     //logs out
     public static void logout(Context context){
         SharedPreferences sharedPref = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
+        editor.remove(PrefConstants.USER);
+        editor.remove(PrefConstants.LOGIN_STATE);
         editor.apply();
     }
 
     //getters
     public static String getUser(Context context) {
         SharedPreferences sharedPref = getSharedPreferences(context);
-        //the getString method takes a 2nd argument called a default, here its ""
+        // the getString method takes a 2nd argument called a default, here its ""
         return sharedPref.getString(PrefConstants.USER, "");
     }
 
     public static boolean getAdminStatus(Context context) {
         SharedPreferences sharedPref = getSharedPreferences(context);
-        //the getBoolean method takes a 2nd argument called a default, which is left false here
+        // false by default
         return sharedPref.getBoolean(PrefConstants.LOGIN_STATE, false);
     }
 
+    public static boolean getAutoLogoutStatus(Context context) {
+        SharedPreferences sharedPref = getSharedPreferences(context);
+        // false by default
+        return sharedPref.getBoolean(PrefConstants.AUTO_LOGOUT_STATUS, false);
+    }
 
+//    public static int getMaxEntryCount(Context context) {
+//        SharedPreferences sharedPref = getSharedPreferences(context);
+//        // 6 is default
+//        return sharedPref.getInt(PrefConstants.MAX_ENTRY_COUNT, 6);
+//    }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="welcome_msg">Welcome, continue as the following:</string>
+    <string name="welcome_msg">Welcome to the TAAM! Proceed as:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="app_name">The Toronto Asian Art Museum</string>
 
@@ -14,6 +14,10 @@
 
     <!-->The string below is a format string<!-->
     <string name="welcome_back">Welcome back, %1$s!</string>
+    <string name="about">This app developed for the Toronto Asian Art Museum was created
+    for the CSCB07 final project. The project members include Andy Liang, Kevin Wang, Mathan Thatparananthan,
+        Nicky Lam,Orion Chen, and Zohair Syed.
+    </string>
 
     <string-array name="category">
         <item></item>

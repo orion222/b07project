@@ -143,10 +143,11 @@ public class AddItemFragment extends Fragment {
                     }
                     isUploading = false;
                     count++;
-                    mediaCount.setText("Uploaded files: " + count);
+                    String fileUpdate = "Uploaded files: " + count + "/2";
+                    mediaCount.setText(fileUpdate);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed to Upload: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     isUploading = false;
                 });
     }

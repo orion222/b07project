@@ -10,9 +10,9 @@
         style="@style/Button"
         android:id="@+id/buttonAdd"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:text="@string/add_item"
-        android:textSize="25sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/mediaCount"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:text="Uploaded files: 0"
+        android:text="Uploaded files: 0/2"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +40,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add To Collection"
+            style="@style/FragmentHeader"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editTextName"
@@ -72,8 +82,9 @@
 
             <Spinner
                 android:id="@+id/spnCategory"
+                android:background="@drawable/spinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:entries="@array/category" />
         </LinearLayout>
@@ -97,7 +108,8 @@
             <Spinner
                 android:id="@+id/spnPeriod"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/spinner"
                 android:layout_weight="1"
                 android:entries="@array/period" />
         </LinearLayout>
@@ -132,6 +144,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_weight="1" />
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,16 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="buttonColor">#CC9840</color>
-    <color name="accent">#000000</color>
+    <color name="accent">#FFFFFF</color>
     <color name="accentBlack">#323232</color>
     <color name="accentGrey">#838386</color>
     <color name = "navyBlue">#10173C</color>
     <color name = "darkBlue">#3F51B5</color>
-    <color name = "buttonBlue">#03A9F4</color>
-    <color name = "buttonBlueGradient">#41C0FA</color>
-    <color name ="background">#DAFCFF</color>
-    <color name ="background2">#D2F1FF</color>
-    <color name ="background3">#1CB9FF</color>
+    <color name = "buttonBlue">#06090B</color>
+    <color name = "buttonBlueGradient">#24363E</color>
+    <color name ="background">#DBD2E6</color>
+    <color name ="background2">#DBCAEB</color>
+    <color name ="background3">#A68CBD</color>
     <color name ="selected">#EBEBEB</color>
     <color name ="selected2">#B6BDBD</color>
 </resources>

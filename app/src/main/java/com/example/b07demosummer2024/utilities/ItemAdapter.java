@@ -95,7 +95,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
         else {
             //if no thumbnail in db
-            holder.imageView.setImageResource(R.drawable.notavailable);
+            holder.imageView.setImageResource(R.drawable.pic_not_available);
         }
 
         if (clickedList.contains(Integer.parseInt(item.getId()))) {
