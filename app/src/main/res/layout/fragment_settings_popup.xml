@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp">
 
     <TextView
         android:id="@+id/settingsTitle"
@@ -43,9 +43,39 @@
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:text="Confirm" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="10dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/setting2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Auto logout on exit?"
+            android:textSize="18sp"
+            android:layout_weight="1"
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/logoutSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:thumbTint="@color/accentBlack"
+            android:trackTint="@color/buttonBlueGradient"
+            android:showText="true" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/aboutTitle"

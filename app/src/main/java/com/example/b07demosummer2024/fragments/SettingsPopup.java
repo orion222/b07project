@@ -3,29 +3,24 @@ package com.example.b07demosummer2024.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
-import com.example.b07demosummer2024.interfaces.LogoutMVP;
-import com.example.b07demosummer2024.utilities.LogoutPresenter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.utilities.Pagination;
-
-import androidx.fragment.app.FragmentManager;
+import com.example.b07demosummer2024.utilities.Preferences;
 
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingsPopup extends DialogFragment {
-    private LogoutMVP.Presenter presenter;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -37,6 +32,24 @@ public class SettingsPopup extends DialogFragment {
 
         Button confirmYes = view.findViewById(R.id.buttonYes);
         EditText maxEntries = view.findViewById(R.id.editTextMaxItems);
+
+        // keep logged in status
+
+        SwitchCompat autoLogoutSwitch = view.findViewById(R.id.logoutSwitch);
+        boolean check = Preferences.getAutoLogoutStatus(requireContext());
+//        Log.d("LOGOUT_CHE", String.valueOf(check));
+        autoLogoutSwitch.setChecked(check);
+
+
+        autoLogoutSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Log.d("LOGOUT_set", "AUTOLOGOUT VAL: " + isChecked);
+            if (isChecked) {
+                Preferences.saveAutoLogoutStatus(requireContext(), true);
+            } else{
+                Preferences.saveAutoLogoutStatus(requireContext(), false);
+            }
+        });
+
 
         //event handlers
         confirmYes.setOnClickListener(new View.OnClickListener() {
