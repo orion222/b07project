@@ -24,6 +24,13 @@
             <item name="android:fontFamily">@font/berkshite</item>
             <item name="android:letterSpacing">0.1</item>
     </style>
+    <style name="FragmentHeader">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accentBlack</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">center</item>
+    </style>
     <style name="MuseumHeader">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
