@@ -18,6 +18,7 @@ import java.util.Set;
 //glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
+import com.example.b07demosummer2024.activities.HomeActivity;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
@@ -40,11 +41,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     // temp
     // could just be one constructor
-    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Set<Integer> set) {
+    public ItemAdapter(List<Item> itemList, RecyclerViewInterface recyclerViewInterface, Set<Integer> set, Context context) {
         this.itemList = itemList;
         this.recyclerViewInterface = recyclerViewInterface;
 //        clickedList = new ArrayList<Integer>();
         clickedList = set;
+        this.context = context;
     }
 
     public void setItems(List<Item> itemList) {
@@ -106,19 +108,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
 
         // used to listen for long presses; used for deletion
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-//                if (!Preferences.getAdminStatus(context)){
-//                    return false; //if not admin
-//                }
-                if(!RecyclerViewFragment.getDeleteMode()) {
-                    RecyclerViewFragment.setDeleteMode(true);
-                    checkItemToRemove(holder, item);
+        if(Preferences.getAdminStatus(context)) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (!RecyclerViewFragment.getDeleteMode()) {
+                        RecyclerViewFragment.setDeleteMode(true);
+                        checkItemToRemove(holder, item);
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
