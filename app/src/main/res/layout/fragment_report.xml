@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="32dp">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report"
+        style="@style/FragmentHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerFilterOptions"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerFilterOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minWidth="240dp"
+        app:layout_constraintBottom_toTopOf="@+id/selectionSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle"/>
+
+    <Spinner
+        android:id="@+id/selectionSpinner"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:minWidth="240dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/spinner"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFilterOptions"
+        app:layout_constraintBottom_toTopOf="@+id/editReportConstraint"/>
+
+    <EditText
+        android:id="@+id/editReportConstraint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter report details"
+        android:minWidth="240dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/contentCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectionSpinner"/>
+
+    <CheckBox
+        android:id="@+id/contentCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description and Picture only"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editReportConstraint"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGenerate"
+        android:layout_marginTop="36dp"/>
+
+    <Button
+        style="@style/Button"
+        android:id="@+id/buttonGenerate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contentCheckBox"
+        android:layout_marginTop="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024.fragments;
+package com.example.b07demosummer2024.unused;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

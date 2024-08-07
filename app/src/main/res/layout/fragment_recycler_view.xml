@@ -11,43 +11,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintWidth_percent="0.95"
+            android:background="@drawable/search_view_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryHint="Search by keyword ... "
+            app:iconifiedByDefault="false"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="36dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonPrevious"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintVertical_bias="0.135" />
+            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            app:layout_constraintWidth_percent="0.95" />
 
-        <Button
-            android:id="@+id/buttonPrevious"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Previous"
-            android:layout_marginBottom="36dp"
-            android:background="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonNext"
-            app:layout_constraintHorizontal_bias="0.5" />
-
-        <Button
-            android:id="@+id/buttonNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Next"
-            android:layout_marginBottom="36dp"
-            android:background="@color/white"
-            app:layout_constraintStart_toEndOf="@id/buttonPrevious"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center">
+
+            <Button
+                style="@style/Button"
+                android:id="@+id/buttonPrevious"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Previous" />
+
+            <Button
+                style="@style/Button"
+                android:id="@+id/buttonNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:text="Next" />
+
+            <ImageButton
+                android:id="@+id/buttonDelete"
+                android:src="@drawable/delete"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:visibility="invisible"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"/>
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

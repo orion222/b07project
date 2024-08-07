@@ -6,24 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.b07demosummer2024.utilities.Database;
+import com.example.b07demosummer2024.models.ItemViewModel;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.ItemAdapter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.utilities.Pagination;
-import com.google.firebase.database.DatabaseError;
+import com.example.b07demosummer2024.utilities.Preferences;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RecyclerViewFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
@@ -32,7 +35,14 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private List<Item> clickedList;
     private Button buttonNext;
     private Button buttonPrevious;
+    private ImageButton buttonDelete;
+    private ItemViewModel itemViewModel;
+    private SearchView searchView;
+
+    //defaults to 0
     private int currentPage;
+
+    private static boolean deleteMode;
 
     @Nullable
     @Override
@@ -42,87 +52,134 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
+        buttonDelete = view.findViewById(R.id.buttonDelete);
+
+        boolean isAdmin = Preferences.getAdminStatus(requireContext());
+        if (isAdmin){
+            buttonDelete.setVisibility(View.VISIBLE);
+        } else {
+            buttonDelete.setVisibility(View.INVISIBLE);
+            RecyclerViewFragment.setDeleteMode(false);
+        }
 
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
 
-        // create a listener for itemList, so that when
-        // fetchItems() eventually returns the data,
-        // itemList will be set accordingly
-        itemList = new ArrayList<Item>();
-        Database.fetchItems(new Database.OnDataFetchedListener(){
+        itemAdapter = new ItemAdapter(new ArrayList<>(), RecyclerViewFragment.this, getContext());
+        recyclerView.setAdapter(itemAdapter);
+
+        itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+
+        itemViewModel.getFilteredList().observe(getViewLifecycleOwner(), new Observer<List<Item>>() {
             @Override
-            public void onDataFetched(List ret) {
-                itemList.clear();
-                itemList.addAll(ret);
-
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-                recyclerView.setAdapter(itemAdapter);
+            public void onChanged(List<Item> items) {
+                itemList = items;
+                updateRecyclerView();
                 switchButtonState();
+            }
+        });
 
-                itemAdapter.notifyDataSetChanged();
+        itemViewModel.getNoResults().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean noResults) {
+                if (noResults) {
+                    Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if (itemViewModel.getItemList().getValue() == null) {
+            itemViewModel.fetchViewModelItems();
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onError(DatabaseError error) {
-                Log.e("db err", "Failed to fetch items");
+            public boolean onQueryTextChange(String newText) {
+                itemViewModel.searchByNameOrDescription(newText.toLowerCase().trim());
+                return true;
             }
         });
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentPage++;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-                recyclerView.setAdapter(itemAdapter);
-                switchButtonState();
+                clickedList.clear();
+                changePage(currentPage + 1);
             }
         });
 
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentPage--;
-                itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-                recyclerView.setAdapter(itemAdapter);
-                switchButtonState();
+                clickedList.clear();
+                changePage(currentPage - 1);
             }
         });
 
-//        itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList), RecyclerViewFragment.this);
-//        recyclerView.setAdapter(itemAdapter);
-        Log.d("WOW4", "goes through recycler");
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Set<Integer> clickedList = itemAdapter.getSet();
+
+                if(clickedList.isEmpty()) {
+                    Toast.makeText(view.getContext(), "Long-Press Items to Delete", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    DeletionPopup temp = new DeletionPopup(clickedList, itemList);
+                    temp.show(getParentFragmentManager(), "Item Deletion");
+                }
+            }
+        });
 
         return view;
     }
 
+    private void updateRecyclerView() {
+        if (itemList != null) {
+            List<Item> pageItems = Pagination.generatePage(currentPage, itemList);
+            itemAdapter.setItems(pageItems);
+        }
+    }
+
     @Override
     public void itemClicked(int pos) {
-        Item clickedItem = itemList.get(pos);
-
+//        Item clickedItem = itemList.get(pos);
+        Item clickedItem = Pagination.generatePage(currentPage, itemList).get(pos);
         if (clickedList.contains(clickedItem)) {
             clickedList.remove(clickedItem);
         } else {
             clickedList.add(clickedItem);
         }
 
-        // Temp implementation of view function, only allow 1 item at a time
-        // Modify later to incorporate remove functionality w/ multiple items allowed
-        if (clickedList.size() != 1) {
-            Toast.makeText(getContext(), "Please select only ONE item to view", Toast.LENGTH_SHORT).show();
-        } else {
-            // Creates ViewFragment w/ item data in a bundle
-            ViewFragment view = new ViewFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("key", clickedList.get(0));
-            view.setArguments(bundle);
+        // creates ViewFragment w/ item data in a bundle
+        ViewFragment view = new ViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("key", clickedList.get(0));
+        view.setArguments(bundle);
+        Log.e("zebraaa", clickedList.get(0).toString());
+        switchFragment(view);
 
-            switchFragment(view);
-        }
     }
 
+    public void changePage(int currentPage) {
+        this.currentPage = currentPage;
+        itemAdapter = new ItemAdapter(Pagination.generatePage(currentPage, itemList),
+                RecyclerViewFragment.this, itemAdapter.getSet(), getContext());
+        recyclerView.setAdapter(itemAdapter);
+        switchButtonState();
+    }
+
+    // changes UI, we need to move this to a new class
     private void switchButtonState() {
         int size = itemList.size();
         int lastPage = size / Pagination.getItemsPerPage();
@@ -147,9 +204,29 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         }
     }
 
+    //getters and setters
+    public static boolean getDeleteMode() {
+        return deleteMode;
+    }
+
+    public static void setDeleteMode(boolean c) {
+        deleteMode = c;
+//        if(c) {
+//            Toast.makeText(requireContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
+//        }
+    }
 
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        // I added animations, but the exit ones are kind of glitchy so didn't include them for now
+        transaction.setCustomAnimations(
+                R.anim.fragment_enter,
+                R.anim.fragment_exit//,
+//                R.anim.fragment_pop_enter,  // pop enter animation
+//                R.anim.fragment_pop_exit    // pop exit animation
+        );
+
         transaction.replace(R.id.home_fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

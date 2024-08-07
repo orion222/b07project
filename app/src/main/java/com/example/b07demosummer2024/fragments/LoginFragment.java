@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
@@ -32,10 +33,11 @@ public class LoginFragment extends Fragment {
         Button loginAdmin = view.findViewById(R.id.adminButton);
         Button loginGuest = view.findViewById(R.id.guestButton);
         Button logoutButton = view.findViewById(R.id.logoutButton); // initially hidden
+        ImageButton settings = view.findViewById(R.id.settings);
 
         TextView continueMSG = view.findViewById(R.id.textContinueAs);
 
-        boolean loggedIn = Preferences.checkLogin(requireContext());
+        boolean loggedIn = Preferences.getAdminStatus(requireContext());
         Log.d("ZEBRA3", "Is logged in: " + loggedIn);
         //conditional rendering for logged in
         if (loggedIn) {
@@ -96,8 +98,19 @@ public class LoginFragment extends Fragment {
                 custom.show(getParentFragmentManager(), "Logout");
             }
         });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();
+                SettingsPopup custom = new SettingsPopup();
+                custom.show(getParentFragmentManager(), "Settings Popup");
+            }
+        });
         return view;
+
     }
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

@@ -1,7 +1,7 @@
 <resources>
-    <string name="welcome_msg">Welcome to the Toronto Asian Art Museum!</string>
+    <string name="welcome_msg">Welcome to the TAAM! Proceed as:</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="app_name">Welcome to the Toronto Asian Art Museum!</string>
+    <string name="app_name">The Toronto Asian Art Museum</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_item">Delete Item</string>
@@ -14,8 +14,47 @@
 
     <!-->The string below is a format string<!-->
     <string name="welcome_back">Welcome back, %1$s!</string>
+    <string name="about">This app developed for the Toronto Asian Art Museum was created
+    for the CSCB07 final project. The project members include Andy Liang, Kevin Wang, Mathan Thatparananthan,
+        Nicky Lam,Orion Chen, and Zohair Syed.
+    </string>
 
+    <string-array name="category">
+        <item></item>
+        <item>Jade</item>
+        <item>Paintings</item>
+        <item>Calligraphy</item>
+        <item>Rubbings</item>
+        <item>Bronze</item>
+        <item>Brass</item>
+        <item>Copper</item>
+        <item>Gold and Silvers</item>
+        <item>Lacquer</item>
+        <item>Enamels</item>
+    </string-array>
 
+    <string-array name="period">
+        <item></item>
+        <item>Xia</item>
+        <item>Shang</item>
+        <item>Zhou</item>
+        <item>Chuanqiu</item>
+        <item>Zhanggou</item>
+        <item>Qin</item>
+        <item>Hang</item>
+        <item>Shangou</item>
+        <item>Ji</item>
+        <item>South and North</item>
+        <item>Shui</item>
+        <item>Tang</item>
+        <item>Liao</item>
+        <item>Song</item>
+        <item>Jin</item>
+        <item>Yuan</item>
+        <item>Ming</item>
+        <item>Qing</item>
+        <item>Modern</item>
+    </string-array>
     <string-array name="categories_array">
         <item>All</item>
         <item>Books</item>
@@ -23,21 +62,33 @@
     </string-array>
 
     <string-array name="adminActions">
+        <item>Select an Action</item>
         <item>Home</item>
-        <item>Search</item>
-        <item>Add</item>
-        <item>Remove</item>
-        <item>Report</item>
-        <item>Back</item>
+        <item>Advanced Search</item>
+        <item>Add Item</item>
+        <item>Generate Report</item>
     </string-array>
 
     <string-array name="userActions">
+        <item>Select an Action</item>
         <item>Home</item>
-        <item>Search</item>
-        <item>Report</item>
-        <item>Back</item>
+        <item>Advanced Search</item>
     </string-array>
-    <!-- Strings used for fragments for navigation -->
+
+    <string-array name="reportFilterOptions">
+        <item>All Items</item>
+        <item>By Lot Number</item>
+        <item>By Name</item>
+        <item>By Category</item>
+        <item>By Time Period</item>
+    </string-array>
+
+    <string-array name="mediaUploadOptions">
+        <item>Image</item>
+        <item>Video</item>
+    </string-array>
+
+  <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -80,6 +131,8 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="actions">Actions</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
 
 
 </resources>

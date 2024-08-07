@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DeleteItemFragment">
+    tools:context=".unused.DeleteItemFragment">
 
     <EditText
         android:id="@+id/editTextName"
@@ -24,6 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
+        style="@style/Button"
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

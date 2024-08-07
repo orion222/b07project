@@ -1,33 +1,33 @@
 package com.example.b07demosummer2024.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.content.Intent;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.fragments.AddItemFragment;
-import com.example.b07demosummer2024.fragments.LogoutPopup;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
-import com.example.b07demosummer2024.fragments.LoginPopup;
+import com.example.b07demosummer2024.fragments.ReportFragment;
+import com.example.b07demosummer2024.fragments.SearchFragment;
 import com.example.b07demosummer2024.utilities.Preferences;
+import com.example.b07demosummer2024.models.ItemViewModel;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private boolean isAdmin;
+    private ItemViewModel itemViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +36,22 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
+        //Initialize ViewModel
+        itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+
         // initialize spinner and adapter (used for dropdown)
         Spinner viewSpinner = findViewById(R.id.actionSpinner);
-
-        //testing different spinner layouts depending on admin or not (can delete later)
-        //previously the adapter was initialized based off of the old login
         ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(this,
-                R.array.adminActions, android.R.layout.simple_spinner_item);
+
+        isAdmin = Preferences.getAdminStatus(this);
+        if (isAdmin){
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.adminActions, android.R.layout.simple_spinner_item);
+        }
+        else {
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.userActions, android.R.layout.simple_spinner_item);
+        }
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewSpinner.setAdapter(adapter);
@@ -51,31 +59,38 @@ public class HomeActivity extends AppCompatActivity {
         viewSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0){
-                    // load Home Fragment
-                    Log.d("WOW", String.valueOf(Preferences.checkLogin(getApplicationContext())));
-                    loadFragment(new RecyclerViewFragment());
-                    Log.d("WOW2", "recycler view made");
+                // load fragments based on selected action
+                Fragment fragment = null;
+                String tag = null;
 
+                switch (position) {
+                    case 1:
+                        itemViewModel.fetchViewModelItems();
+                        fragment = new RecyclerViewFragment();
+                        tag = "RecyclerViewFragment";
+                        break;
+                    case 2:
+                        fragment = new SearchFragment();
+                        tag = "SearchFragment";
+                        break;
+                    case 3:
+                        if (isAdmin) {
+                            fragment = new AddItemFragment();
+                            tag = "AddItemFragment";
+                        }
+                        break;
+                    case 4:
+                        if (isAdmin) {
+                            fragment = new ReportFragment();
+                            tag = "ReportFragment";
+                        }
+                        break;
                 }
-                else if (position == 1){
-                    // load Search fragment
-                    loadFragment(new RecyclerViewFragment());
-                }
-                else if (position == 2){
-                    // load Add fragment
-                    loadFragment(new AddItemFragment());
 
+                if (fragment != null) {
+                    loadFragment(fragment, tag);
                 }
-                else if (position == 3){
-                    // load Remove fragment
-                }
-                else if (position == 4){
-                    // load Report fragment
-                }
-                else{
-                    // load back fragment
-                }
+                parent.setSelection(0);
             }
 
             @Override
@@ -83,33 +98,50 @@ public class HomeActivity extends AppCompatActivity {
                 // Do nothing
             }
         });
+
+        // Load initial fragment if needed
+        if (savedInstanceState == null) {
+            loadFragment(new RecyclerViewFragment(), "RecyclerViewFragment");
+        }
     }
 
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home_fragment_container, fragment);
-        transaction.addToBackStack(null);
+    private void loadFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Check if the fragment is already in the back stack
+        Fragment existingFragment = fragmentManager.findFragmentByTag(tag);
+        if (existingFragment != null) {
+            // Remove duplicates in the back stack
+            fragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
+        // Add the new fragment
+        transaction.replace(R.id.home_fragment_container, fragment, tag);
+        transaction.addToBackStack(tag);
         transaction.commit();
     }
 
     @Override
     public void onBackPressed() {
-        //when you press back, kill this activity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (fragmentManager.getBackStackEntryCount() > 1) {
-            // pop the back stack to go back to the previous fragment (changed to > 1)
             fragmentManager.popBackStack();
         } else {
-            // when no fragments in back stack (go back to login - MainActivity)
+            // When no fragments in back stack, go back to login - MainActivity
+            RecyclerViewFragment.setDeleteMode(false);
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
             finish();
         }
     }
 
-
-
+    public void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
