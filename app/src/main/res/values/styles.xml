@@ -17,6 +17,19 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">16dp</item>
     </style>
-
+    <style name="MuseumTitle">
+            <item name="android:textSize">36sp</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textColor">@color/navyBlue</item>
+            <item name="android:fontFamily">@font/berkshite</item>
+            <item name="android:letterSpacing">0.1</item>
+    </style>
+    <style name="MuseumHeader">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accentBlack</item>
+        <item name="android:fontFamily">@font/ubuntu</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
 
 </resources>

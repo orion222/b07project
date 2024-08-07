@@ -1,5 +1,5 @@
 <resources>
-    <string name="welcome_msg">Welcome, continue as the following:</string>
+    <string name="welcome_msg">Welcome to the TAAM! Proceed as:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="app_name">The Toronto Asian Art Museum</string>
 

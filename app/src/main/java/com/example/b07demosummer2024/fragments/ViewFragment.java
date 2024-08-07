@@ -86,10 +86,8 @@ public class ViewFragment extends Fragment {
                 linksTextView.setVisibility(View.INVISIBLE);
             } else {
                 StringBuilder linksBuilder = new StringBuilder();
-                int videoNumber = 1; // Counter for video labeling
                 for (String link : videoLinks) {
-                    linksBuilder.append("Video").append(videoNumber).append(": ").append(link).append("\n\n");
-                    videoNumber++; // Increment counter for each video
+                    linksBuilder.append("Video: ").append(link).append("\n\n");
                 }
                 linksTextView.setText(linksBuilder.toString());
                 linksTextView.setMovementMethod(LinkMovementMethod.getInstance()); // make links clickable
