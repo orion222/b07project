@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -18,13 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b07demosummer2024.models.ItemViewModel;
-import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.ItemAdapter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.utilities.Pagination;
-import com.google.firebase.database.DatabaseError;
+import com.example.b07demosummer2024.utilities.Preferences;
 
 import java.util.*;
 
@@ -37,6 +37,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private Button buttonPrevious;
     private ImageButton buttonDelete;
     private ItemViewModel itemViewModel;
+    private SearchView searchView;
 
     //defaults to 0
     private int currentPage;
@@ -51,9 +52,20 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
         buttonDelete = view.findViewById(R.id.buttonDelete);
+
+        boolean isAdmin = Preferences.getAdminStatus(requireContext());
+        if (isAdmin){
+            buttonDelete.setVisibility(View.VISIBLE);
+        } else {
+            buttonDelete.setVisibility(View.INVISIBLE);
+            RecyclerViewFragment.setDeleteMode(false);
+        }
 
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();
@@ -72,9 +84,31 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
             }
         });
 
+        itemViewModel.getNoResults().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean noResults) {
+                if (noResults) {
+                    Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         if (itemViewModel.getItemList().getValue() == null) {
             itemViewModel.fetchViewModelItems();
         }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                itemViewModel.searchByNameOrDescription(newText.toLowerCase().trim());
+                return true;
+            }
+        });
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override

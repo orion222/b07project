@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,6 +34,7 @@ public class ReportFragment extends Fragment {
     private EditText editReportConstraint;
     private Button buttonGenerate;
     private Spinner spinnerFilterOptions;
+    private Spinner selectionSpinner;
     private CheckBox contentCheckBox;
 
     private static final int REQUEST_CODE_PERMISSIONS = 1;
@@ -46,6 +48,7 @@ public class ReportFragment extends Fragment {
         editReportConstraint = view.findViewById(R.id.editReportConstraint);
         buttonGenerate = view.findViewById(R.id.buttonGenerate);
         spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
+        selectionSpinner = view.findViewById(R.id.selectionSpinner);
         contentCheckBox = view.findViewById(R.id.contentCheckBox);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
@@ -53,15 +56,56 @@ public class ReportFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilterOptions.setAdapter(adapter);
 
-        buttonGenerate.setOnClickListener(v -> {
-//            Log.d("REPORT", "Button clicked");
-            checkMediaPermissions();
+        spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                handleFilterOptionSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectionSpinner.setVisibility(View.GONE);
+                editReportConstraint.setVisibility(View.GONE); // Ensure it's visible when no selection
+            }
         });
+
+        buttonGenerate.setOnClickListener(v -> checkMediaPermissions());
 
         return view;
     }
 
-    // asks and enables permissions
+    private void handleFilterOptionSelection(int position) {
+        String selectedFilter = filterKeyWords[position];
+
+        if (selectedFilter.equalsIgnoreCase("category")) {
+            selectionSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.category, android.R.layout.simple_spinner_item);
+            categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selectionSpinner.setAdapter(categoryAdapter);
+
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for category
+
+        } else if (selectedFilter.equalsIgnoreCase("timePeriod")) {
+            selectionSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.period, android.R.layout.simple_spinner_item);
+            periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            selectionSpinner.setAdapter(periodAdapter);
+
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for timePeriod
+
+        } else if (selectedFilter.equalsIgnoreCase("")) {
+            selectionSpinner.setVisibility(View.GONE);
+            editReportConstraint.setVisibility(View.GONE); // Hide EditText for all items
+
+        } else {
+            selectionSpinner.setVisibility(View.GONE);
+            editReportConstraint.setVisibility(View.VISIBLE); // Show EditText for other filters (name and id)
+        }
+    }
+
+
     private void checkMediaPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             boolean readMediaImages = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
@@ -77,7 +121,6 @@ public class ReportFragment extends Fragment {
                 generateReport();
             }
         } else {
-            // for devices < Android 13, use old permissions
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("REPORT", "Requesting WRITE_EXTERNAL_STORAGE permission");
                 ActivityCompat.requestPermissions(requireActivity(),
@@ -94,16 +137,22 @@ public class ReportFragment extends Fragment {
         Log.d("REPORT", "Generating report");
         PDFCreator pdfCreator = new PDFCreator();
 
-        String filterConstraint = editReportConstraint.getText().toString().trim();
+        String filterConstraint;
         boolean contentType = contentCheckBox.isChecked();
         int position = spinnerFilterOptions.getSelectedItemPosition();
         String filterType = filterKeyWords[position];
+
+        if (filterType.equals("category") || filterType.equals("timePeriod")) {
+            filterConstraint = selectionSpinner.getSelectedItem().toString();
+        } else {
+            filterConstraint = editReportConstraint.getText().toString().trim();
+        }
 
         if (position == 0) {
             Database.fetchItems(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
-                    pdfCreator.createPdf(getContext(), ret, contentType);
+                    pdfCreator.createPdf(getContext(), ret, "All Items", contentType);
                 }
 
                 @Override
@@ -115,7 +164,7 @@ public class ReportFragment extends Fragment {
             Database.fetchItemsFiltered(new Database.OnDataFetchedListener<Item>() {
                 @Override
                 public void onDataFetched(List<Item> ret) {
-                    pdfCreator.createPdf(getContext(), ret, contentType);
+                    pdfCreator.createPdf(getContext(), ret, filterType, contentType);
                 }
 
                 @Override

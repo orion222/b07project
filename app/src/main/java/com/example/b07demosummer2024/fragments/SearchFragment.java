@@ -27,7 +27,6 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -39,6 +38,12 @@ public class SearchFragment extends Fragment {
         btnResult = view.findViewById(R.id.btnResult);
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+
+        // Clear input fields when the fragment is loaded
+        edtTxtLotNumber.setText("");
+        edtTxtName.setText("");
+        spnCategory.setSelection(0); // Set to the first item
+        spnPeriod.setSelection(0); // Set to the first item
 
         btnResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,4 +63,5 @@ public class SearchFragment extends Fragment {
 
         return view;
     }
+
 }
