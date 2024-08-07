@@ -19,13 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b07demosummer2024.models.ItemViewModel;
-import com.example.b07demosummer2024.utilities.Database;
 import com.example.b07demosummer2024.models.Item;
 import com.example.b07demosummer2024.utilities.ItemAdapter;
 import com.example.b07demosummer2024.R;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.utilities.Pagination;
-import com.google.firebase.database.DatabaseError;
+import com.example.b07demosummer2024.utilities.Preferences;
 
 import java.util.*;
 
@@ -59,6 +58,14 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonPrevious = view.findViewById(R.id.buttonPrevious);
         buttonDelete = view.findViewById(R.id.buttonDelete);
+
+        boolean isAdmin = Preferences.getAdminStatus(requireContext());
+        if (isAdmin){
+            buttonDelete.setVisibility(View.VISIBLE);
+        } else {
+            buttonDelete.setVisibility(View.INVISIBLE);
+            RecyclerViewFragment.setDeleteMode(false);
+        }
 
         // List to keep track of clicked items
         clickedList = new ArrayList<Item>();

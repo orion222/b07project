@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        boolean isLoggedIn = Preferences.checkLogin(this);
+        boolean isLoggedIn = Preferences.getAdminStatus(this);
         if (savedInstanceState == null) {
             Log.d("wow15", "Is logged in: " + isLoggedIn);
 

@@ -11,7 +11,6 @@ import android.widget.Spinner;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -44,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         Spinner viewSpinner = findViewById(R.id.actionSpinner);
         ArrayAdapter<CharSequence> adapter;
 
-        isAdmin = Preferences.checkLogin(this);
+        isAdmin = Preferences.getAdminStatus(this);
         if (isAdmin){
             adapter = ArrayAdapter.createFromResource(this,
                     R.array.adminActions, android.R.layout.simple_spinner_item);
@@ -61,17 +60,37 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // load fragments based on selected action
-                if (position == 0) {
-                    // load home fragment (view)
-                    itemViewModel.fetchViewModelItems();
-                    loadFragment(new RecyclerViewFragment());
-                } else if (position == 1) {
-                    loadFragment(new SearchFragment());
+                Fragment fragment = null;
+                String tag = null;
+
+                switch (position) {
+                    case 1:
+                        itemViewModel.fetchViewModelItems();
+                        fragment = new RecyclerViewFragment();
+                        tag = "RecyclerViewFragment";
+                        break;
+                    case 2:
+                        fragment = new SearchFragment();
+                        tag = "SearchFragment";
+                        break;
+                    case 3:
+                        if (isAdmin) {
+                            fragment = new AddItemFragment();
+                            tag = "AddItemFragment";
+                        }
+                        break;
+                    case 4:
+                        if (isAdmin) {
+                            fragment = new ReportFragment();
+                            tag = "ReportFragment";
+                        }
+                        break;
                 }
-                if (isAdmin) {
-                    if (position == 2) loadFragment(new AddItemFragment());
-                    else if (position == 3) loadFragment(new ReportFragment());
+
+                if (fragment != null) {
+                    loadFragment(fragment, tag);
                 }
+                parent.setSelection(0);
             }
 
             @Override
@@ -79,32 +98,41 @@ public class HomeActivity extends AppCompatActivity {
                 // Do nothing
             }
         });
+
+        // Load initial fragment if needed
+        if (savedInstanceState == null) {
+            loadFragment(new RecyclerViewFragment(), "RecyclerViewFragment");
+        }
     }
 
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home_fragment_container, fragment);
-        transaction.addToBackStack(null);
+    private void loadFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Check if the fragment is already in the back stack
+        Fragment existingFragment = fragmentManager.findFragmentByTag(tag);
+        if (existingFragment != null) {
+            // Remove duplicates in the back stack
+            fragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
+        // Add the new fragment
+        transaction.replace(R.id.home_fragment_container, fragment, tag);
+        transaction.addToBackStack(tag);
         transaction.commit();
     }
 
     @Override
     public void onBackPressed() {
-        //when you press back, kill this activity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (fragmentManager.getBackStackEntryCount() > 1) {
-            // pop the back stack to go back to the previous fragment (changed to > 1)
             fragmentManager.popBackStack();
         } else {
-            // when no fragments in back stack (go back to login - MainActivity)
-
-            // there were currently some issues with this
+            // When no fragments in back stack, go back to login - MainActivity
             RecyclerViewFragment.setDeleteMode(false);
-
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
             startActivity(intent);
             finish();
         }
@@ -116,7 +144,4 @@ public class HomeActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
-
-
 }

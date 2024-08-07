@@ -58,15 +58,17 @@
     </string-array>
 
     <string-array name="adminActions">
+        <item>Select an Action</item>
         <item>Home</item>
-        <item>Search</item>
-        <item>Add</item>
-        <item>Report</item>
+        <item>Advanced Search</item>
+        <item>Add Item</item>
+        <item>Generate Report</item>
     </string-array>
 
     <string-array name="userActions">
+        <item>Select an Action</item>
         <item>Home</item>
-        <item>Search</item>
+        <item>Advanced Search</item>
     </string-array>
 
     <string-array name="reportFilterOptions">

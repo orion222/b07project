@@ -35,7 +35,7 @@ public class LoginFragment extends Fragment {
 
         TextView continueMSG = view.findViewById(R.id.textContinueAs);
 
-        boolean loggedIn = Preferences.checkLogin(requireContext());
+        boolean loggedIn = Preferences.getAdminStatus(requireContext());
         Log.d("ZEBRA3", "Is logged in: " + loggedIn);
         //conditional rendering for logged in
         if (loggedIn) {

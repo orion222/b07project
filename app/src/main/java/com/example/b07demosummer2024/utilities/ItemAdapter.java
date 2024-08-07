@@ -9,21 +9,15 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.graphics.Color;
-import android.widget.Toast;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 //glide imports
 import com.bumptech.glide.Glide;
 import com.example.b07demosummer2024.R;
-import com.example.b07demosummer2024.activities.HomeActivity;
-import com.example.b07demosummer2024.activities.MainActivity;
 import com.example.b07demosummer2024.fragments.RecyclerViewFragment;
 import com.example.b07demosummer2024.interfaces.RecyclerViewInterface;
 import com.example.b07demosummer2024.models.Item;
@@ -115,6 +109,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+//                if (!Preferences.getAdminStatus(context)){
+//                    return false; //if not admin
+//                }
                 if(!RecyclerViewFragment.getDeleteMode()) {
                     RecyclerViewFragment.setDeleteMode(true);
                     checkItemToRemove(holder, item);
