@@ -222,7 +222,19 @@ public class AddItemFragment extends Fragment {
         editTextName.getText().clear();
         editTextLotId.getText().clear();
         editTextDescription.getText().clear();
-//        editTextTimePeriod.getText().clear();
-//        editTextCategory.getText().clear();
+
+        // Reset the spinners to the first item
+        spnCategory.setSelection(0);
+        spnPeriod.setSelection(0);
+        mediaSpinner.setSelection(0);
+
+        // Clear the uploaded media lists
+        images.clear();
+        videos.clear();
+        count = 0;
+
+        // Update the media count display
+        mediaCount.setText("Uploaded files: 0/2");
     }
+
 }
