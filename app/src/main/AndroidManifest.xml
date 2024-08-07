@@ -14,7 +14,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/taam_logo"
-        android:label="@string/app_name"
+        android:label="TAAM"
         android:roundIcon="@mipmap/taam_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.B07DemoSummer2024"
