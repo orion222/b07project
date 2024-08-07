@@ -77,7 +77,7 @@ public class ViewFragment extends Fragment {
                     .into(imageView);
         } else {
             // Set default image if no image available
-            imageView.setImageResource(R.drawable.notavailable);
+            imageView.setImageResource(R.drawable.notloading);
         }
 
         List<String> videoLinks = item.getMedia().getVideoPaths();

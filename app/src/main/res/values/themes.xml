@@ -1,13 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.B07DemoSummer2024" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <!--        <item name="colourAccent">@color/accent</item>-->
-        <!--        <item name="colourBlack">@color/accentBlack</item>-->
-        <!--        <item name="colourGrey">@color/accentGrey</item>-->
         <item name="android:textColor">@color/accentGrey</item>
     </style>
 
-    <style name="Theme.B07DemoSummer2024" parent="Base.Theme.B07DemoSummer2024" />
 </resources>

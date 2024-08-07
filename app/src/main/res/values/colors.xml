@@ -12,6 +12,7 @@
     <color name = "buttonBlueGradient">#41C0FA</color>
     <color name ="background">#DBD2E6</color>
     <color name ="background2">#DBCAEB</color>
-    <color name ="selected">#D3EFF8</color>
+    <color name ="background3">#A68CBD</color>
+    <color name ="selected">#EBEBEB</color>
     <color name ="selected2">#B6BDBD</color>
 </resources>
