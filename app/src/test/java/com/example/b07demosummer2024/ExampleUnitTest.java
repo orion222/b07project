@@ -30,69 +30,69 @@ import com.example.b07demosummer2024.utilities.Presenter;
 @RunWith(MockitoJUnitRunner.class)
 public class ExampleUnitTest {
 
-//    @Mock
-//    private LoginMVP.View view;
-//
-//    @Mock
-//    private LoginMVP.Model model;
+    @Mock
+    private LoginMVP.View view;
 
-//    @Mock
-//    private Context context;
+    @Mock
+    private LoginMVP.Model model;
+
+    @Mock
+    private Context context;
 
     @Mock
     private Presenter presenter;
 
-//    @Captor
-//    private ArgumentCaptor<LoginMVP.Model.LoginCallback> ModelArgumentCaptor;
-//
-//    @Mock
-//    private Preferences preferences;
+    @Captor
+    private ArgumentCaptor<LoginMVP.Model.LoginCallback> ModelArgumentCaptor;
+
+    @Mock
+    private Preferences preferences;
 
     @Test
-    public void test() {
+    public void test1() {
         assertEquals(1, 1);
     }
 
-//    @Test
-//    public void testHandleLoginSuccess() {
-//
-//        Presenter presenter = new Presenter(model, context);
-//
-//        presenter.handleLogin("Username", "Password");
-//
-//        verify(model).login("Username", "Password", ModelArgumentCaptor.capture());
-//        LoginMVP.Model.LoginCallback callback = ModelArgumentCaptor.getValue();
-//
-//        callback.onSuccess("Message", "Password");
-//        verify(preferences).saveLogin(context, true);
-//        verify(preferences).saveUser(context, "Username");
-//        verify(view).onLoginSuccess("Message");
-//
-//        callback.onError("Message");
-//        verify(preferences).saveLogin(context, false);
-//        verify(view).onLoginError("Message");
-//
-//    }
+    @Test
+    public void testHandleLoginSuccess() {
+
+        Presenter presenter = new Presenter(model, context);
+
+        presenter.handleLogin("Username", "Password");
+
+        verify(model).login("Username", "Password", ModelArgumentCaptor.capture());
+        LoginMVP.Model.LoginCallback callback = ModelArgumentCaptor.getValue();
+
+        callback.onSuccess("Message", "Password");
+        verify(preferences).saveLogin(context, true);
+        verify(preferences).saveUser(context, "Username");
+        verify(view).onLoginSuccess("Message");
+
+        callback.onError("Message");
+        verify(preferences).saveLogin(context, false);
+        verify(view).onLoginError("Message");
+
+    }
 
 
 
-//
-//    @Test
-//    public void test() {
-//
-//        Presenter presenter = new Presenter(model, context);
-//        presenter.attachView(view);
-//        presenter.handleLogin("Username", "Password");
-//
-//    }
 
-//    @Test
-//    public void test() {
-//
-//        Presenter presenter = new Presenter(model, context);
-//        presenter.attachView(view);
-//        presenter.detachView();
-//
-//    }
+    @Test
+    public void test2() {
+
+        Presenter presenter = new Presenter(model, context);
+        presenter.attachView(view);
+        presenter.handleLogin("Username", "Password");
+
+    }
+
+    @Test
+    public void test3() {
+
+        Presenter presenter = new Presenter(model, context);
+        presenter.attachView(view);
+        presenter.detachView();
+
+    }
 
 }

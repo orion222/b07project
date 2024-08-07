@@ -46,7 +46,7 @@ dependencies {
     implementation(libs.firebase.storage)
     testImplementation(libs.junit)
 //    testImplementation("org.mockito:mockito-all:2.0.2-beta")
-//    testImplementation("org.mockito:mockito-all:1.10.19")
+    testImplementation("org.mockito:mockito-all:1.10.19")
 //    testImplementation("org.mockito:mockito-core:5.2.0")
 //    testImplementation("org.mockito:mockito-inline:5.2.0")
     androidTestImplementation(libs.ext.junit)
