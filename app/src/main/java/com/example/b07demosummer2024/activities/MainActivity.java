@@ -36,23 +36,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-        boolean autoLogoutStatus = Preferences.getAutoLogoutStatus(this);
-//        Log.d("LOGOUT", "AUTOLOGOUT VAL: " + autoLogoutStatus);
-        if (autoLogoutStatus && Preferences.getAdminStatus(this)) {
-            Preferences.logout(this);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-
-    @Override
     public void onBackPressed() {
 //        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
 //            getSupportFragmentManager().popBackStack();

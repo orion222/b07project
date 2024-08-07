@@ -6,4 +6,6 @@ public class PrefConstants {
     public static final String LOGIN_STATE = "loginState";
     public static final String USER = "user";
     public static final String AUTO_LOGOUT_STATUS = "autoLogoutStatus";
+//    public static final String MAX_ENTRY_COUNT = "maxEntryCount";
+
 }
