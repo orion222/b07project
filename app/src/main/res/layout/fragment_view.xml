@@ -28,26 +28,28 @@
         app:layout_constraintTop_toBottomOf="@+id/textName">
 
         <TextView
+            android:textColor="@color/accentBlack"
             android:id="@+id/textDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:padding="6dp"
+            android:padding="8dp"
             android:background="@drawable/text_outline"
             app:layout_constraintEnd_toStartOf="@+id/textCategory"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:textColor="@color/accentBlack"
             android:id="@+id/textCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:padding="6dp"
+            android:padding="8dp"
             android:background="@drawable/text_outline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textDate"

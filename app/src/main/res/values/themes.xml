@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.B07DemoSummer2024" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColor">@color/accentGrey</item>
+        <item name="android:textColor">@color/black</item>
+
     </style>
 
 </resources>

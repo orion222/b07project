@@ -3,6 +3,8 @@
     <style name="Button" parent="TextAppearance.AppCompat">
         <!--        <item name="android:background">@color/accent</item>-->
         <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+<!--        <item name="android:padding">10dp</item>-->
         <item name="android:background">@drawable/button_background</item>
     </style>
 
@@ -27,7 +29,7 @@
     <style name="FragmentHeader">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/accentBlack</item>
+        <item name="android:textColor">@color/accent</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:gravity">center</item>
     </style>
