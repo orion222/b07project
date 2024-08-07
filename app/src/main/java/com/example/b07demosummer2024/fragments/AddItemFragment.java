@@ -147,7 +147,7 @@ public class AddItemFragment extends Fragment {
                     mediaCount.setText(fileUpdate);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed to Upload: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     isUploading = false;
                 });
     }
