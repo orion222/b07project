@@ -30,7 +30,7 @@ public class UserModel implements LoginMVP.Model {
                 for (Credentials c : credentialsList) {
 //                    Log.d("BOOL", String.valueOf(username.equals(c.getUsername()) && password.equals(c.getPassword())));
                     if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
-                        //tells the presenter that it was successful, and passes the uesrname
+                        //tells the presenter that it was si jusuccessful, and passes the uesrname
                         callback.onSuccess("Login successful!", username);
                         return;
                     }

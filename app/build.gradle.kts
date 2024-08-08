@@ -44,9 +44,16 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation(libs.firebase.storage)
-    testImplementation(libs.junit)
+    testImplementation("junit:junit:4.13.2")
+//    testImplementation("org.mockito:mockito-all:2.0.2-beta")
+    testImplementation("org.mockito:mockito-core:5.12.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+//    testImplementation("org.mockito:mockito-core:5.2.0")
+//    testImplementation("org.mockito:mockito-inline:5.2.0")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+//    testImplementation(libs.mockito.all)
 }
+
