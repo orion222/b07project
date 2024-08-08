@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 public class PDFCreator {
+    // static variables for PDF layout
     private static final int PAGE_WIDTH = 595;
     private static final int PAGE_HEIGHT = 842;
     private static final int IMAGE_HEIGHT = 100;

@@ -60,7 +60,7 @@ public class Preferences {
         editor.apply();
     }
 
-    //getters
+    // getters
     public static String getUser(Context context) {
         SharedPreferences sharedPref = getSharedPreferences(context);
         // the getString method takes a 2nd argument called a default, here its ""

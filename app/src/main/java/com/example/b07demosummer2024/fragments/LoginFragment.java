@@ -26,10 +26,10 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        // Find buttons by their IDs
+        // find buttons by their IDs
         Button loginAdmin = view.findViewById(R.id.adminButton);
         Button loginGuest = view.findViewById(R.id.guestButton);
         Button logoutButton = view.findViewById(R.id.logoutButton); // initially hidden
@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment {
 
         boolean loggedIn = Preferences.getAdminStatus(requireContext());
         Log.d("ZEBRA3", "Is logged in: " + loggedIn);
-        //conditional rendering for logged in
+        // conditional rendering for logged in
         if (loggedIn) {
             String user = Preferences.getUser(requireContext());
             // welcomes with username if not null

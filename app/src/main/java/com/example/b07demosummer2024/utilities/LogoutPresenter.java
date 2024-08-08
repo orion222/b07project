@@ -8,7 +8,7 @@ public class LogoutPresenter implements LogoutMVP.Presenter {
     private LogoutMVP.View view;
     private Context context;
 
-    //constructor
+    // constructor
     public LogoutPresenter(Context context) {
         this.context = context;
     }
@@ -19,7 +19,7 @@ public class LogoutPresenter implements LogoutMVP.Presenter {
         view.onLogoutSuccess();
     }
 
-    //getters/setters
+    // getters and setters
     @Override
     public void attachView(LogoutMVP.View view) {
         this.view = view;

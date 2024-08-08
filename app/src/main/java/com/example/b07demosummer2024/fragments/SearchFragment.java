@@ -24,7 +24,7 @@ public class SearchFragment extends Fragment {
     private ItemViewModel itemViewModel;
 
     public SearchFragment() {
-        // Required empty public constructor
+        // required empty public constructor
     }
 
     @Override
@@ -39,11 +39,11 @@ public class SearchFragment extends Fragment {
 
         itemViewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
-        // Clear input fields when the fragment is loaded
+        // clear input fields when the fragment is loaded
         edtTxtLotNumber.setText("");
         edtTxtName.setText("");
-        spnCategory.setSelection(0); // Set to the first item
-        spnPeriod.setSelection(0); // Set to the first item
+        spnCategory.setSelection(0);
+        spnPeriod.setSelection(0);
 
         btnResult.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -81,7 +81,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.textViewDescription.setText(item.getDescription());
 
 
-        //try to showcase thumbnail
+        // try to showcase thumbnail
         List<String> imagePaths = item.getMedia().getImagePaths();
         if (imagePaths != null && !imagePaths.isEmpty()) {
             String thumbnail = imagePaths.get(0);
@@ -94,7 +94,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     .into(holder.imageView);
         }
         else {
-            //if no thumbnail in db
+            // if no thumbnail in db
             holder.imageView.setImageResource(R.drawable.pic_not_available);
         }
 
@@ -156,7 +156,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         notifyItemChanged(pos);
     }
 
-    //accessory function
+    // accessory function
     @Override
     public int getItemCount() {
         return itemList.size();

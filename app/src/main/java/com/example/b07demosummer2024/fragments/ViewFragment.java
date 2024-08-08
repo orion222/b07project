@@ -59,7 +59,7 @@ public class ViewFragment extends Fragment {
             assert item != null;
         }
 
-        // Update TextViews with item details
+        // update TextViews with item details
         nameText.setText(item.getName());
         DateText.setText("Time Period: " + item.getTimePeriod());
         CategoryText.setText("Category: " + item.getCategory());
@@ -76,7 +76,7 @@ public class ViewFragment extends Fragment {
                     .error(R.drawable.pic_not_available) // error image
                     .into(imageView);
         } else {
-            // Set default image if no image available
+            // set default image if no image available
             imageView.setImageResource(R.drawable.notloading);
         }
 

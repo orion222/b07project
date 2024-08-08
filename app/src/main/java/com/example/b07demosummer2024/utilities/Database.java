@@ -36,7 +36,7 @@ public class Database {
         void onError(DatabaseError error);
     }
 
-    // Main method to retrieve all data
+    // main method to retrieve all data
     public static void fetchItems(OnDataFetchedListener<Item> listener) {
         DatabaseReference myRef = db.getReference("items");
 
@@ -50,7 +50,7 @@ public class Database {
                     Log.d("TAGTEST", "1" + item);
                 }
 
-                // Log the fetched items
+                // log the fetched items
                 for (Item i : itemList) {
                     Log.d("firebase", "name: " + i.getName());
                     if (i.getMedia() != null) {

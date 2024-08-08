@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.List;
 
-//this is the MODEL in MVP, it verifies the login
+// this is the MODEL in MVP, it verifies the login
 public class UserModel implements LoginMVP.Model {
 
     private List<Credentials> credentialsList;

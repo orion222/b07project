@@ -35,8 +35,6 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("WOW10", "activity commenced");
 
         setContentView(R.layout.activity_home);
-
-        //Initialize ViewModel
         itemViewModel = new ViewModelProvider(this).get(ItemViewModel.class);
 
         // initialize spinner and adapter (used for dropdown)
@@ -99,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // Load initial fragment if needed
+        // load initial fragment if needed
         if (savedInstanceState == null) {
             loadFragment(new RecyclerViewFragment(), "RecyclerViewFragment");
         }
@@ -109,14 +107,14 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        // Check if the fragment is already in the back stack
+        // check if the fragment is already in the back stack
         Fragment existingFragment = fragmentManager.findFragmentByTag(tag);
         if (existingFragment != null) {
-            // Remove duplicates in the back stack
+            // remove duplicates in the back stack
             fragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
-        // Add the new fragment
+        // add the new fragment
         transaction.replace(R.id.home_fragment_container, fragment, tag);
         transaction.addToBackStack(tag);
         transaction.commit();
@@ -129,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         if (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStack();
         } else {
-            // When no fragments in back stack, go back to login - MainActivity
+            // when no fragments in back stack, go back to login - MainActivity
             RecyclerViewFragment.setDeleteMode(false);
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

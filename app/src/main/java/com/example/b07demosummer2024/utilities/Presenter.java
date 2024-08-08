@@ -3,13 +3,13 @@ package com.example.b07demosummer2024.utilities;
 import com.example.b07demosummer2024.interfaces.LoginMVP;
 import android.content.Context;
 
-//this is the PRESENTER in MVP, it uses callbacks to link the model (backend) and view (frontend)
+// this is the PRESENTER in MVP, it uses callbacks to link the model (backend) and view (frontend)
 public class Presenter implements LoginMVP.Presenter {
 
     private LoginMVP.View view;
     private LoginMVP.Model model;
 
-    //need to store login status and admin username
+    // need to store login status and admin username
     private Context context;
 
     public Presenter(LoginMVP.Model model, Context context) {
@@ -17,7 +17,7 @@ public class Presenter implements LoginMVP.Presenter {
         this.context = context;
     }
 
-    //tbh idk why we cant directly attach it but this is what the thing said to do
+    // tbh idk why we cant directly attach it but this is what the thing said to do
     @Override
     public void attachView(LoginMVP.View view) {
         this.view = view;
@@ -32,7 +32,7 @@ public class Presenter implements LoginMVP.Presenter {
     public void handleLogin(String username, String password) {
         if (view == null) return;
 
-        //calling login method on UserModel object sends back callback
+        // calling login method on UserModel object sends back callback
         model.login(username, password, new LoginMVP.Model.LoginCallback() {
             @Override
             public void onSuccess(String message, String username) {
@@ -53,7 +53,7 @@ public class Presenter implements LoginMVP.Presenter {
         });
     }
 
-    // Getter for the view, useful for testing
+    // getter for the view, useful for testing
     public LoginMVP.View getView() {
         return view;
     }

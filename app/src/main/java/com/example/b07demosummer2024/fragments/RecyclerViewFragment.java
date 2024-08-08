@@ -39,7 +39,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
     private ItemViewModel itemViewModel;
     private SearchView searchView;
 
-    //defaults to 0
+    // defaults to 0
     private int currentPage;
 
     private static boolean deleteMode;
@@ -204,16 +204,13 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewInterf
         }
     }
 
-    //getters and setters
+    // getters and setters
     public static boolean getDeleteMode() {
         return deleteMode;
     }
 
     public static void setDeleteMode(boolean c) {
         deleteMode = c;
-//        if(c) {
-//            Toast.makeText(requireContext(), "Delete Mode Activated", Toast.LENGTH_SHORT).show();
-//        }
     }
 
     private void switchFragment(Fragment fragment) {

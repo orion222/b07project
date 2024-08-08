@@ -65,7 +65,7 @@ public class ReportFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectionSpinner.setVisibility(View.GONE);
-                editReportConstraint.setVisibility(View.GONE); // Ensure it's visible when no selection
+                editReportConstraint.setVisibility(View.GONE);
             }
         });
 
@@ -93,18 +93,17 @@ public class ReportFragment extends Fragment {
             periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             selectionSpinner.setAdapter(periodAdapter);
 
-            editReportConstraint.setVisibility(View.GONE); // Hide EditText for timePeriod
+            editReportConstraint.setVisibility(View.GONE);
 
         } else if (selectedFilter.equalsIgnoreCase("")) {
             selectionSpinner.setVisibility(View.GONE);
-            editReportConstraint.setVisibility(View.GONE); // Hide EditText for all items
+            editReportConstraint.setVisibility(View.GONE);
 
         } else {
             selectionSpinner.setVisibility(View.GONE);
-            editReportConstraint.setVisibility(View.VISIBLE); // Show EditText for other filters (name and id)
+            editReportConstraint.setVisibility(View.VISIBLE);
         }
     }
-
 
     private void checkMediaPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

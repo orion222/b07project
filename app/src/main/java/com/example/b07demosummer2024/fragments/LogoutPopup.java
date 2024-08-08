@@ -42,7 +42,7 @@ public class LogoutPopup extends DialogFragment implements LogoutMVP.View {
         Button confirmYes = view.findViewById(R.id.buttonYes);
         Button confirmNo = view.findViewById(R.id.buttonNo);
 
-        //event handlers
+        // event handlers
         confirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

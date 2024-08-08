@@ -51,7 +51,7 @@ public class SettingsPopup extends DialogFragment {
         });
 
 
-        //event handlers
+        // event handlers
         confirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

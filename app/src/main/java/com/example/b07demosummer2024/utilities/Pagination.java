@@ -8,7 +8,7 @@ public class Pagination {
     private static int items_per_page = 6;
 
     public static List<Item> generatePage(int currentPage, List<Item> itemList) {
-        if(itemList == null) return new ArrayList<Item>();
+        if (itemList == null) return new ArrayList<Item>();
 
         int numItems = itemList.size();
 

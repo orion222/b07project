@@ -2,7 +2,7 @@ package com.example.b07demosummer2024.models;
 
 import java.util.List;
 
-//class contains media for each item, including videos and images
+// class contains media for each item, including videos and images
 public class Media {
     private List<String> imagePaths;
     private List<String> videoPaths;

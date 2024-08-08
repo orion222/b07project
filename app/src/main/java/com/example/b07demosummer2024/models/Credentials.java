@@ -15,7 +15,7 @@ public class Credentials {
         this.password = password;
     }
 
-    //getters and setters
+    // getters and setters
     public int getId() {
         return id;
     }
