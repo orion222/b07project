@@ -52,4 +52,9 @@ public class Presenter implements LoginMVP.Presenter {
             }
         });
     }
+
+    // Getter for the view, useful for testing
+    public LoginMVP.View getView() {
+        return view;
+    }
 }
