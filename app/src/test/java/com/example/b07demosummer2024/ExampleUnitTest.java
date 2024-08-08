@@ -14,7 +14,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
@@ -25,7 +24,6 @@ import android.content.SharedPreferences;
 
 import com.example.b07demosummer2024.interfaces.LoginMVP;
 import com.example.b07demosummer2024.utilities.PrefConstants;
-import com.example.b07demosummer2024.utilities.Preferences;
 import com.example.b07demosummer2024.utilities.Presenter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,7 +50,6 @@ public class ExampleUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        // Mock SharedPreferences behavior
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPreferences);
         when(sharedPreferences.edit()).thenReturn(editor);
 
@@ -76,17 +73,17 @@ public class ExampleUnitTest {
 
     @Test
     public void testHandleLoginSuccess() {
-        // Arrange
+        // arrange
         doAnswer(invocation -> {
             LoginMVP.Model.LoginCallback callback = invocation.getArgument(2);
             callback.onSuccess("Login successful!", "admin1");
             return null;
         }).when(model).login(anyString(), anyString(), any(LoginMVP.Model.LoginCallback.class));
 
-        // Act
+        // act
         presenter.handleLogin("admin1", "pass");
 
-        // Assert
+        // assert
         verify(view).onLoginSuccess("Login successful!");
 
         InOrder inOrder = inOrder(editor);
@@ -97,7 +94,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testHandleLoginError() {
-        // Arrange
+        // arrange
         String errorMessage = "Login failed!";
         doAnswer(invocation -> {
             LoginMVP.Model.LoginCallback callback = invocation.getArgument(2);
@@ -109,10 +106,9 @@ public class ExampleUnitTest {
 
         verify(view).onLoginError(errorMessage);
 
-        // Verify the login state is set to false
+        // verify the login state is set to false
         InOrder inOrder = inOrder(editor);
         inOrder.verify(editor).putBoolean(PrefConstants.LOGIN_STATE, false);
         inOrder.verify(editor).apply();
     }
-
 }
